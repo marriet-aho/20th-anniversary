@@ -1,0 +1,13 @@
+.root {
+  --o: #F58220; --od: #C25E08; --ol: #FFF1E3; --bg: #fff; --s: #F4F5F7; --b: #D1D5DB; --t2: #5B616B; --t: #1d1e20;
+  box-sizing: border-box; margin: 0; position: relative; overflow-x: hidden; isolation: isolate;
+  background: var(--bg); color: var(--t); font: 400 16px/1.6 Figtree, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  * { box-sizing: border-box; }
+}
+@media (prefers-color-scheme: dark) {
+  .root:not([data-theme='light']) {
+    --bg: #1d1e20; --s: #26272a; --b: #3d3f44; --t2: #a9adb5; --t: #f1f1f1; --ol: #3a2a1a;
+  }
+}
+.root[data-theme='dark'] { --bg: #1d1e20; --s: #26272a; --b: #3d3f44; --t2: #a9adb5; --t: #f1f1f1; --ol: #3a2a1a; }

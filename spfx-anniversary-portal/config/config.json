@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "anniversary-portal-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/anniversaryPortal/AnniversaryPortalWebPart.js",
+          "manifest": "./src/webparts/anniversaryPortal/AnniversaryPortalWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "AnniversaryPortalWebPartStrings": "lib/webparts/anniversaryPortal/loc/{locale}.js"
+  }
+}

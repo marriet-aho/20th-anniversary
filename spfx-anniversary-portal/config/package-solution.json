@@ -1,0 +1,40 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "spfx-anniversary-portal-client-side-solution",
+    "id": "c3c73912-4989-4ddf-a146-d95145b1c6ff",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": "Undefined-1.23.2"
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "spfx-anniversary-portal description"
+      },
+      "longDescription": {
+        "default": "spfx-anniversary-portal description"
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "spfx-anniversary-portal Feature",
+        "description": "The feature that activates elements of the spfx-anniversary-portal solution.",
+        "id": "076949b5-6bc5-40a0-9e1c-49757245538b",
+        "version": "1.0.0.0"
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/spfx-anniversary-portal.sppkg"
+  }
+}

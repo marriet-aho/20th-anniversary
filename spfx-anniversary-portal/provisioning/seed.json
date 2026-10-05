@@ -1,0 +1,556 @@
+{
+  "PortalContent": [
+    {
+      "Title": "hero.title",
+      "Value": "20 Years of Audacious Steps",
+      "ContentGroup": "Hero"
+    },
+    {
+      "Title": "hero.subtitle",
+      "Value": "For two decades, we have embraced bold ideas, navigated challenges, empowered our people, and transformed possibilities into achievements. Today, we celebrate the individuals whose dedication has shaped our story and paved the way for the future.",
+      "ContentGroup": "Hero"
+    },
+    {
+      "Title": "hero.btn1",
+      "Value": "Meet our {count} audacious legends",
+      "ContentGroup": "Hero"
+    },
+    {
+      "Title": "hero.btn2",
+      "Value": "Our audacious journey",
+      "ContentGroup": "Hero"
+    },
+    {
+      "Title": "hero.btn3",
+      "Value": "Watch the celebration",
+      "ContentGroup": "Hero"
+    },
+    {
+      "Title": "countdown.title",
+      "Value": "Countdown to Our Grand 20th Anniversary Celebration",
+      "ContentGroup": "Countdown"
+    },
+    {
+      "Title": "countdown.lead",
+      "Value": "The countdown is on as we prepare to celebrate 20 years of excellence, innovation, and impact.",
+      "ContentGroup": "Countdown"
+    },
+    {
+      "Title": "journey.heading",
+      "Value": "Twenty audacious steps",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "journey.sub",
+      "Value": "Each milestone from 2006 to today was a bold move.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "tree.heading",
+      "Value": "The Tree of Legacy",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "tree.sub",
+      "Value": "Every colleague who has given us 20 years. Select a name to read their story.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "legends.heading",
+      "Value": "Our {count} Audacious Legends",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "legends.sub",
+      "Value": "Honouring the {count} Audacious Legends who have shaped our journey over the last 20 years.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "memory.heading",
+      "Value": "Memory Lane",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "memory.sub",
+      "Value": "Moments from our first 20 years.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "voices.heading",
+      "Value": "Voices of appreciation",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "voices.sub",
+      "Value": "Messages from our leaders.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "video.heading",
+      "Value": "Anniversary video",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "video.sub",
+      "Value": "A message from leadership.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "video.url",
+      "Value": "",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "board.heading",
+      "Value": "Orange Family Celebration Board",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "board.sub",
+      "Value": "Share a message celebrating our people, our journey, and our 20 Years of Audacious Steps.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "gallery.heading",
+      "Value": "Celebration Gallery",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "gallery.sub",
+      "Value": "Memories and moments from our 20th anniversary celebrations.",
+      "ContentGroup": "Headings"
+    },
+    {
+      "Title": "footer.heading",
+      "Value": "Here is to the next audacious step",
+      "ContentGroup": "Footer"
+    },
+    {
+      "Title": "footer.sub",
+      "Value": "Twenty years of bold moves, and we are just getting started.",
+      "ContentGroup": "Footer"
+    },
+    {
+      "Title": "countdown.date",
+      "Value": "",
+      "DateValue": "2026-10-01T13:15:00Z",
+      "ContentGroup": "Countdown"
+    }
+  ],
+  "Timeline": [
+    {
+      "Title": "Our doors open",
+      "Year": 2006,
+      "SortOrder": 1
+    },
+    {
+      "Title": "Branch network expands",
+      "Year": 2010,
+      "SortOrder": 2
+    },
+    {
+      "Title": "Digital banking launches",
+      "Year": 2015,
+      "SortOrder": 3
+    },
+    {
+      "Title": "Serving customers through change",
+      "Year": 2020,
+      "SortOrder": 4
+    },
+    {
+      "Title": "Twenty years and counting",
+      "Year": 2026,
+      "SortOrder": 5
+    }
+  ],
+  "KeyStats": [
+    {
+      "Title": "Years of Excellence",
+      "Value": "20",
+      "SortOrder": 1
+    },
+    {
+      "Title": "Branches Nationwide",
+      "Value": "81",
+      "SortOrder": 2
+    },
+    {
+      "Title": "Employees",
+      "Value": "2k+",
+      "SortOrder": 3
+    },
+    {
+      "Title": "Customers Served",
+      "Value": "2M+",
+      "SortOrder": 4
+    }
+  ],
+  "Departments": [
+    {
+      "Title": "Retail Banking",
+      "Active": true
+    },
+    {
+      "Title": "Operations",
+      "Active": true
+    },
+    {
+      "Title": "Finance",
+      "Active": true
+    },
+    {
+      "Title": "Credit",
+      "Active": true
+    },
+    {
+      "Title": "HR",
+      "Active": true
+    },
+    {
+      "Title": "IT",
+      "Active": true
+    },
+    {
+      "Title": "Compliance",
+      "Active": true
+    },
+    {
+      "Title": "Risk",
+      "Active": true
+    },
+    {
+      "Title": "Marketing",
+      "Active": true
+    },
+    {
+      "Title": "Treasury",
+      "Active": true
+    },
+    {
+      "Title": "Customer Service",
+      "Active": true
+    },
+    {
+      "Title": "Corporate & Investment Banking",
+      "Active": true
+    },
+    {
+      "Title": "Prestige Banking",
+      "Active": true
+    },
+    {
+      "Title": "Retail Network",
+      "Active": true
+    },
+    {
+      "Title": "Banking Operations",
+      "Active": true
+    },
+    {
+      "Title": "Technology",
+      "Active": true
+    },
+    {
+      "Title": "Financial & Capital Markets",
+      "Active": true
+    },
+    {
+      "Title": "Fidelity Securities Limited",
+      "Active": true
+    },
+    {
+      "Title": "Banking Operation",
+      "Active": true
+    }
+  ],
+  "Branches": [
+    {
+      "Title": "Head Office",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Head Office Annex",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Abbosey Okai Main",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Kwame Nkrumah Avenue",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Head Office Annex - Orange Height",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Ashaley Botwe Express Center",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Adenta Branch",
+      "Region": "",
+      "Active": true
+    },
+    {
+      "Title": "Berekum Branch",
+      "Region": "",
+      "Active": true
+    }
+  ],
+  "Legends": [
+    {
+      "Title": "Selom Cofie Atta",
+      "Department": "Corporate & Investment Banking",
+      "Position": "Director, Special Projects",
+      "Branch": "Head Office",
+      "Joined": "2006-03-01",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Selom has not missed a staff durbar since 2006.",
+      "SortOrder": 1,
+      "Active": true
+    },
+    {
+      "Title": "Jemima Audrey Annan",
+      "Department": "Prestige Banking",
+      "Position": "Head, Prestige Banking",
+      "Branch": "Head Office",
+      "Joined": "2006-04-10",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Jemima has not missed a staff durbar since 2006.",
+      "SortOrder": 2,
+      "Active": true
+    },
+    {
+      "Title": "Juliana Owusu-Ansah",
+      "Department": "Retail Network",
+      "Position": "Head, Client Engagement Center",
+      "Branch": "Head Office Annex",
+      "Joined": "2006-02-15",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Juliana has not missed a staff durbar since 2006.",
+      "SortOrder": 3,
+      "Active": true
+    },
+    {
+      "Title": "Edward Sadoc Annobil",
+      "Department": "Retail Network",
+      "Position": "Relationship Manager, Commercial Banking",
+      "Branch": "Abbosey Okai Main",
+      "Joined": "2006-05-02",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Edward has not missed a staff durbar since 2006.",
+      "SortOrder": 4,
+      "Active": true
+    },
+    {
+      "Title": "Patience Abena Duffuor",
+      "Department": "Retail Network",
+      "Position": "Branch Sales & Services Manager",
+      "Branch": "Kwame Nkrumah Avenue",
+      "Joined": "2006-06-12",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Patience has not missed a staff durbar since 2006.",
+      "SortOrder": 5,
+      "Active": true
+    },
+    {
+      "Title": "Kwaku K. Barnafo",
+      "Department": "Banking Operations",
+      "Position": "Operations Control Manager",
+      "Branch": "Head Office Annex - Orange Height",
+      "Joined": "2006-01-23",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Kwaku has not missed a staff durbar since 2006.",
+      "SortOrder": 6,
+      "Active": true
+    },
+    {
+      "Title": "Edna Engmann",
+      "Department": "Technology",
+      "Position": "Head, Transformation Program",
+      "Branch": "Head Office",
+      "Joined": "2006-07-03",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Edna has not missed a staff durbar since 2006.",
+      "SortOrder": 7,
+      "Active": true
+    },
+    {
+      "Title": "Cecilia Twum-Barima",
+      "Department": "Retail Network",
+      "Position": "Branch Sales & Services Manager",
+      "Branch": "Ashaley Botwe Express Center",
+      "Joined": "2006-08-14",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Cecilia has not missed a staff durbar since 2006.",
+      "SortOrder": 8,
+      "Active": true
+    },
+    {
+      "Title": "Seidu Iddrisu",
+      "Department": "Banking Operations",
+      "Position": "Document Control Officer",
+      "Branch": "Adenta Branch",
+      "Joined": "2006-09-01",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Seidu has not missed a staff durbar since 2006.",
+      "SortOrder": 9,
+      "Active": true
+    },
+    {
+      "Title": "Simon Adu-Gyamfi",
+      "Department": "Banking Operations",
+      "Position": "Chief Support Officer",
+      "Branch": "Head Office",
+      "Joined": "2006-03-20",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Simon has not missed a staff durbar since 2006.",
+      "SortOrder": 10,
+      "Active": true
+    },
+    {
+      "Title": "John Taricone",
+      "Department": "Financial & Capital Markets",
+      "Position": "Head, Corporate Finance",
+      "Branch": "Head Office",
+      "Joined": "2006-10-09",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: John has not missed a staff durbar since 2006.",
+      "SortOrder": 11,
+      "Active": true
+    },
+    {
+      "Title": "Akwasi Adu-Boahene",
+      "Department": "Fidelity Securities Limited",
+      "Position": "Head Fidelity Securities Limited",
+      "Branch": "Head Office",
+      "Joined": "2006-11-06",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Akwasi has not missed a staff durbar since 2006.",
+      "SortOrder": 12,
+      "Active": true
+    },
+    {
+      "Title": "Ebenezer Tetteh Larweh",
+      "Department": "Banking Operation",
+      "Position": "Cash Collection Officer",
+      "Branch": "Berekum Branch",
+      "Joined": "2006-01-01",
+      "Quote": "Sample quote: every customer I served taught me something new.",
+      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
+      "FunFact": "Sample fun fact: Ebenezer has not missed a staff durbar since 2006.",
+      "SortOrder": 13,
+      "Active": true
+    }
+  ],
+  "MemoryLane": [
+    {
+      "Title": "Opening day",
+      "Year": 2006,
+      "SortOrder": 1
+    },
+    {
+      "Title": "First branch team",
+      "Year": 2008,
+      "SortOrder": 2
+    },
+    {
+      "Title": "Community outreach",
+      "Year": 2011,
+      "SortOrder": 3
+    },
+    {
+      "Title": "Annual awards",
+      "Year": 2015,
+      "SortOrder": 4
+    },
+    {
+      "Title": "Digital launch",
+      "Year": 2018,
+      "SortOrder": 5
+    },
+    {
+      "Title": "Staff durbar",
+      "Year": 2023,
+      "SortOrder": 6
+    }
+  ],
+  "LeadershipMessages": [
+    {
+      "Title": "Message from the CEO",
+      "Message": "Sample text: every milestone we celebrate was built by the people in this room.",
+      "SortOrder": 1
+    },
+    {
+      "Title": "Message from the Board",
+      "Message": "Sample text: twenty years of trust begins with dedicated service.",
+      "SortOrder": 2
+    },
+    {
+      "Title": "Message from Management",
+      "Message": "Sample text: your commitment sets the standard we hold ourselves to.",
+      "SortOrder": 3
+    }
+  ],
+  "BoardMessages": [
+    {
+      "Title": "Sample text: Twenty years of showing up with courage.",
+      "Message": "Sample text: Twenty years of showing up with courage. Thank you for every audacious step.",
+      "Celebrating": "Selom Cofie Atta",
+      "Tags": [
+        "Audacious Steps",
+        "Appreciation"
+      ],
+      "Featured": true
+    },
+    {
+      "Title": "Sample text: You taught our team that great service starts with really listening.",
+      "Message": "Sample text: You taught our team that great service starts with really listening.",
+      "Celebrating": "Juliana Owusu-Ansah",
+      "Tags": [
+        "Customer Focus",
+        "Teamwork"
+      ],
+      "Featured": true
+    },
+    {
+      "Title": "Sample text: From the first branch to today, your ideas opened doors for all of us.",
+      "Message": "Sample text: From the first branch to today, your ideas opened doors for all of us.",
+      "Celebrating": "Kwaku K. Barnafo",
+      "Tags": [
+        "Innovation",
+        "Leadership"
+      ],
+      "Featured": false
+    }
+  ],
+  "GalleryCategories": [
+    "Then & Now",
+    "Branch Celebrations",
+    "Team Moments",
+    "Community Impact",
+    "Anniversary Events",
+    "Fun Memories"
+  ]
+}

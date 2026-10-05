@@ -1,0 +1,9 @@
+[
+  { "file": "hero-celebration-loop.mp4",      "title": "Hero celebration loop",     "assetType": "HeroVideo" },
+  { "file": "hero-celebration-poster.webp",   "title": "Hero poster",               "assetType": "HeroPoster" },
+  { "file": "logo-20th-anniversary.webp",     "title": "20th anniversary logo",     "assetType": "Logo" },
+  { "file": "board-watermark.webp",           "title": "Watermark",                 "assetType": "Other" },
+  { "file": "background-music.mp3",           "title": "Background music",          "assetType": "BackgroundMusic" },
+  { "file": "anniversary-video-web.mp4",      "title": "Anniversary film",          "assetType": "AnniversaryVideo" },
+  { "file": "anniversary-video-poster.webp",  "title": "Anniversary film poster",   "assetType": "VideoPoster" }
+]

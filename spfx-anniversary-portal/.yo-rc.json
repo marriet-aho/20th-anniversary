@@ -1,0 +1,23 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "whichFolder": "subdir",
+    "solutionName": "spfx-anniversary-portal",
+    "environment": "spo",
+    "packageManager": "npm",
+    "useGulp": false,
+    "componentType": "webpart",
+    "template": "react",
+    "componentName": "AnniversaryPortal",
+    "componentDescription": "20th Anniversary celebration portal",
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.22.0",
+    "sdksVersions": {},
+    "version": "1.23.2",
+    "libraryName": "spfx-anniversary-portal",
+    "libraryId": "c3c73912-4989-4ddf-a146-d95145b1c6ff",
+    "solutionShortDescription": "spfx-anniversary-portal description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false
+  }
+}
