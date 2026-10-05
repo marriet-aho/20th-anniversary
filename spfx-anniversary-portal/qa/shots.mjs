@@ -9,7 +9,7 @@ const root = path.resolve('../..');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.webp': 'image/webp', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.woff2': 'font/woff2', '.css': 'text/css' };
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(req.url.split('?')[0]);
-  const f = path.join(root, u === '/' ? '/spfx-anniversary-portal/qa/index.html' : u);
+  const f = path.join(root, u === '/' ? '/spfx-anniversary-portal/qa/preview/index.html' : u);
   if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
   const size = fs.statSync(f).size, type = mime[path.extname(f)] || 'application/octet-stream';
   const r = req.headers.range && /bytes=(\d*)-(\d*)/.exec(req.headers.range);
@@ -24,7 +24,7 @@ const errors = [];
 page.on('pageerror', e => errors.push('pageerror: ' + e.message));
 page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' + r.url()); });
 await page.route('**/getpreview.ashx**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/hero-celebration-poster.webp'), contentType: 'image/webp' }));
-await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/index.html?${q}`);
+await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/preview/index.html?notoolbar=1&${q}`);
 await page.waitForSelector('header.hero', { timeout: 15000 });
 // dismiss the entry overlay unless asked to keep it
 if (!/overlay=1/.test(q)) { const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1100); } }

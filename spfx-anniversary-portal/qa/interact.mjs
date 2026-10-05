@@ -9,7 +9,7 @@ const root = path.resolve('../..');
 const mime = { '.html': 'text/html', '.js': 'text/javascript', '.webp': 'image/webp', '.mp4': 'video/mp4', '.mp3': 'audio/mpeg', '.woff2': 'font/woff2', '.css': 'text/css' };
 const server = http.createServer((req, res) => {
   const u = decodeURIComponent(req.url.split('?')[0]);
-  const f = path.join(root, u === '/' ? '/spfx-anniversary-portal/qa/index.html' : u);
+  const f = path.join(root, u === '/' ? '/spfx-anniversary-portal/qa/preview/index.html' : u);
   if (!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()) { res.writeHead(404); res.end(); return; }
   const size = fs.statSync(f).size, type = mime[path.extname(f)] || 'application/octet-stream';
   const r = req.headers.range && /bytes=(\d*)-(\d*)/.exec(req.headers.range);
@@ -27,7 +27,7 @@ page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' +
 await page.route('**/getpreview.ashx**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/hero-celebration-poster.webp'), contentType: 'image/webp' }));
 const results = [];
 const ok = (n, c, d = '') => { results.push((c ? 'PASS ' : 'FAIL ') + n + (c ? '' : ' ' + d)); };
-async function open(q) { await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/index.html?${q}`); await page.waitForSelector('header.hero'); const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1000); } }
+async function open(q) { await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/preview/index.html?notoolbar=1&${q}`); await page.waitForSelector('header.hero'); const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1000); } }
 async function mountAll() { const H = await page.evaluate(() => document.body.scrollHeight); for (let y = 0; y < H + 1500; y += 700) { await page.evaluate(y => window.scrollTo(0, y), y); await page.waitForTimeout(120); } await page.waitForTimeout(500); }
 async function scrollTo(sel) { for (let i = 0; i < 4 && !(await page.locator(sel).count()); i++) await mountAll(); await page.locator(sel).first().scrollIntoViewIfNeeded(); await page.waitForTimeout(600); }
 
