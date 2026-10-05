@@ -76,9 +76,10 @@ export class PortalService {
   public getLookup(kind: 'branches' | 'departments'): Promise<ILookupOption[]> {
     return this.cache.get(kind, async () => {
       const name = kind === 'branches' ? this.cfg.branchesList : this.cfg.departmentsList;
+      const cols = kind === 'branches' ? ['Id', 'Title', 'Region'] : ['Id', 'Title'];
       const rows: any[] = await this.list(name).items
-        .select('Id', 'Title').filter('Active eq 1').orderBy('Title', true).top(PAGE)();
-      return rows.map(r => ({ id: r.Id as number, title: String(r.Title) }));
+        .select(...cols).filter('Active eq 1').orderBy('Title', true).top(PAGE)();
+      return rows.map(r => ({ id: r.Id as number, title: String(r.Title), region: r.Region ? String(r.Region) : undefined }));
     });
   }
 

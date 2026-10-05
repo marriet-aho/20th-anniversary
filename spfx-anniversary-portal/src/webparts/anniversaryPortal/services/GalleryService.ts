@@ -9,12 +9,13 @@ export const GALLERY_CATEGORIES = [
 
 export interface IGalleryQuery {
   category: string; // 'All' | 'Featured' | a category
-  branchId?: number;
+  branch: string;      // typed by the visitor; matches part of the Branch text
+  region: string;      // typed by the visitor; matches part of the Region text
   departmentId?: number;
   search: string;
 }
 
-const SELECT = ['Id', 'Title', 'Category', 'Featured', 'Published', 'Credit', 'DateTaken', 'Branch/Title',
+const SELECT = ['Id', 'Title', 'Category', 'Featured', 'Published', 'Credit', 'DateTaken', 'Branch', 'Region',
   'Department/Title', 'File/Name', 'File/ServerRelativeUrl'];
 
 const esc = (v: string): string => v.replace(/'/g, "''");
@@ -24,7 +25,8 @@ export function buildGalleryFilter(q: IGalleryQuery, isOwner: boolean): string {
   if (!isOwner) f.push('Published eq 1'); // indexed column first
   if (q.category === 'Featured') f.push('Featured eq 1');
   else if (q.category && q.category !== 'All') f.push("Category eq '" + esc(q.category) + "'");
-  if (q.branchId) f.push('BranchId eq ' + q.branchId);
+  if (q.branch.trim()) f.push("substringof('" + esc(q.branch.trim()) + "',Branch)");
+  if (q.region.trim()) f.push("substringof('" + esc(q.region.trim()) + "',Region)");
   if (q.departmentId) f.push('DepartmentId eq ' + q.departmentId);
   if (q.search.trim()) f.push("substringof('" + esc(q.search.trim()) + "',Title)");
   return f.join(' and ');
@@ -44,7 +46,7 @@ export class GalleryService {
   }
 
   public async getPage(q: IGalleryQuery, isOwner: boolean, size: number): Promise<IPage<IGalleryItem>> {
-    let items = this.lib().items.select(...SELECT).expand('Branch', 'Department', 'File');
+    let items = this.lib().items.select(...SELECT).expand('Department', 'File');
     const filter = buildGalleryFilter(q, isOwner);
     if (filter) items = items.filter(filter);
     return this.wrap(await items.orderBy('Featured', false).orderBy('Created', false).top(size).getPaged());

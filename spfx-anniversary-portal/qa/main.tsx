@@ -26,8 +26,7 @@ const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.
   const cats = seed.GalleryCategories;
   const gallery: Row[] = params.get('nogallery') ? [] : Array.from({ length: 30 }, (_, i) => ({
     Id: i + 1, Title: 'Sample photo ' + (i + 1) + (i % 4 === 0 ? ' with a rather long caption that wraps over lines' : ''),
-    Category: cats[i % cats.length], Featured: i % 7 === 0, Published: i !== 5, Credit: 'Ama O.', BranchId: 1 + (i % 3), DepartmentId: 1 + (i % 4),
-    Branch: { Title: branches[i % 3].Title }, Department: { Title: departments[i % 4].Title },
+    Category: cats[i % cats.length], Featured: i % 7 === 0, Published: i !== 5, Credit: 'Ama O.', Branch: ['Head Office', 'Kumasi Main', 'Tamale Branch'][i % 3], Region: ['Greater Accra', 'Ashanti', 'Northern'][i % 3], DepartmentId: 1 + (i % 4), Department: { Title: departments[i % 4].Title },
     Created: new Date(2026, 0, i + 1).toISOString(), File: { Name: i === 3 ? 'clip.mp4' : 'p' + i + '.webp', ServerRelativeUrl: M + (i === 3 ? 'hero-celebration-loop.mp4' : 'logo-20th-anniversary.webp') }
   }));
   const board: Row[] = seed.BoardMessages.map((m, i) => ({
@@ -48,7 +47,7 @@ const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.
     { Title: 'Film poster', AssetType: 'VideoPoster', Active: true, FileRef: M + 'anniversary-video-poster.webp' }
   ]);
   const data = {
-    PortalContent: content, Timeline: id(seed.Timeline), KeyStats: id(seed.KeyStats), Legends: legends, MemoryLane: id(seed.MemoryLane),
+    PortalContent: content, Timeline: id(seed.Timeline), KeyStats: id(seed.KeyStats), Legends: legends, MemoryLane: id(seed.MemoryLane.map(m => ({ ...m, Photo: (m as { PhotoFile?: string }).PhotoFile ? JSON.stringify({ serverRelativeUrl: M + (m as { PhotoFile?: string }).PhotoFile }) : '' }))),
     LeadershipMessages: id(seed.LeadershipMessages), BoardMessages: board, BoardStats: [], GalleryMedia: gallery, GalleryReactions: [
       { Id: 1, GalleryItemId: 1, Reaction: 'Like', AuthorId: 3 }, { Id: 2, GalleryItemId: 1, Reaction: 'Like', AuthorId: 4 }],
     GalleryComments: [{ Id: 1, GalleryItemId: 1, Comment: 'Where did the time go?', Published: true, Created: '2026-01-02', Author: { Title: 'Efua' } }],

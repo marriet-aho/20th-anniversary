@@ -48,7 +48,7 @@ const GalleryLightbox: React.FC<IProps> = ({ item, onClose, onLikesChanged }) =>
         : <img alt={item.title} src={item.url} />}
       <h3>{item.title}</h3>
       <p style={{ color: 'var(--t2)' }}>
-        {[item.credit, item.branch, item.department, item.category].filter(Boolean).join(', ')}
+        {[item.credit, item.branch, item.region, item.department, item.category].filter(Boolean).join(', ')}
       </p>
       <div className="rx" role="group" aria-label="Reactions">
         {REACTIONS.map(r => (

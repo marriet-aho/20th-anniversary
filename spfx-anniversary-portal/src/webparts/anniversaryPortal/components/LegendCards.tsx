@@ -2,7 +2,6 @@ import * as React from 'react';
 import { ILegend } from '../models';
 import { Section } from './common/Section';
 import { Empty } from './common/States';
-import { formatJoined } from './Tree';
 import { useDebounced } from '../hooks/useAsync';
 
 const CameraIcon: React.FC = () => (
@@ -27,7 +26,6 @@ export const LegendCards: React.FC<{ legends: ILegend[]; onPick: (i: number) => 
             </div>
             <b>{l.name}</b>
             <small>{l.department}</small>
-            <small>Joined {formatJoined(l.joined)}</small>
             <span className="badge">20 years of service</span>
             {l.quote ? <small style={{ fontStyle: 'italic', marginTop: 'auto', paddingTop: 8 }}>&ldquo;{l.quote}&rdquo;</small> : null}
           </div>

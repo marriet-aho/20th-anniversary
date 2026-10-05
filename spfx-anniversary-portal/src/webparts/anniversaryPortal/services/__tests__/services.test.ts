@@ -126,24 +126,26 @@ describe('BoardService', () => {
 
 describe('GalleryService', () => {
   it('builds filters with the indexed column first and escapes quotes', () => {
-    expect(buildGalleryFilter({ category: 'All', search: '' }, false)).toBe('Published eq 1');
-    expect(buildGalleryFilter({ category: 'All', search: '' }, true)).toBe('');
-    expect(buildGalleryFilter({ category: 'Featured', search: "o'neil", branchId: 3, departmentId: 4 }, false))
-      .toBe("Published eq 1 and Featured eq 1 and BranchId eq 3 and DepartmentId eq 4 and substringof('o''neil',Title)");
-    expect(buildGalleryFilter({ category: 'Team Moments', search: '' }, false)).toBe("Published eq 1 and Category eq 'Team Moments'");
+    expect(buildGalleryFilter({ category: 'All', branch: '', region: '', search: '' }, false)).toBe('Published eq 1');
+    expect(buildGalleryFilter({ category: 'All', branch: '', region: '', search: '' }, true)).toBe('');
+    expect(buildGalleryFilter({ category: 'Featured', search: "o'neil", branch: ' Kumasi ', region: 'Ashanti', departmentId: 4 }, false))
+      .toBe("Published eq 1 and Featured eq 1 and substringof('Kumasi',Branch) and substringof('Ashanti',Region) and DepartmentId eq 4 and substringof('o''neil',Title)");
+    expect(buildGalleryFilter({ category: 'Team Moments', branch: '', region: '', search: '' }, false)).toBe("Published eq 1 and Category eq 'Team Moments'");
   });
   it('lists published media, featured first, and flags videos', async () => {
     const d = base();
     d.GalleryMedia = [
-      { Id: 1, Title: 'one', Published: true, Featured: false, Category: 'Team Moments', Created: '2026-01-02', File: { Name: 'a.jpg', ServerRelativeUrl: '/sites/x/G/a.jpg' } },
+      { Id: 1, Title: 'one', Published: true, Featured: false, Category: 'Team Moments', Branch: 'Kumasi Main', Region: 'Ashanti', Created: '2026-01-02', File: { Name: 'a.jpg', ServerRelativeUrl: '/sites/x/G/a.jpg' } },
       { Id: 2, Title: 'two', Published: true, Featured: true, Category: 'Fun Memories', Created: '2026-01-01', File: { Name: 'b.mp4', ServerRelativeUrl: '/sites/x/G/b.mp4' } },
       { Id: 3, Title: 'hid', Published: false, Featured: false, Created: '2026-01-03', File: { Name: 'c.jpg', ServerRelativeUrl: '/c.jpg' } }
     ];
     const svc = new GalleryService(createFakeSp(d).sp, cfg);
-    const p = await svc.getPage({ category: 'All', search: '' }, false, 12);
+    const p = await svc.getPage({ category: 'All', branch: '', region: '', search: '' }, false, 12);
     expect(p.items.map(i => i.id)).toEqual([2, 1]);
     expect(p.items[0].isVideo).toBe(true);
-    expect((await svc.getPage({ category: 'All', search: 'ONE' }, false, 12)).items.map(i => i.id)).toEqual([1]);
+    expect((await svc.getPage({ category: 'All', branch: '', region: '', search: 'ONE' }, false, 12)).items.map(i => i.id)).toEqual([1]);
+    expect((await svc.getPage({ category: 'All', branch: 'kumasi', region: '', search: '' }, false, 12)).items.map(i => i.id)).toEqual([1]);
+    expect((await svc.getPage({ category: 'All', branch: '', region: 'ashanti', search: '' }, false, 12)).items[0].region).toBe('Ashanti');
     expect(await svc.count(false)).toBe(2);
     expect(await svc.count(true)).toBe(3);
   });

@@ -471,12 +471,14 @@
     {
       "Title": "Opening day",
       "Year": 2006,
-      "SortOrder": 1
+      "SortOrder": 1,
+      "PhotoFile": "memory/opening-day.jpg"
     },
     {
       "Title": "First branch team",
       "Year": 2008,
-      "SortOrder": 2
+      "SortOrder": 2,
+      "PhotoFile": "memory/first-branch-team.jpg"
     },
     {
       "Title": "Community outreach",
@@ -491,28 +493,30 @@
     {
       "Title": "Digital launch",
       "Year": 2018,
-      "SortOrder": 5
+      "SortOrder": 5,
+      "PhotoFile": "memory/digital-launch.jpg"
     },
     {
       "Title": "Staff durbar",
       "Year": 2023,
-      "SortOrder": 6
+      "SortOrder": 6,
+      "PhotoFile": "memory/staff-durbar.jpg"
     }
   ],
   "LeadershipMessages": [
     {
       "Title": "Message from the CEO",
-      "Message": "",
+      "Message": "Sample text: every milestone we celebrate was built by the people in this room.",
       "SortOrder": 1
     },
     {
       "Title": "Message from the Board",
-      "Message": "",
+      "Message": "Sample text: twenty years of trust begins with dedicated service.",
       "SortOrder": 2
     },
     {
       "Title": "Message from Management",
-      "Message": "",
+      "Message": "Sample text: your commitment sets the standard we hold ourselves to.",
       "SortOrder": 3
     }
   ],

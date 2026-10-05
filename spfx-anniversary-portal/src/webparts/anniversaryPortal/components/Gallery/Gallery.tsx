@@ -33,10 +33,13 @@ const Gallery: React.FC = () => {
   const { gallery, portal, reactions, user } = usePortal();
   const [open, setOpen] = React.useState(true);
   const [category, setCategory] = React.useState('All');
-  const [branchId, setBranchId] = React.useState('');
+  const [branch, setBranch] = React.useState('');
+  const [region, setRegion] = React.useState('');
   const [departmentId, setDepartmentId] = React.useState('');
   const [search, setSearch] = React.useState('');
   const dsearch = useDebounced(search, 300);
+  const dbranch = useDebounced(branch, 300);
+  const dregion = useDebounced(region, 300);
 
   const [items, setItems] = React.useState<IGalleryItem[]>([]);
   const [hasMore, setHasMore] = React.useState(false);
@@ -51,6 +54,7 @@ const Gallery: React.FC = () => {
   const total = useAsync(() => gallery.count(user.isOwner), [user.isOwner]);
   const branches = useAsync<ILookupOption[]>(() => portal.getLookup('branches'), []);
   const departments = useAsync<ILookupOption[]>(() => portal.getLookup('departments'), []);
+  const regions = Array.from(new Set((branches.data || []).map(b => b.region || '').filter(Boolean)));
 
   const addLikes = React.useCallback((page: IGalleryItem[]): void => {
     reactions.likeCounts(page.map(i => i.id)).then(c => setLikes(cur => ({ ...cur, ...c })), () => undefined);
@@ -59,7 +63,7 @@ const Gallery: React.FC = () => {
   // New query: reset to the first page. Stale responses are ignored.
   React.useEffect(() => {
     if (!open) return;
-    const q: IGalleryQuery = { category, branchId: branchId ? +branchId : undefined,
+    const q: IGalleryQuery = { category, branch: dbranch, region: dregion,
       departmentId: departmentId ? +departmentId : undefined, search: dsearch };
     const id = ++req.current;
     setLoading(true); setErr(undefined);
@@ -70,7 +74,7 @@ const Gallery: React.FC = () => {
       if (id !== req.current) return;
       setErr(e instanceof Error ? e.message : String(e)); setLoading(false);
     });
-  }, [open, category, branchId, departmentId, dsearch, user.isOwner, gallery, addLikes]);
+  }, [open, category, dbranch, dregion, departmentId, dsearch, user.isOwner, gallery, addLikes]);
 
   const loadMore = React.useCallback((): void => {
     const p = pager.current;
@@ -103,10 +107,12 @@ const Gallery: React.FC = () => {
         </div>
         <div className="gf">
           <input type="search" placeholder="Search photos" aria-label="Search photos" value={search} onChange={e => setSearch(e.target.value)} />
-          <select className="inp" aria-label="Branch" value={branchId} onChange={e => setBranchId(e.target.value)}>
-            <option value="">All branches</option>
-            {(branches.data || []).map(b => <option key={b.id} value={b.id}>{b.title}</option>)}
-          </select>
+          <input type="text" list="gal-branches" placeholder="Type a branch" aria-label="Branch" value={branch}
+            onChange={e => setBranch(e.target.value)} />
+          <datalist id="gal-branches">{(branches.data || []).map(b => <option key={b.id} value={b.title} />)}</datalist>
+          <input type="text" list="gal-regions" placeholder="Type a region" aria-label="Region" value={region}
+            onChange={e => setRegion(e.target.value)} />
+          <datalist id="gal-regions">{regions.map(r => <option key={r} value={r} />)}</datalist>
           <select className="inp" aria-label="Department" value={departmentId} onChange={e => setDepartmentId(e.target.value)}>
             <option value="">All departments</option>
             {(departments.data || []).map(b => <option key={b.id} value={b.id}>{b.title}</option>)}

@@ -39,6 +39,7 @@ Original file: `audacious-portal-v7.html` (state object `S` in `localStorage`, k
 
 ## Behaviour changes to be aware of
 * Legend count, and the "13" in the hero button, now come from the number of Active legends via the `{count}` token.
-* Dates for legends are shown as `1 Mar 2006` rather than the raw ISO text.
+* Gallery Branch and Region are typed freely (suggestions come from the `Branches` list) instead of picked from a fixed list.
+* The legend cards no longer show the joined date, and the tree panel no longer shows it either.
 * The gallery card shows a like count; reacting happens in the lightbox (Like, Clap, Celebrate, Love).
 * The board watermark and logo are separate `PortalAssets` files (watermark = AssetType Other, title "Watermark").

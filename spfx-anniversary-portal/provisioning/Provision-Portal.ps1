@@ -180,7 +180,11 @@ Ensure-View 'BoardMessages' 'Hidden messages' @('LinkTitle', 'Celebrating', 'Aut
 Write-Host 'GalleryMedia (library)'
 Ensure-List 'GalleryMedia' 'DocumentLibrary' | Out-Null
 Ensure-Field 'GalleryMedia' 'Category' 'Choice' @{ Choices = @('Then & Now', 'Branch Celebrations', 'Team Moments', 'Community Impact', 'Anniversary Events', 'Fun Memories'); Format = 'Dropdown' }
-Ensure-Field 'GalleryMedia' 'Branch' 'Lookup' @{ ListId = $branchesId; Indexed = 'TRUE' }
+# Branch and Region are typed freely (no fixed list), so whoever uploads can write any branch or region.
+$gb = Get-PnPField -List 'GalleryMedia' -Identity 'Branch' -ErrorAction SilentlyContinue
+if ($gb -and $gb.TypeAsString -eq 'Lookup') { Write-Warning 'GalleryMedia.Branch is still a Lookup from an earlier run. Delete that column and re-run to get the free-text Branch.' }
+Ensure-Field 'GalleryMedia' 'Branch' 'Text'
+Ensure-Field 'GalleryMedia' 'Region' 'Text'
 Ensure-Field 'GalleryMedia' 'Department' 'Lookup' @{ ListId = $departmentsId; Indexed = 'TRUE' }
 Ensure-Field 'GalleryMedia' 'Featured' 'Boolean' $bool0
 Ensure-Field 'GalleryMedia' 'Published' 'Boolean' $bool1
@@ -191,7 +195,7 @@ Ensure-Index 'GalleryMedia' 'Published'
 Ensure-Index 'GalleryMedia' 'Featured'
 Ensure-Index 'GalleryMedia' 'Category'
 Ensure-Index 'GalleryMedia' 'Created'
-Update-DefaultView 'GalleryMedia' @('DocIcon', 'LinkFilename', 'Title', 'Category', 'Branch', 'Department', 'Featured', 'Published', 'Credit', 'DateTaken') 'All Documents'
+Update-DefaultView 'GalleryMedia' @('DocIcon', 'LinkFilename', 'Title', 'Category', 'Branch', 'Region', 'Department', 'Featured', 'Published', 'Credit', 'DateTaken') 'All Documents'
 Ensure-View 'GalleryMedia' 'Hidden items' @('DocIcon', 'LinkFilename', 'Title', 'Category') '<Where><Eq><FieldRef Name="Published"/><Value Type="Boolean">0</Value></Eq></Where>'
 
 Write-Host 'PortalAssets (library)'

@@ -8,11 +8,6 @@ export const Avatar: React.FC<{ legend: ILegend }> = ({ legend }) => (
   <div className="avatar">{legend.photo ? <img alt="" src={legend.photo} loading="lazy" /> : initials(legend.name)}</div>
 );
 
-export function formatJoined(iso: string): string {
-  const d = new Date(iso);
-  return isNaN(d.getTime()) ? iso : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-}
-
 const LegendPanel: React.FC<{ legend?: ILegend }> = ({ legend: s }) => (
   <aside className="panel" aria-live="polite">
     {s ? (

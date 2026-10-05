@@ -52,7 +52,7 @@ Both scripts can be re-run. Provisioning skips anything that exists; seeding is 
 | `PortalContent` (key/value, unique indexed `Title`) | Every editable text, plus `countdown.date` (in `DateValue`) and optional `video.url` |
 | `Timeline`, `KeyStats`, `Legends`, `MemoryLane`, `LeadershipMessages` | Page sections |
 | `BoardMessages`, `GalleryReactions`, `GalleryComments` | Staff activity (item-level security) |
-| `GalleryMedia` (library) | Gallery photos and videos, uploaded by admins only |
+| `GalleryMedia` (library) | Gallery photos and videos, uploaded by admins only. **Branch** and **Region** are free text: type any branch or region |
 | `PortalAssets` (library) | Hero loop, poster, logo, music, anniversary film, board watermark |
 | `Branches`, `Departments` | Lookups and filters |
 | `BoardStats` | Optional, for a nightly flow when the board passes ~2,000 messages |
@@ -74,7 +74,7 @@ Names of every list/library and the Portal Owners group. Leave a field empty to 
 ## 5. Day-to-day content
 * Text, countdown date: edit `PortalContent` (refresh the page; no redeploy).
 * Legends and their photos: `Legends` list (Photo is an Image column; a missing photo shows "Photo coming soon").
-* Gallery: drop photos or videos into `GalleryMedia`, set Category, Branch, Department; tick Featured to pin and badge; untick Published to hide.
+* Gallery: drop photos or videos into `GalleryMedia`, set Category, Department and type the Branch and Region; tick Featured to pin and badge; untick Published to hide.
 * Page media: replace a file in `PortalAssets` and keep only the new one **Active** per AssetType (the newest Active file wins).
 * Board: owners can Feature/Unfeature, Hide/Unhide and Delete on each card. Staff can delete their own messages.
 

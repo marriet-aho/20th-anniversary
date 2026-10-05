@@ -50,7 +50,7 @@ export interface ILegend {
 }
 export interface IMemory { id: number; caption: string; year: number; photo: string; sortOrder: number }
 export interface ILeadershipMessage { id: number; title: string; message: string; sortOrder: number }
-export interface ILookupOption { id: number; title: string }
+export interface ILookupOption { id: number; title: string; region?: string }
 
 export type TagKey = 'Leadership' | 'Teamwork' | 'Innovation' | 'Customer Focus' | 'Audacious Steps' | 'Appreciation';
 
@@ -62,7 +62,7 @@ export interface IBoardMessage {
 export type ReactionKind = 'Like' | 'Clap' | 'Celebrate' | 'Love';
 
 export interface IGalleryItem {
-  id: number; title: string; category: string; branch: string; department: string; featured: boolean;
+  id: number; title: string; category: string; branch: string; region: string; department: string; featured: boolean;
   published: boolean; credit: string; dateTaken?: string; url: string; fileName: string; isVideo: boolean;
 }
 

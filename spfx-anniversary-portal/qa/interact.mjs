@@ -98,6 +98,16 @@ ok('featured filter', (await page.locator('.gi').count()) === 5 && (await page.l
 await page.locator('.gb button', { hasText: 'All' }).first().click();
 await page.locator('input[aria-label="Search photos"]').fill('photo 2'); await page.waitForTimeout(900);
 ok('search filters on server query', (await page.locator('.gi').count()) > 0 && (await page.locator('.gi').count()) < 28);
+await page.locator('input[aria-label="Search photos"]').fill(''); await page.waitForTimeout(700);
+const allN = await page.locator('.gi').count();
+await page.locator('input[aria-label="Branch"]').fill('kumasi'); await page.waitForTimeout(900);
+const kN = await page.locator('.gi').count();
+ok('branch is typed freely and filters', kN > 0 && kN < allN, kN + ' of ' + allN);
+await page.locator('input[aria-label="Region"]').fill('northern'); await page.waitForTimeout(900);
+ok('region typed together with branch narrows to none', (await page.locator('.gi').count()) === 0);
+await page.locator('input[aria-label="Branch"]').fill(''); await page.waitForTimeout(900);
+ok('region alone filters', (await page.locator('.gi').count()) > 0);
+await page.locator('input[aria-label="Region"]').fill(''); await page.waitForTimeout(700);
 await page.locator('button[aria-controls=gbody]').click();
 ok('gallery collapses with aria-expanded=false', (await page.locator('button[aria-controls=gbody]').getAttribute('aria-expanded')) === 'false' && /Show gallery \(\d+\)/.test(await page.locator('button[aria-controls=gbody]').innerText()), await page.locator('button[aria-controls=gbody]').innerText());
 // memory dialog
