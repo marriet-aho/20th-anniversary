@@ -26,4 +26,4 @@ export const DEFAULT_TEXT: { [key: string]: string } = {
   'footer.heading': 'Here is to the next audacious step',
   'footer.sub': 'Twenty years of bold moves, and we are just getting started.'
 };
-export const DEFAULT_COUNTDOWN = '2026-10-01T13:15:00+00:00';
+export const DEFAULT_COUNTDOWN = '2026-10-06T13:15:00+00:00';

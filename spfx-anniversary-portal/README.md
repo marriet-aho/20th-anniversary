@@ -80,7 +80,7 @@ Names of every list/library and the Portal Owners group. Leave a field empty to 
 
 ## 6. Tests and local preview
 * `npm run build` runs lint and 34 Jest tests (tag suggestion, top-legends tally, initials/first names, countdown, image-field parsing, reaction keys, and every service against a fake SharePoint).
-* `qa/` is a browser harness (not shipped) that renders the real components against the same fake SharePoint layer: `cd qa && npm i && npm run build && node shots.mjs 1440` (screenshots) or `node interact.mjs` (33 scripted checks). Needs Chromium; set `CHROME=/path/to/chrome` if it is not in `/opt/pw-browsers`.
+* `qa/` is a browser harness (not shipped) that renders the real components against the same fake SharePoint layer: `cd qa && npm i && npm run build && node shots.mjs 1440` (screenshots) or `node interact.mjs` (36 scripted checks). Needs Chromium; set `CHROME=/path/to/chrome` if it is not in `/opt/pw-browsers`.
 
 ## 7. Troubleshooting
 | Symptom | Fix |

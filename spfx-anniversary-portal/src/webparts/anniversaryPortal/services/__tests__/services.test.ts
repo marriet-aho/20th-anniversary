@@ -10,7 +10,7 @@ const me = { id: 7, displayName: 'Me' };
 
 function base(): { [list: string]: Row[] } {
   return {
-    PortalContent: [{ Id: 1, Title: 'hero.title', Value: 'Hi' }, { Id: 2, Title: 'countdown.date', Value: '', DateValue: '2026-10-01T13:15:00Z' }],
+    PortalContent: [{ Id: 1, Title: 'hero.title', Value: 'Hi' }, { Id: 2, Title: 'countdown.date', Value: '', DateValue: '2026-10-06T13:15:00Z' }],
     Timeline: [{ Id: 2, Title: 'b', Year: 2010, SortOrder: 2 }, { Id: 1, Title: 'a', Year: 2006, SortOrder: 1 }],
     KeyStats: [], MemoryLane: [], LeadershipMessages: [], BoardStats: [],
     Legends: [
@@ -36,7 +36,7 @@ describe('PortalService', () => {
     const s = new PortalService(sp, cfg, me);
     const c = await s.getContent();
     expect(c['hero.title'].value).toBe('Hi');
-    expect(c['countdown.date'].date).toBe('2026-10-01T13:15:00Z');
+    expect(c['countdown.date'].date).toBe('2026-10-06T13:15:00Z');
     expect((await s.getTimeline()).map(t => t.title)).toEqual(['a', 'b']);
   });
   it('returns only Active legends, in tree order, and parses the photo', async () => {
