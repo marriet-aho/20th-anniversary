@@ -24,7 +24,6 @@ const LegendPanel: React.FC<{ legend?: ILegend }> = ({ legend: s }) => (
           <dt>Position</dt><dd>{s.position}</dd>
           <dt>Department</dt><dd>{s.department}</dd>
           <dt>Branch</dt><dd>{s.branch}</dd>
-          <dt>Joined</dt><dd>{formatJoined(s.joined)}</dd>
         </dl>
         {s.quote ? <p><i>&ldquo;{s.quote}&rdquo;</i></p> : null}
         {s.highlights ? <p style={{ color: 'var(--t2)' }}><b>Career highlights.</b> {s.highlights}</p> : null}

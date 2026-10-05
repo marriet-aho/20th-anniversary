@@ -7,7 +7,7 @@
     },
     {
       "Title": "hero.subtitle",
-      "Value": "For two decades, we have embraced bold ideas, navigated challenges, empowered our people, and transformed possibilities into achievements. Today, we celebrate the individuals whose dedication has shaped our story and paved the way for the future.",
+      "Value": "For two decades, we have embraced bold ideas, navigated challenges, empowered our people, and transformed possibilities into achievements.",
       "ContentGroup": "Hero"
     },
     {
@@ -313,11 +313,12 @@
       "Position": "Director, Special Projects",
       "Branch": "Head Office",
       "Joined": "2006-03-01",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Selom has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 1,
-      "Active": true
+      "Active": true,
+      "PhotoFile": "legends/selom-cofie-atta.jpg"
     },
     {
       "Title": "Jemima Audrey Annan",
@@ -325,9 +326,9 @@
       "Position": "Head, Prestige Banking",
       "Branch": "Head Office",
       "Joined": "2006-04-10",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Jemima has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 2,
       "Active": true
     },
@@ -337,9 +338,9 @@
       "Position": "Head, Client Engagement Center",
       "Branch": "Head Office Annex",
       "Joined": "2006-02-15",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Juliana has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 3,
       "Active": true
     },
@@ -349,9 +350,9 @@
       "Position": "Relationship Manager, Commercial Banking",
       "Branch": "Abbosey Okai Main",
       "Joined": "2006-05-02",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Edward has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 4,
       "Active": true
     },
@@ -361,9 +362,9 @@
       "Position": "Branch Sales & Services Manager",
       "Branch": "Kwame Nkrumah Avenue",
       "Joined": "2006-06-12",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Patience has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 5,
       "Active": true
     },
@@ -373,9 +374,9 @@
       "Position": "Operations Control Manager",
       "Branch": "Head Office Annex - Orange Height",
       "Joined": "2006-01-23",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Kwaku has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 6,
       "Active": true
     },
@@ -385,11 +386,12 @@
       "Position": "Head, Transformation Program",
       "Branch": "Head Office",
       "Joined": "2006-07-03",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Edna has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 7,
-      "Active": true
+      "Active": true,
+      "PhotoFile": "legends/edna-engmann.jpg"
     },
     {
       "Title": "Cecilia Twum-Barima",
@@ -397,9 +399,9 @@
       "Position": "Branch Sales & Services Manager",
       "Branch": "Ashaley Botwe Express Center",
       "Joined": "2006-08-14",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Cecilia has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 8,
       "Active": true
     },
@@ -409,9 +411,9 @@
       "Position": "Document Control Officer",
       "Branch": "Adenta Branch",
       "Joined": "2006-09-01",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Seidu has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 9,
       "Active": true
     },
@@ -421,11 +423,12 @@
       "Position": "Chief Support Officer",
       "Branch": "Head Office",
       "Joined": "2006-03-20",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Simon has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 10,
-      "Active": true
+      "Active": true,
+      "PhotoFile": "legends/simon-adu-gyamfi.png"
     },
     {
       "Title": "John Taricone",
@@ -433,9 +436,9 @@
       "Position": "Head, Corporate Finance",
       "Branch": "Head Office",
       "Joined": "2006-10-09",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: John has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 11,
       "Active": true
     },
@@ -445,9 +448,9 @@
       "Position": "Head Fidelity Securities Limited",
       "Branch": "Head Office",
       "Joined": "2006-11-06",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Akwasi has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 12,
       "Active": true
     },
@@ -457,9 +460,9 @@
       "Position": "Cash Collection Officer",
       "Branch": "Berekum Branch",
       "Joined": "2006-01-01",
-      "Quote": "Sample quote: every customer I served taught me something new.",
-      "CareerHighlights": "Sample highlights: joined as a trainee, led branch growth, mentored new colleagues.",
-      "FunFact": "Sample fun fact: Ebenezer has not missed a staff durbar since 2006.",
+      "Quote": "",
+      "CareerHighlights": "",
+      "FunFact": "",
       "SortOrder": 13,
       "Active": true
     }
@@ -499,17 +502,17 @@
   "LeadershipMessages": [
     {
       "Title": "Message from the CEO",
-      "Message": "Sample text: every milestone we celebrate was built by the people in this room.",
+      "Message": "",
       "SortOrder": 1
     },
     {
       "Title": "Message from the Board",
-      "Message": "Sample text: twenty years of trust begins with dedicated service.",
+      "Message": "",
       "SortOrder": 2
     },
     {
       "Title": "Message from Management",
-      "Message": "Sample text: your commitment sets the standard we hold ourselves to.",
+      "Message": "",
       "SortOrder": 3
     }
   ],

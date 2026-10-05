@@ -29,6 +29,6 @@ await build({
 
 // assemble the static preview folder
 fs.mkdirSync('preview/fonts', { recursive: true }); fs.mkdirSync('preview/media', { recursive: true });
-for (const f of fs.readdirSync(path.join(root, 'provisioning/media'))) if (!f.endsWith('.json')) fs.copyFileSync(path.join(root, 'provisioning/media', f), path.join('preview/media', f));
+fs.cpSync(path.join(root, 'provisioning/media'), 'preview/media', { recursive: true, filter: s => !s.endsWith('.json') });
 for (const [pkg, files] of [['fraunces', ['600', '800']], ['figtree', ['400', '600']]])
   for (const w of files) { const n = `${pkg}-latin-${w}-normal.woff2`; fs.copyFileSync(path.join(root, 'node_modules/@fontsource', pkg, 'files', n), path.join('preview/fonts', n)); }

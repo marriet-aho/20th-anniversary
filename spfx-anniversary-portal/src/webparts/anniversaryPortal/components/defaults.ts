@@ -1,7 +1,7 @@
 /** Fallback copy (from the original page) used only when a PortalContent key is missing. */
 export const DEFAULT_TEXT: { [key: string]: string } = {
   'hero.title': '20 Years of Audacious Steps',
-  'hero.subtitle': 'For two decades, we have embraced bold ideas, navigated challenges, empowered our people, and transformed possibilities into achievements. Today, we celebrate the individuals whose dedication has shaped our story and paved the way for the future.',
+  'hero.subtitle': 'For two decades, we have embraced bold ideas, navigated challenges, empowered our people, and transformed possibilities into achievements.',
   'hero.btn1': 'Meet our {count} audacious legends',
   'hero.btn2': 'Our audacious journey',
   'hero.btn3': 'Watch the celebration',

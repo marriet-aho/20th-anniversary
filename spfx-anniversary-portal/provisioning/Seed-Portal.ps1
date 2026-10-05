@@ -66,6 +66,25 @@ foreach ($k in $seed.KeyStats) { Add-IfMissing 'KeyStats' $k.Title @{ Title = $k
 foreach ($m in $seed.MemoryLane) { Add-IfMissing 'MemoryLane' $m.Title @{ Title = $m.Title; Year = $m.Year; SortOrder = $m.SortOrder } }
 foreach ($m in $seed.LeadershipMessages) { Add-IfMissing 'LeadershipMessages' $m.Title @{ Title = $m.Title; Message = $m.Message; SortOrder = $m.SortOrder } }
 
+# Image columns store a JSON pointer to a file kept under SiteAssets/Lists/<list id>/.
+function Set-LegendPhoto([string]$Title, [string]$File) {
+  $item = Find-Item 'Legends' 'Title' $Title
+  if (-not $item) { return }
+  if ($item['Photo']) { return }   # never overwrite a photo someone already set
+  $path = Join-Path $PSScriptRoot "media/$File"
+  if (-not (Test-Path $path)) { Write-Warning "Missing $path"; return }
+  $list = Get-PnPList -Identity 'Legends'
+  $web = Get-PnPWeb
+  $folder = "SiteAssets/Lists/$($list.Id.ToString().ToLower())"
+  Ensure-PnPFolder -SiteRelativePath $folder | Out-Null
+  $name = Split-Path $path -Leaf
+  Add-PnPFile -Path $path -Folder $folder | Out-Null
+  $rel = "$($web.ServerRelativeUrl.TrimEnd('/'))/$folder/$name"
+  $json = @{ type = 'thumbnail'; fileName = $name; fieldName = 'Photo'; serverUrl = ([uri]$SiteUrl).GetLeftPart('Authority'); serverRelativeUrl = $rel; id = [guid]::NewGuid().ToString() } | ConvertTo-Json -Compress
+  Set-PnPListItem -List 'Legends' -Identity $item.Id -Values @{ Photo = $json } | Out-Null
+  Write-Host "  + photo for $Title"
+}
+
 Write-Host 'Legends'
 foreach ($l in $seed.Legends) {
   $v = @{
@@ -75,6 +94,7 @@ foreach ($l in $seed.Legends) {
   $d = Lookup-Id 'Departments' $l.Department; if ($d) { $v.Department = $d }
   $b = Lookup-Id 'Branches' $l.Branch; if ($b) { $v.Branch = $b }
   Add-IfMissing 'Legends' $l.Title $v
+  if ($l.PhotoFile -and -not $SkipMedia) { Set-LegendPhoto $l.Title $l.PhotoFile }
 }
 
 Write-Host 'BoardMessages (samples)'

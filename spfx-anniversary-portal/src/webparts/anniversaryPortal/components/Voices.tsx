@@ -6,7 +6,7 @@ import { Empty } from './common/States';
 export const Voices: React.FC<{ items: ILeadershipMessage[] }> = ({ items }) => (
   <Section alt k="voices" manage={{ name: 'LeadershipMessages' }}>
     {items.length ? (
-      <div className="g hg">{items.map(m => <div key={m.id} className="msg"><b>{m.title}</b><p>{m.message}</p></div>)}</div>
+      <div className="g hg">{items.map(m => <div key={m.id} className="msg"><b>{m.title}</b>{m.message ? <p>{m.message}</p> : null}</div>)}</div>
     ) : <Empty>No messages yet.</Empty>}
   </Section>
 );
