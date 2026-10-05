@@ -18,7 +18,7 @@ export const DEFAULT_TEXT: { [key: string]: string } = {
   'voices.heading': 'Voices of appreciation',
   'voices.sub': 'Messages from our leaders.',
   'video.heading': 'Anniversary video',
-  'video.sub': 'A message from leadership.',
+  'video.sub': '',
   'board.heading': 'Orange Family Celebration Board',
   'board.sub': 'Share a message celebrating our people, our journey, and our 20 Years of Audacious Steps.',
   'gallery.heading': 'Celebration Gallery',

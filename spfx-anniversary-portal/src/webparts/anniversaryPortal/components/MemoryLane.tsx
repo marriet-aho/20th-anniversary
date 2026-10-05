@@ -12,16 +12,16 @@ export const MemoryLane: React.FC<{ items: IMemory[] }> = ({ items }) => {
         <div className="g mg">
           {items.map(m => (
             <figure key={m.id} className="tile" style={{ margin: 0 }} tabIndex={0} role="button"
-              aria-label={`Open ${m.year}: ${m.caption}`} onClick={() => setOpen(m)}
+              aria-label={`Open ${m.caption}`} onClick={() => setOpen(m)}
               onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setOpen(m); } }}>
               {m.photo ? <img alt="" src={m.photo} loading="lazy" /> : null}
-              <figcaption>{m.year}: {m.caption}</figcaption>
+              <figcaption>{m.caption}</figcaption>
             </figure>
           ))}
         </div>
       ) : <Empty>No memories yet.</Empty>}
       <Modal open={!!open} onClose={() => setOpen(undefined)} label="Memory">
-        {open ? <>{open.photo ? <img alt="" src={open.photo} /> : null}<h3>{open.year}</h3><p>{open.caption}</p></> : null}
+        {open ? <>{open.photo ? <img alt={open.caption} src={open.photo} /> : null}<h3>{open.caption}</h3></> : null}
       </Modal>
     </Section>
   );

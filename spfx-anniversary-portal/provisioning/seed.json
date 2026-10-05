@@ -92,7 +92,7 @@
     },
     {
       "Title": "video.sub",
-      "Value": "A message from leadership.",
+      "Value": "",
       "ContentGroup": "Headings"
     },
     {
@@ -483,12 +483,14 @@
     {
       "Title": "Community outreach",
       "Year": 2011,
-      "SortOrder": 3
+      "SortOrder": 3,
+      "PhotoFile": "memory/community-outreach.jpg"
     },
     {
       "Title": "Annual awards",
       "Year": 2015,
-      "SortOrder": 4
+      "SortOrder": 4,
+      "PhotoFile": "memory/annual-awards.jpg"
     },
     {
       "Title": "Digital launch",
@@ -506,17 +508,17 @@
   "LeadershipMessages": [
     {
       "Title": "Message from the CEO",
-      "Message": "Sample text: every milestone we celebrate was built by the people in this room.",
+      "Message": "Every milestone we celebrate was built by the people in this room.",
       "SortOrder": 1
     },
     {
       "Title": "Message from the Board",
-      "Message": "Sample text: twenty years of trust begins with dedicated service.",
+      "Message": "Twenty years of trust begins with dedicated service.",
       "SortOrder": 2
     },
     {
       "Title": "Message from Management",
-      "Message": "Sample text: your commitment sets the standard we hold ourselves to.",
+      "Message": "Your commitment sets the standard we hold ourselves to.",
       "SortOrder": 3
     }
   ],
