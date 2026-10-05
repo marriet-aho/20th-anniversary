@@ -1,0 +1,7 @@
+{
+  "name": "anniversary-portal-qa",
+  "private": true,
+  "description": "Local browser harness: renders the real components against a fake SharePoint layer. Not part of the .sppkg.",
+  "scripts": { "build": "node build.mjs", "shots": "node shots.mjs" },
+  "devDependencies": { "esbuild": "^0.25.0", "playwright-core": "^1.50.0" }
+}

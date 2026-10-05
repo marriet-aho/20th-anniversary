@@ -86,6 +86,7 @@ function makeQuery(store: { [list: string]: Row[] }, list: string, calls: IFakeC
     const k = uniqueKey[list];
     if (k && (store[list] || []).some(r => r[k] === body[k])) return Promise.reject(new Error('duplicate value'));
     const row = { ...body, Id: nextId(), AuthorId: userId, Author: { Id: userId, Title: 'Me' }, Created: new Date().toISOString() };
+    if (body.CelebratingId) { const l = (store.Legends || []).filter(x => x.Id === body.CelebratingId)[0]; if (l) (row as Row).Celebrating = { Title: l.Title }; }
     (store[list] = store[list] || []).push(row);
     return Promise.resolve(row);
   };

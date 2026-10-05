@@ -1,77 +1,99 @@
-# spfx-anniversary-portal
+# Anniversary Portal (SPFx web part)
 
-## Summary
+The "20 Years of Audacious Steps" celebration page as a SharePoint Framework web part for SharePoint Online.
+All content and activity live in SharePoint lists and libraries (see `provisioning/`). Nothing is stored in the browser.
 
-Short summary on functionality and used technologies.
+* SPFx **1.23.2** (Heft toolchain), React 17, TypeScript strict, PnPjs v4. Node **22.14 or later, below 23**.
+* One web part, `Anniversary Portal`. Hosts: full-page app page (full bleed) and a normal page section.
+* Fonts (Fraunces, Figtree; both SIL Open Font License) are bundled in the package. No external hosts are called.
 
-[picture of the solution in action, if possible]
+## 1. Quick deploy (you only want the `.sppkg`)
 
-## Used SharePoint Framework Version
+The built package is committed at `releases/spfx-anniversary-portal.sppkg`.
 
-![version](https://img.shields.io/badge/version-1.23.2-green.svg)
+1. **Provision the site** (once, see section 3): creates the lists and libraries, then loads the starter data and media.
+2. SharePoint admin center > More features > Apps (or the tenant App Catalog) > **Upload** the `.sppkg` > **Deploy**. Tick "Make this solution available to all sites" if you want to skip adding it per site.
+3. If the app is not tenant-wide, on the site: Site contents > New > App > add **Anniversary Portal**.
+4. Create the page: Pages > New > **App page** (single-part full-width) > add the **Anniversary Portal** web part > Publish.
+5. Open the page. Owners see "Manage content" links; edit the web part to rename lists if you used other names.
 
-## Applies to
+## 2. Build it yourself
 
-- [SharePoint Framework](https://aka.ms/spfx)
-- [Microsoft 365 tenant](https://docs.microsoft.com/sharepoint/dev/spfx/set-up-your-developer-tenant)
+```bash
+cd spfx-anniversary-portal
+npm install
+npm run build        # lint + Jest + production bundle + .sppkg  (heft test --production && heft package-solution --production)
+# output: sharepoint/solution/spfx-anniversary-portal.sppkg
+npm run start        # local dev server (serves to your tenant's hosted workbench; needs a debug URL, see below)
+```
 
-> Get your own free development tenant by subscribing to [Microsoft 365 developer program](http://aka.ms/o365devprogram)
+`gulp bundle --ship` / `gulp package-solution --ship` from the older tooling are replaced by `npm run build` in this SPFx version.
 
-## Prerequisites
+**Debugging against a real site:** run `npm run start`, then open
+`https://<tenant>.sharepoint.com/sites/Anniversary20/_layouts/15/workbench.aspx` (the web part appears in the toolbox).
+To debug on a real page, append `?debug=true&noredir=true&debugManifestsFile=https://localhost:4321/temp/build/manifests.js` to the page URL.
 
-> Any special pre-requisites?
+## 3. Provisioning (PnP PowerShell)
 
-## Solution
+Needs **PnP.PowerShell 2.x or later**, an Entra ID app registered for PnP interactive login (`-ClientId`), and Site Owner rights.
 
-| Solution    | Author(s)                                               |
-| ----------- | ------------------------------------------------------- |
-| folder name | Author details (name, company, twitter alias with link) |
+```powershell
+cd provisioning
+./Provision-Portal.ps1 -SiteUrl https://<tenant>.sharepoint.com/sites/Anniversary20 -ClientId <app-id>
+./Seed-Portal.ps1      -SiteUrl https://<tenant>.sharepoint.com/sites/Anniversary20 -ClientId <app-id>
+# later, when you have the full list of 81 branches (columns: Title,Region):
+./Seed-Portal.ps1      -SiteUrl ... -ClientId ... -BranchesCsv ./branches.csv -SkipMedia
+```
 
-## Version history
+Both scripts can be re-run. Provisioning skips anything that exists; seeding is create-if-missing and never overwrites your edits.
 
-| Version | Date             | Comments        |
-| ------- | ---------------- | --------------- |
-| 1.1     | March 10, 2021   | Update comment  |
-| 1.0     | January 29, 2021 | Initial release |
+| Created | Purpose |
+|---|---|
+| `PortalContent` (key/value, unique indexed `Title`) | Every editable text, plus `countdown.date` (in `DateValue`) and optional `video.url` |
+| `Timeline`, `KeyStats`, `Legends`, `MemoryLane`, `LeadershipMessages` | Page sections |
+| `BoardMessages`, `GalleryReactions`, `GalleryComments` | Staff activity (item-level security) |
+| `GalleryMedia` (library) | Gallery photos and videos, uploaded by admins only |
+| `PortalAssets` (library) | Hero loop, poster, logo, music, anniversary film, board watermark |
+| `Branches`, `Departments` | Lookups and filters |
+| `BoardStats` | Optional, for a nightly flow when the board passes ~2,000 messages |
 
-## Disclaimer
+`{count}` in a heading or button (for example "Our {count} Audacious Legends") is replaced by the number of **Active** legends, so nothing says "13" by hand.
+The board watermark is the `PortalAssets` file titled **Watermark** with AssetType **Other**.
 
-**THIS CODE IS PROVIDED _AS IS_ WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+### Permissions the script sets
+* **Portal Owners** group: *Edit* on the site. The web part treats anyone who can manage lists, or who is in the group named in the web part settings, as an owner.
+* **Members** lose *Edit* and get *Read*; **Visitors** keep *Read*. (If Members keep Edit they would be treated as owners.)
+* `BoardMessages`, `GalleryReactions`, `GalleryComments`: inheritance broken, *Read all items* and *Create items and edit items created by the user*, with *Contribute* for Members and Visitors.
+* Use `-SkipPermissions` to do this by hand.
 
----
+> **Hidden items are not a security boundary.** "Read all items" means a member who calls the REST API directly can still read items with `Published = No`. The web part hides them, owners see a "Hidden" badge. If you need true secrecy, keep moderation in a separate restricted list.
 
-## Minimal Path to Awesome
+## 4. Web part settings (property pane)
+Names of every list/library and the Portal Owners group. Leave a field empty to use the default name. No URLs are hard-coded; everything resolves from the current site.
 
-- Clone this repository
-- Ensure that you are at the solution folder
-- in the command-line run:
-  - `npm install -g @rushstack/heft`
-  - `npm install`
-  - `heft start`
+## 5. Day-to-day content
+* Text, countdown date: edit `PortalContent` (refresh the page; no redeploy).
+* Legends and their photos: `Legends` list (Photo is an Image column; a missing photo shows "Photo coming soon").
+* Gallery: drop photos or videos into `GalleryMedia`, set Category, Branch, Department; tick Featured to pin and badge; untick Published to hide.
+* Page media: replace a file in `PortalAssets` and keep only the new one **Active** per AssetType (the newest Active file wins).
+* Board: owners can Feature/Unfeature, Hide/Unhide and Delete on each card. Staff can delete their own messages.
 
-> Include any additional steps as needed.
+## 6. Tests and local preview
+* `npm run build` runs lint and 34 Jest tests (tag suggestion, top-legends tally, initials/first names, countdown, image-field parsing, reaction keys, and every service against a fake SharePoint).
+* `qa/` is a browser harness (not shipped) that renders the real components against the same fake SharePoint layer: `cd qa && npm i && npm run build && node shots.mjs 1440` (screenshots) or `node interact.mjs` (33 scripted checks). Needs Chromium; set `CHROME=/path/to/chrome` if it is not in `/opt/pw-browsers`.
 
-Other build commands can be listed using `heft --help`.
+## 7. Troubleshooting
+| Symptom | Fix |
+|---|---|
+| A section says "We could not load ..." | The list name in the web part settings does not match, or the list is missing. Owners see the detail under the message. Re-run `Provision-Portal.ps1`. |
+| Hero shows a poster but no video; no music | No Active `HeroVideo` / `BackgroundMusic` in `PortalAssets` (run the seed, or upload). Browsers block audio until the first click or key press; that is expected. |
+| Gallery shows placeholders instead of thumbnails | The thumbnail service (`getpreview.ashx`) did not return an image, for example for a type SharePoint cannot preview. The full file still opens in the lightbox. |
+| Every member sees "Manage content" and Feature/Hide | Members have Edit on the site. Re-run provisioning, or remove Manage Lists from their level. |
+| A reaction does not toggle | Check the unique index on `GalleryReactions.ReactionKey` exists and that people have *Contribute* on the list. |
+| `video.url` embed is blank | Your tenant's content security policy blocks that host. Upload the film to `PortalAssets` instead and leave `video.url` empty. |
+| `npm install` or build fails | Check `node -v` is 22.14 or later and below 23. |
+| `yo` fails with EACCES in a root container | `yo` drops to a non-root user; make the target folder writable. |
 
-## Features
-
-Description of the extension that expands upon high-level summary above.
-
-This extension illustrates the following concepts:
-
-- topic 1
-- topic 2
-- topic 3
-
-> Notice that better pictures and documentation will increase the sample usage and the value you are providing for others. Thanks for your submissions advance.
-
-> Share your web part with others through Microsoft 365 Patterns and Practices program to get visibility and exposure. More details on the community, open-source projects and other activities from http://aka.ms/m365pnp.
-
-## References
-
-- [Getting started with SharePoint Framework](https://docs.microsoft.com/sharepoint/dev/spfx/set-up-your-developer-tenant)
-- [Building for Microsoft teams](https://docs.microsoft.com/sharepoint/dev/spfx/build-for-teams-overview)
-- [Use Microsoft Graph in your solution](https://docs.microsoft.com/sharepoint/dev/spfx/web-parts/get-started/using-microsoft-graph-apis)
-- [Publish SharePoint Framework applications to the Marketplace](https://docs.microsoft.com/sharepoint/dev/spfx/publish-to-marketplace-overview)
-- [Microsoft 365 Patterns and Practices](https://aka.ms/m365pnp) - Guidance, tooling, samples and open-source controls for your Microsoft 365 development
-- [Heft Documentation](https://heft.rushstack.io/)
+## 8. Not verified here (needs your tenant)
+This was built and tested without access to a SharePoint Online tenant. Verified locally: build, lint, 34 unit tests, the UI in Chromium at 360/390/820/1024/1440/1920 px, dark mode, reduced motion, and 33 interaction checks against a fake SharePoint layer.
+**Not verified:** the PowerShell scripts (not run), real permissions and item-level security, the unique-index rejection, `getpreview.ashx` thumbnails, Image column values, the Portal Owners detection, the full-page app page, and the Lighthouse scores (these depend heavily on the SharePoint page chrome). Please run through the acceptance list in section 9 of the original brief on a test site.
