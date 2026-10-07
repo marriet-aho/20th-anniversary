@@ -133,9 +133,14 @@ Update-DefaultView 'KeyStats' @('SortOrder', 'LinkTitle', 'Value') 'All Items'
 
 Write-Host 'Legends'
 Ensure-List 'Legends' 'GenericList' | Out-Null
-Ensure-Field 'Legends' 'Department' 'Lookup' @{ ListId = $departmentsId; Indexed = 'TRUE' }
+# Department and Branch are plain text so they paste and import quickly (no lookups).
+foreach ($c in @('Department', 'Branch')) {
+  $f = Get-PnPField -List 'Legends' -Identity $c -ErrorAction SilentlyContinue
+  if ($f -and $f.TypeAsString -ne 'Text') { Write-Warning "Legends.$c is a $($f.TypeAsString) column. Delete it and re-run so it becomes single line of text." }
+}
+Ensure-Field 'Legends' 'Department' 'Text'
 Ensure-Field 'Legends' 'Position' 'Text'
-Ensure-Field 'Legends' 'Branch' 'Lookup' @{ ListId = $branchesId; Indexed = 'TRUE' }
+Ensure-Field 'Legends' 'Branch' 'Text'
 Ensure-Field 'Legends' 'Joined' 'DateTime' @{ Format = 'DateOnly' }
 Ensure-Field 'Legends' 'Quote' 'Note' @{ NumLines = '4'; RichText = 'FALSE' }
 Ensure-Field 'Legends' 'CareerHighlights' 'Note' @{ NumLines = '6'; RichText = 'FALSE' }

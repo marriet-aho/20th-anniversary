@@ -14,7 +14,7 @@ function base(): { [list: string]: Row[] } {
     Timeline: [{ Id: 2, Title: 'b', Year: 2010, SortOrder: 2 }, { Id: 1, Title: 'a', Year: 2006, SortOrder: 1 }],
     KeyStats: [], MemoryLane: [], LeadershipMessages: [], BoardStats: [],
     Legends: [
-      { Id: 1, Title: 'B', SortOrder: 2, Active: true, Department: { Title: 'D' }, Branch: { Title: 'HO' }, Photo: '{"serverRelativeUrl":"/p.jpg"}' },
+      { Id: 1, Title: 'B', SortOrder: 2, Active: true, Department: 'D', Branch: 'HO', Photo: '{"serverRelativeUrl":"/p.jpg"}' },
       { Id: 2, Title: 'A', SortOrder: 1, Active: true },
       { Id: 3, Title: 'Gone', SortOrder: 3, Active: false }
     ],
@@ -44,6 +44,8 @@ describe('PortalService', () => {
     const l = await new PortalService(sp, cfg, me).getLegends();
     expect(l.map(x => x.name)).toEqual(['A', 'B']);
     expect(l[1].photo).toBe('/p.jpg');
+    expect(l[1].department).toBe('D');
+    expect(l[1].branch).toBe('HO');
   });
   it('picks the newest Active asset per type and maps the Watermark', async () => {
     const { sp } = createFakeSp(base());

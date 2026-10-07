@@ -7,6 +7,8 @@ import { isVideoFile, parseImageField } from '../logic/imageField';
 type Row = any;
 
 const s = (v: unknown): string => (v === null || v === undefined ? '' : String(v));
+/** Department and Branch are plain text; an expanded lookup object is also accepted. */
+const text = (v: unknown): string => (v && typeof v === 'object' ? s((v as { Title?: string }).Title) : s(v));
 const n = (v: unknown): number => (typeof v === 'number' ? v : parseFloat(s(v)) || 0);
 
 export function mapTimeline(r: Row): ITimelineItem {
@@ -17,8 +19,8 @@ export function mapKeyStat(r: Row): IKeyStat {
 }
 export function mapLegend(r: Row): ILegend {
   return {
-    id: r.Id, name: s(r.Title), department: s(r.Department && r.Department.Title), position: s(r.Position),
-    branch: s(r.Branch && r.Branch.Title), joined: s(r.Joined), quote: s(r.Quote),
+    id: r.Id, name: s(r.Title), department: text(r.Department), position: s(r.Position),
+    branch: text(r.Branch), joined: s(r.Joined), quote: s(r.Quote),
     highlights: s(r.CareerHighlights), funFact: s(r.FunFact), photo: parseImageField(r.Photo), sortOrder: n(r.SortOrder)
   };
 }

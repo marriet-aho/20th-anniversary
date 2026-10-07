@@ -56,9 +56,9 @@ Rows: paste them from `provisioning/csv/PortalContent.csv` (see "Filling the lis
 | Column | Type | Notes |
 |---|---|---|
 | Title | built in | Full name (display name: Name) |
-| Department | **Lookup** | Get information from **Departments**, column **Title** |
+| Department | **Text** | Single line of text (not a lookup) |
 | Position | Text | |
-| Branch | **Lookup** | From **Branches**, column **Title** |
+| Branch | **Text** | Single line of text (not a lookup) |
 | Joined | Date only | Not shown on the page now, but keep it |
 | Quote | Multi-line | Leave empty until you have real text |
 | CareerHighlights | Multi-line | |
@@ -150,7 +150,7 @@ If you replace a file later, upload the new one and untick Active on the old one
 
 ## Filling the lists
 
-Fast way: open `provisioning/csv/<ListName>.csv` in Excel, copy the rows (not the header), open the list, switch to **Edit in grid view**, click the first empty Title cell and paste. Do **Departments** and **Branches** first, then the others. Lookup columns (Department, Branch in Legends) accept the name as text when pasted in grid view; check that they all resolved.
+Fast way: open `provisioning/csv/<ListName>.csv` in Excel, copy the rows (not the header), open the list, switch to **Edit in grid view**, click the first empty Title cell and paste. Do **Departments** and **Branches** first, then the others. Paste one column (or a few adjacent columns) at a time, not the whole sheet at once.
 Files provided: Departments, Branches, PortalContent, Timeline, KeyStats, Legends, MemoryLane, LeadershipMessages.
 Then, by hand:
 * **Legends**: open each of Selom Cofie Atta, Edna Engmann and Simon Adu-Gyamfi and upload their photo into **Photo**.

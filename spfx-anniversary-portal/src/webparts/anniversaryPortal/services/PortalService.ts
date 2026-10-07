@@ -51,8 +51,8 @@ export class PortalService {
     return this.cache.get('legends', async () => {
       const rows: any[] = await this.list(this.cfg.legendsList).items
         .select('Id', 'Title', 'Position', 'Joined', 'Quote', 'CareerHighlights', 'FunFact', 'Photo', 'SortOrder',
-          'Active', 'Department/Title', 'Branch/Title')
-        .expand('Department', 'Branch').filter('Active eq 1').orderBy('SortOrder', true).top(PAGE)();
+          'Active', 'Department', 'Branch')
+        .filter('Active eq 1').orderBy('SortOrder', true).top(PAGE)();
       return rows.map(mapLegend);
     });
   }

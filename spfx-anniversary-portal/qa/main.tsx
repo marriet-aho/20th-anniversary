@@ -20,7 +20,7 @@ function mount(): void {
 const id = (rows: Row[]): Row[] => rows.map((r, i) => ({ Id: i + 1, ...r }));
 const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.Title === t)[0];
 
-  const legends = id(seed.Legends.map(l => ({ ...l, Department: { Title: l.Department }, Branch: { Title: l.Branch },
+  const legends = id(seed.Legends.map(l => ({ ...l, Department: l.Department, Branch: l.Branch,
     Photo: (l as { PhotoFile?: string }).PhotoFile ? JSON.stringify({ serverRelativeUrl: M + (l as { PhotoFile?: string }).PhotoFile }) : '' })));
   const branches = id(seed.Branches), departments = id(seed.Departments);
   const cats = seed.GalleryCategories;

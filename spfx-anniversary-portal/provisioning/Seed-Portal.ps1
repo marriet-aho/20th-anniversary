@@ -96,8 +96,8 @@ foreach ($l in $seed.Legends) {
     Title = $l.Title; Position = $l.Position; Joined = [datetime]::Parse($l.Joined); Quote = $l.Quote
     CareerHighlights = $l.CareerHighlights; FunFact = $l.FunFact; SortOrder = $l.SortOrder; Active = $true
   }
-  $d = Lookup-Id 'Departments' $l.Department; if ($d) { $v.Department = $d }
-  $b = Lookup-Id 'Branches' $l.Branch; if ($b) { $v.Branch = $b }
+  $v.Department = $l.Department
+  $v.Branch = $l.Branch
   Add-IfMissing 'Legends' $l.Title $v
   if ($l.PhotoFile -and -not $SkipMedia) { Set-ListPhoto 'Legends' $l.Title $l.PhotoFile }
 }
