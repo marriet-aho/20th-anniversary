@@ -15,7 +15,7 @@ export class PortalService {
   private readonly cache = new Cache();
 
   constructor(private readonly sp: SPFI, private readonly cfg: IPortalSettings,
-    private readonly user: { id: number; displayName: string }) { }
+    private readonly user: { id: number; displayName: string }, private readonly webServerRelativeUrl: string = '') { }
 
   private list(name: string): any {
     return this.sp.web.lists.getByTitle(name);
@@ -63,7 +63,7 @@ export class PortalService {
         // ...or as plain text columns (no expand allowed).
         rows = await query(cols.concat('Department', 'Branch'), []);
       }
-      return rows.map(mapLegend);
+      return rows.map(r => mapLegend(r, { webServerRelativeUrl: this.webServerRelativeUrl, listName: this.cfg.legendsList, itemId: r.Id }));
     });
   }
 
@@ -71,7 +71,7 @@ export class PortalService {
     return this.cache.get('memory', async () => {
       const rows: any[] = await this.list(this.cfg.memoryList).items
         .select('Id', 'Title', 'Year', 'Photo', 'SortOrder').orderBy('SortOrder', true).top(PAGE)();
-      return rows.map(mapMemory);
+      return rows.map(r => mapMemory(r, { webServerRelativeUrl: this.webServerRelativeUrl, listName: this.cfg.memoryList, itemId: r.Id }));
     });
   }
 

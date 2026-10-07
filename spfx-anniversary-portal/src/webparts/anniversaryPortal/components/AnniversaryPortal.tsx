@@ -52,7 +52,7 @@ const AnniversaryPortal: React.FC<IAnniversaryPortalProps> = ({ context, sp, set
     const userId = (page.legacyPageContext as { userId: number }).userId;
     const me = { id: userId, displayName: page.user.displayName };
     return {
-      portal: new PortalService(sp, settings, me), board: new BoardService(sp, settings),
+      portal: new PortalService(sp, settings, me, page.web.serverRelativeUrl), board: new BoardService(sp, settings),
       gallery: new GalleryService(sp, settings), reactions: new ReactionService(sp, settings, userId), me
     };
   }, [sp, settings, page]);

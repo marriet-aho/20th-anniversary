@@ -80,6 +80,10 @@ describe('image field and media helpers', () => {
     expect(parseImageField('/sites/x/b.jpg')).toBe('/sites/x/b.jpg');
     expect(parseImageField('{bad json')).toBe('');
     expect(parseImageField(null)).toBe('');
+    expect(parseImageField('{"fileName":"a b.jpg","id":"x"}', { webServerRelativeUrl: '/sites/s', listName: 'MemoryLane', itemId: 4 }))
+      .toBe('/sites/s/Lists/MemoryLane/Attachments/4/a%20b.jpg');
+    expect(parseImageField('{"fileName":"a.jpg"}')).toBe('');
+    expect(parseImageField({ Url: 'https://x/y.jpg' })).toBe('https://x/y.jpg');
   });
   it('recognises video files', () => {
     expect(isVideoFile('clip.MP4')).toBe(true);

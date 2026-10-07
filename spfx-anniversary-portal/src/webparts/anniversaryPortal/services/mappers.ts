@@ -1,7 +1,7 @@
 import {
   IBoardMessage, IGalleryItem, IKeyStat, ILeadershipMessage, ILegend, IMemory, ITimelineItem, TagKey
 } from '../models';
-import { isVideoFile, parseImageField } from '../logic/imageField';
+import { IImageContext, isVideoFile, parseImageField } from '../logic/imageField';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Row = any;
@@ -17,15 +17,15 @@ export function mapTimeline(r: Row): ITimelineItem {
 export function mapKeyStat(r: Row): IKeyStat {
   return { id: r.Id, label: s(r.Title), value: s(r.Value), sortOrder: n(r.SortOrder) };
 }
-export function mapLegend(r: Row): ILegend {
+export function mapLegend(r: Row, ctx?: IImageContext): ILegend {
   return {
     id: r.Id, name: s(r.Title), department: text(r.Department), position: s(r.Position),
     branch: text(r.Branch), joined: s(r.Joined), quote: s(r.Quote),
-    highlights: s(r.CareerHighlights), funFact: s(r.FunFact), photo: parseImageField(r.Photo), sortOrder: n(r.SortOrder)
+    highlights: s(r.CareerHighlights), funFact: s(r.FunFact), photo: parseImageField(r.Photo, ctx && { ...ctx, itemId: r.Id }), sortOrder: n(r.SortOrder)
   };
 }
-export function mapMemory(r: Row): IMemory {
-  return { id: r.Id, caption: s(r.Title), year: n(r.Year), photo: parseImageField(r.Photo), sortOrder: n(r.SortOrder) };
+export function mapMemory(r: Row, ctx?: IImageContext): IMemory {
+  return { id: r.Id, caption: s(r.Title), year: n(r.Year), photo: parseImageField(r.Photo, ctx && { ...ctx, itemId: r.Id }), sortOrder: n(r.SortOrder) };
 }
 export function mapLeadershipMessage(r: Row): ILeadershipMessage {
   return { id: r.Id, title: s(r.Title), message: s(r.Message), sortOrder: n(r.SortOrder) };
