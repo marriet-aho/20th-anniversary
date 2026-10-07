@@ -70,6 +70,18 @@ describe('PortalService', () => {
   });
 });
 
+describe('PortalService legends with plain-text Department and Branch', () => {
+  it('falls back to a query without expand when the columns are text', async () => {
+    const d = base();
+    d.Legends = [{ Id: 1, Title: 'A', SortOrder: 1, Active: true, Department: 'Retail', Branch: 'Head Office' }];
+    const f = createFakeSp(d, { rejectExpand: ['Legends'] });
+    const l = await new PortalService(f.sp, cfg, me).getLegends();
+    expect(l[0].department).toBe('Retail');
+    expect(l[0].branch).toBe('Head Office');
+    expect(f.calls.filter(c => c.list === 'Legends').length).toBe(1);
+  });
+});
+
 describe('BoardService', () => {
   const msgs = (n: number): Row[] => Array.from({ length: n }, (_, i) => ({
     Id: i + 1, Title: 't', Message: 'm' + i, Tags: ['Teamwork'], Published: i % 5 !== 0, Featured: i < 2,

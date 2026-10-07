@@ -2,7 +2,7 @@
 import { SPFI } from '../services/sp';
 
 export type Row = { [key: string]: any };
-export interface IFakeOptions { userId?: number; isOwner?: boolean; ownerGroupMember?: boolean; pageSize?: number }
+export interface IFakeOptions { userId?: number; isOwner?: boolean; ownerGroupMember?: boolean; pageSize?: number; rejectExpand?: string[] }
 export interface IFakeCall { list: string; op: string; filter?: string; select?: string[]; order?: string[]; top?: number; body?: Row }
 
 /** Evaluates the small OData subset the services use: eq / ne, and, or, parentheses, substringof. */
@@ -48,8 +48,9 @@ type Q = ((() => Promise<Row[]>) & {
 
 function makeQuery(store: { [list: string]: Row[] }, list: string, calls: IFakeCall[], opts: IFakeOptions,
   userId: number): Q {
-  const st = { f: '', o: [] as string[], t: 100, s: [] as string[] };
+  const st = { f: '', o: [] as string[], t: 100, s: [] as string[], x: false };
   const run = (): Row[] => {
+    if (st.x && (opts.rejectExpand || []).indexOf(list) > -1) throw new Error('The query to field is not valid. expand');
     const rows = (store[list] || []).filter(r => matches(r, st.f)).slice();
     st.o.slice().reverse().forEach(spec => {
       const [c, dir] = spec.split(' ');
@@ -68,7 +69,7 @@ function makeQuery(store: { [list: string]: Row[] }, list: string, calls: IFakeC
     try { return Promise.resolve(run().slice(0, st.t)); } catch (e) { return Promise.reject(e); }
   };
   q.select = (...a: string[]): Q => { st.s = a; return q; };
-  q.expand = (): Q => q;
+  q.expand = (): Q => { st.x = true; return q; };
   q.filter = (f: string): Q => { st.f = f; return q; };
   q.orderBy = (c: string, asc: boolean = true): Q => { st.o.push(c + (asc ? ' asc' : ' desc')); return q; };
   q.top = (n: number): Q => { st.t = n; return q; };

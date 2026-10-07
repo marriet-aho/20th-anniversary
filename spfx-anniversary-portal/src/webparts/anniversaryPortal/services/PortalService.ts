@@ -49,10 +49,20 @@ export class PortalService {
 
   public getLegends(): Promise<ILegend[]> {
     return this.cache.get('legends', async () => {
-      const rows: any[] = await this.list(this.cfg.legendsList).items
-        .select('Id', 'Title', 'Position', 'Joined', 'Quote', 'CareerHighlights', 'FunFact', 'Photo', 'SortOrder',
-          'Active', 'Department', 'Branch')
-        .filter('Active eq 1').orderBy('SortOrder', true).top(PAGE)();
+      const cols = ['Id', 'Title', 'Position', 'Joined', 'Quote', 'CareerHighlights', 'FunFact', 'Photo', 'SortOrder', 'Active'];
+      const query = (select: string[], expand: string[]): Promise<any[]> => {
+        let q = this.list(this.cfg.legendsList).items.select(...select);
+        if (expand.length) q = q.expand(...expand);
+        return q.filter('Active eq 1').orderBy('SortOrder', true).top(PAGE)();
+      };
+      let rows: any[];
+      try {
+        // Department and Branch as lookup columns...
+        rows = await query(cols.concat('Department/Title', 'Branch/Title'), ['Department', 'Branch']);
+      } catch {
+        // ...or as plain text columns (no expand allowed).
+        rows = await query(cols.concat('Department', 'Branch'), []);
+      }
       return rows.map(mapLegend);
     });
   }

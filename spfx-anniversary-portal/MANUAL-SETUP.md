@@ -56,9 +56,9 @@ Rows: paste them from `provisioning/csv/PortalContent.csv` (see "Filling the lis
 | Column | Type | Notes |
 |---|---|---|
 | Title | built in | Full name (display name: Name) |
-| Department | **Text** | Single line of text (not a lookup) |
+| Department | **Text** (or Lookup) | Single line of text is easiest to paste. A lookup to **Departments** also works |
 | Position | Text | |
-| Branch | **Text** | Single line of text (not a lookup) |
+| Branch | **Text** (or Lookup) | Same: text, or a lookup to **Branches** |
 | Joined | Date only | Not shown on the page now, but keep it |
 | Quote | Multi-line | Leave empty until you have real text |
 | CareerHighlights | Multi-line | |
