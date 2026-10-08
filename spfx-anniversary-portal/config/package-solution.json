@@ -3,7 +3,7 @@
   "solution": {
     "name": "Anniversary Portal",
     "id": "c3c73912-4989-4ddf-a146-d95145b1c6ff",
-    "version": "1.0.0.0",
+    "version": "1.0.1.0",
     "includeClientSideAssets": true,
     "skipFeatureDeployment": true,
     "isDomainIsolated": false,
@@ -30,7 +30,7 @@
         "title": "Anniversary Portal Feature",
         "description": "The feature that activates elements of the Anniversary Portal solution.",
         "id": "076949b5-6bc5-40a0-9e1c-49757245538b",
-        "version": "1.0.0.0"
+        "version": "1.0.1.0"
       }
     ]
   },

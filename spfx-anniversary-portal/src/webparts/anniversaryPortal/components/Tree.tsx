@@ -49,7 +49,7 @@ export const TreeOfLegacy: React.FC<ITreeProps> = ({ legends, selected, onSelect
     }
   }
   return (
-    <Section id="tree" alt k="tree" manage={{ name: 'Legends' }}>
+    <Section id="tree" alt k="tree">
       {n ? (
         <div className="tw">
           <div>

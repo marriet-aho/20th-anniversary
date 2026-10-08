@@ -13,7 +13,7 @@ export const AnniversaryVideo: React.FC = () => {
   const audio = useAudio();
   const url = content['video.url'] && content['video.url'].value.trim();
   return (
-    <Section id="video" k="video" manage={{ name: 'PortalAssets', library: true }}>
+    <Section id="video" k="video">
       <div className="vid">
         {url ? (
           <iframe title="Anniversary video" allowFullScreen src={embedUrl(url)} loading="lazy" />

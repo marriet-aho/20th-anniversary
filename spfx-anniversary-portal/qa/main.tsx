@@ -1,7 +1,9 @@
 import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import AnniversaryPortal from '../src/webparts/anniversaryPortal/components/AnniversaryPortal';
-import { createFakeSp, Row } from '../src/webparts/anniversaryPortal/testing/fakeSp';
+import { Row } from '../src/webparts/anniversaryPortal/testing/fakeSp';
+import { createSP } from '../src/webparts/anniversaryPortal/services/sp';
+import { installMockRest, ISchema } from './mockRest';
 import { DEFAULT_SETTINGS } from '../src/webparts/anniversaryPortal/models';
 import seed from '../provisioning/seed.json';
 
@@ -55,11 +57,33 @@ const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.
   } as { [k: string]: Row[] };
   if (params.get('broken')) delete (data as Row).Timeline;
 
-  const { sp } = createFakeSp(data, { userId: 7, isOwner: !!params.get('owner'), pageSize: 12 });
+  const asLookup = params.get('legends') === 'lookup';
+  if (asLookup) (data.Legends as Row[]).forEach(l => { l.Department = { Title: l.Department }; l.Branch = { Title: l.Branch }; });
+  const T = 'text', L = 'lookup', O = 'other';
+  const schema: ISchema = {
+    PortalContent: { Title: T, Value: O, DateValue: O, ContentGroup: O },
+    Timeline: { Title: T, Year: O, SortOrder: O },
+    KeyStats: { Title: T, Value: T, SortOrder: O },
+    Legends: { Title: T, Department: asLookup ? L : T, Position: T, Branch: asLookup ? L : T, Joined: O, Quote: O, CareerHighlights: O, FunFact: O, Photo: O, SortOrder: O, Active: O },
+    MemoryLane: { Title: T, Year: O, Photo: O, SortOrder: O },
+    LeadershipMessages: { Title: T, Message: O, SortOrder: O },
+    BoardMessages: { Title: T, Message: O, Celebrating: L, Tags: O, Featured: O, Published: O },
+    BoardStats: { Title: T, Value: O },
+    GalleryMedia: { Title: T, Category: O, Branch: T, Region: T, Department: L, Featured: O, Published: O, Credit: T, DateTaken: O },
+    PortalAssets: { Title: T, AssetType: O, Active: O },
+    Branches: { Title: T, Region: O, Active: O },
+    Departments: { Title: T, Active: O },
+    GalleryReactions: { Title: T, GalleryItem: L, Reaction: O, ReactionKey: T },
+    GalleryComments: { Title: T, GalleryItem: L, Comment: O, Published: O }
+  };
+  if (params.get('broken')) delete schema.Timeline;
+  installMockRest(data, schema, { userId: 7, isOwner: !!params.get('owner'), ownerGroupMember: false, pageSize: 12 });
   const context = {
     pageContext: { web: { absoluteUrl: location.origin + '/spfx-anniversary-portal/qa', serverRelativeUrl: '/spfx-anniversary-portal/qa' },
-      user: { displayName: 'Ama Mensah' }, legacyPageContext: { userId: 7 } }
+      user: { displayName: 'Ama Mensah' },
+      legacyPageContext: { userId: 7, formDigestValue: '0xABC,01 Jan 2035 00:00:00 -0000', formDigestTimeoutSeconds: 1800 } }
   } as never;
+  const sp = createSP(context);
   (window as unknown as { __data: unknown }).__data = data;
   ReactDom.unmountComponentAtNode(document.getElementById('app') as HTMLElement);
   ReactDom.render(<AnniversaryPortal context={context} sp={sp} settings={{ ...DEFAULT_SETTINGS, allowPosting: !!params.get('allow'), allowReactions: !!params.get('allow') }} isDarkTheme={params.get('theme') === 'dark'} />, document.getElementById('app'));

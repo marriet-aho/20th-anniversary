@@ -2,7 +2,6 @@ import * as React from 'react';
 import { IKeyStat } from '../models';
 import { useReducedMotion } from '../hooks/useReducedMotion';
 import { useInView } from '../hooks/useInView';
-import { ManageLink } from './common/ManageLink';
 
 const Stat: React.FC<{ stat: IKeyStat; hi: boolean; go: boolean; rm: boolean }> = ({ stat, hi, go, rm }) => {
   const numeric = /^\d+$/.test(stat.value);
@@ -33,7 +32,6 @@ export const KeyStats: React.FC<{ stats: IKeyStat[] }> = ({ stats }) => {
       <div className="w g stats" ref={ref}>
         {stats.map(s => <Stat key={s.id} stat={s} hi={/branch/i.test(s.label)} go={seen} rm={rm} />)}
       </div>
-      <div className="w"><ManageLink name="KeyStats" /></div>
     </section>
   );
 };

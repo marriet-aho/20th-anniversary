@@ -27,11 +27,13 @@ page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' +
 await page.route('**/getpreview.ashx**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/hero-celebration-poster.webp'), contentType: 'image/webp' }));
 const results = [];
 const ok = (n, c, d = '') => { results.push((c ? 'PASS ' : 'FAIL ') + n + (c ? '' : ' ' + d)); };
-async function open(q) { await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/preview/index.html?notoolbar=1&${q}`); await page.waitForSelector('header.hero'); const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1000); } }
+const allRest = [];
+async function open(q) { try { allRest.push(...(await page.evaluate(() => window.__rest || []))); } catch { /* first load */ } await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/preview/index.html?notoolbar=1&${q}`); await page.waitForSelector('header.hero'); const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1000); } }
 async function mountAll() { const H = await page.evaluate(() => document.body.scrollHeight); for (let y = 0; y < H + 1500; y += 700) { await page.evaluate(y => window.scrollTo(0, y), y); await page.waitForTimeout(120); } await page.waitForTimeout(500); }
 async function scrollTo(sel) { for (let i = 0; i < 4 && !(await page.locator(sel).count()); i++) await mountAll(); await page.locator(sel).first().scrollIntoViewIfNeeded(); await page.waitForTimeout(600); }
 
 await open('photos=1&allow=1');
+ok('all 13 legends in the tree', (await page.locator('.node').count()) === 13);
 // tree selection
 await page.locator('.node[aria-label="Edna Engmann"]').click();
 ok('tree select updates panel', (await page.locator('aside.panel h3').innerText()) === 'Edna Engmann');
@@ -119,7 +121,7 @@ await scrollTo('#wall');
 ok('owner always sees the post form', (await page.locator('textarea[aria-label="Your message"]').count()) === 1);
 ok('owner sees Feature/Hide/Delete', (await page.locator('.oc-card').first().locator('button').allInnerTexts()).join().match(/Feature.*Hide.*Delete/s) !== null);
 ok('owner sees hidden badge', (await page.locator('.oc-card .badge', { hasText: 'Hidden' }).count()) > 0 || true);
-ok('owner sees manage links', (await page.locator('.mgl a').count()) >= 5, await page.locator('.mgl a').count());
+ok('no "Manage content" links for owners either', (await page.locator('.mgl').count()) === 0 && (await page.locator('text=Manage content').count()) === 0);
 await page.locator('.oc-card').first().locator('button', { hasText: /^Feature$/ }).click().catch(() => {});
 // view-only by default: visitors cannot post, react or comment
 await open('photos=1'); await scrollTo('#wall');
@@ -129,14 +131,23 @@ ok('visitor: reactions are read-only', (await page.locator('dialog[open] button[
 ok('visitor: no comment box', (await page.locator('dialog[open] textarea').count()) === 0);
 await page.keyboard.press('Escape');
 // visitor sees no manage links
-await open('photos=1'); ok('visitor sees no manage links', (await page.locator('.mgl').count()) === 0);
+await open('photos=1'); ok('visitor sees no manage links', (await page.locator('text=Manage content').count()) === 0);
 // failed list shows an error, rest of page still renders
 await open('broken=1'); await scrollTo('#tree');
 ok('missing list degrades to a message', (await page.locator('.state.err').count()) >= 1 && (await page.locator('#tree').count()) === 1);
 // empty gallery
 await open('nogallery=1'); await scrollTo('#gbody'); await page.waitForTimeout(800);
 ok('empty gallery state', (await page.locator('text=No posts match').count()) === 1);
+// Legends with Department and Branch as lookup columns also load
+await open('legends=lookup'); await scrollTo('#tree');
+ok('legends load with lookup columns (all 13)', (await page.locator('.node').count()) === 13 && (await page.locator('text=We could not load the legends').count()) === 0);
+ok('lookup legends show department', /Corporate/.test(await page.locator('aside.panel').innerText()));
 // celebration done / overlay
 await open('overlay=1'); 
+allRest.push(...(await page.evaluate(() => window.__rest || [])));
+const bad = allRest.filter(r => r.status >= 400);
+const uniq = [...new Set(bad.map(r => r.status + ' ' + r.req.slice(0, 150) + '  -> ' + r.msg.slice(0, 110)))];
 console.log(results.join('\n')); console.log('errors:', JSON.stringify(errors));
+console.log('REST calls: ' + allRest.length + ', rejected: ' + bad.length);
+uniq.forEach(u => console.log('  REJECTED ' + u));
 await browser.close(); server.close();

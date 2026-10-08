@@ -7,7 +7,7 @@ import { Modal } from './common/Modal';
 export const MemoryLane: React.FC<{ items: IMemory[] }> = ({ items }) => {
   const [open, setOpen] = React.useState<IMemory | undefined>();
   return (
-    <Section alt k="memory" manage={{ name: 'MemoryLane' }}>
+    <Section alt k="memory">
       {items.length ? (
         <div className="g mg">
           {items.map(m => (

@@ -99,7 +99,7 @@ const Gallery: React.FC = () => {
   const cats = ['All', 'Featured'].concat(GALLERY_CATEGORIES);
 
   return (
-    <Section k="gallery" manage={{ name: 'GalleryMedia', library: true }}>
+    <Section k="gallery">
       <p><button type="button" className="btn" aria-controls="gbody" aria-expanded={open} onClick={() => setOpen(o => !o)}>{label}</button></p>
       <div id="gbody" hidden={!open}>
         <div className="gb" role="group" aria-label="Categories">

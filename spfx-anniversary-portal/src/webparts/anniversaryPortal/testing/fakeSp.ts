@@ -6,7 +6,7 @@ export interface IFakeOptions { userId?: number; isOwner?: boolean; ownerGroupMe
 export interface IFakeCall { list: string; op: string; filter?: string; select?: string[]; order?: string[]; top?: number; body?: Row }
 
 /** Evaluates the small OData subset the services use: eq / ne, and, or, parentheses, substringof. */
-function matches(row: Row, filter: string): boolean {
+export function matches(row: Row, filter: string): boolean {
   const f = filter.trim();
   if (!f) return true;
   const parts = (s: string, word: string): string[] => {

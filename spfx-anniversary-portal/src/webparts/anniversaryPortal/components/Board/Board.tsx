@@ -2,7 +2,6 @@ import * as React from 'react';
 import { IBoardMessage, IKeyStat, ILegend, IPage, TagKey } from '../../models';
 import { usePortal, useText } from '../PortalContext';
 import { useAsync } from '../../hooks/useAsync';
-import { ManageLink } from '../common/ManageLink';
 import { ErrorNote } from '../common/States';
 import { FeaturedCarousel, Who } from './FeaturedCarousel';
 import { PostForm } from './PostForm';
@@ -125,7 +124,6 @@ const Board: React.FC<IBoardProps> = ({ legends, keyStats }) => {
         </div>
         {hasMore ? <p style={{ textAlign: 'center', marginTop: 26 }}>
           <button type="button" className="btn" disabled={busyMore} onClick={() => { showMore().catch(() => undefined); }}>Show more messages</button></p> : null}
-        <ManageLink name="BoardMessages" />
       </div>
     </section>
   );

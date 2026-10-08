@@ -15,7 +15,7 @@ The built package is committed at `releases/spfx-anniversary-portal.sppkg`.
 2. SharePoint admin center > More features > Apps (or the tenant App Catalog) > **Upload** the `.sppkg` > **Deploy**. Tick "Make this solution available to all sites" if you want to skip adding it per site.
 3. If the app is not tenant-wide, on the site: Site contents > New > App > add **Anniversary Portal**.
 4. Create the page: Pages > New > **App page** (single-part full-width) > add the **Anniversary Portal** web part > Publish.
-5. Open the page. Owners see "Manage content" links; edit the web part to rename lists if you used other names.
+5. Open the page. Edit the web part (settings panel) to rename lists if you used other names.
 
 ## 2. Build it yourself
 
@@ -88,7 +88,7 @@ Names of every list/library and the Portal Owners group. Leave a field empty to 
 | A section says "We could not load ..." | The list name in the web part settings does not match, or the list is missing. Owners see the detail under the message. Re-run `Provision-Portal.ps1`. |
 | Hero shows a poster but no video; no music | No Active `HeroVideo` / `BackgroundMusic` in `PortalAssets` (run the seed, or upload). Browsers block audio until the first click or key press; that is expected. |
 | Gallery shows placeholders instead of thumbnails | The thumbnail service (`getpreview.ashx`) did not return an image, for example for a type SharePoint cannot preview. The full file still opens in the lightbox. |
-| Every member sees "Manage content" and Feature/Hide | Members have Edit on the site. Re-run provisioning, or remove Manage Lists from their level. |
+| Every member sees Feature/Hide buttons on the board | Members have Edit on the site. Re-run provisioning, or remove Manage Lists from their level. |
 | A reaction does not toggle | Check the unique index on `GalleryReactions.ReactionKey` exists and that people have *Contribute* on the list. |
 | `video.url` embed is blank | Your tenant's content security policy blocks that host. Upload the film to `PortalAssets` instead and leave `video.url` empty. |
 | `npm install` or build fails | Check `node -v` is 22.14 or later and below 23. |

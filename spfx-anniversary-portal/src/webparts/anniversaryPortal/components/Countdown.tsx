@@ -2,7 +2,6 @@ import * as React from 'react';
 import { usePortal, useText } from './PortalContext';
 import { countdownTo, pad } from '../logic/countdown';
 import { DEFAULT_COUNTDOWN } from './defaults';
-import { ManageLink } from './common/ManageLink';
 
 const Flip: React.FC<{ value: string; label: string }> = ({ value, label }) => {
   const [flip, setFlip] = React.useState(false);
@@ -38,7 +37,6 @@ export const Countdown: React.FC = () => {
           <Flip value={pad(c.seconds)} label="Seconds" />
         </div>
         {c.done ? <p className="done" role="status">The celebration has begun. Happy 20th anniversary!</p> : null}
-        <ManageLink name="PortalContent" />
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ export const LegendCards: React.FC<{ legends: ILegend[]; onPick: (i: number) => 
   const dq = useDebounced(q, 200).toLowerCase();
   const list = legends.map((l, i) => ({ l, i })).filter(x => (x.l.name + ' ' + x.l.department).toLowerCase().indexOf(dq) > -1);
   return (
-    <Section k="legends" manage={{ name: 'Legends' }}>
+    <Section k="legends">
       <input type="search" placeholder="Search by name or department" aria-label="Search colleagues" value={q}
         onChange={e => setQ(e.target.value)} />
       <div className="g cards" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
