@@ -36,7 +36,7 @@ export const DEFAULT_SETTINGS: IPortalSettings = {
   departmentsList: 'Departments',
   assetsLibrary: 'PortalAssets',
   ownersGroup: 'Portal Owners',
-  allowPosting: false,
+  allowPosting: true,
   allowReactions: true
 };
 

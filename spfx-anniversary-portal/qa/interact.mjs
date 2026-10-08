@@ -170,7 +170,10 @@ ok('gallery shows the remaining new photo', (await page.locator('.gi').count()) 
 // a visitor sees none of this
 // by default visitors can view, search and react; they cannot post or comment
 await open('photos=1'); await scrollTo('#wall');
-ok('visitor: no post form by default', (await page.locator('textarea[aria-label="Your message"]').count()) === 0);
+ok('visitor: can post on the board by default', (await page.locator('textarea[aria-label="Your message"]').count()) === 1);
+await open('photos=1&nopost=1'); await scrollTo('#wall');
+ok('posting can be switched off: no form', (await page.locator('textarea[aria-label="Your message"]').count()) === 0);
+await open('photos=1'); await scrollTo('#wall');
 await scrollTo('#gbody'); await page.locator('.gi-media').first().click(); await page.waitForTimeout(800);
 ok('visitor: can react to photos', (await page.locator('dialog[open] button[aria-label="Clap"]').count()) === 1);
 await page.locator('dialog[open] button[aria-label="Clap"]').click(); await page.waitForTimeout(600);

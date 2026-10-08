@@ -158,17 +158,21 @@ Then, by hand:
 
 ## Permissions (what visitors can and cannot do)
 
-By default: visitors can **look, search and react** to photos (Like, Clap, Celebrate, Love). They **cannot post on the board or comment**. Only you (and anyone you add as an owner) can add, edit, hide or delete photos, and you do it on the page itself.
+By default visitors can:
+* **look and search** the whole page, and **react** to gallery photos (Like, Clap, Celebrate, Love);
+* **post messages on the "Voices of appreciation" board** (their own messages only can be deleted by them).
 
-1. **Make yourself an owner:** Site settings > Site permissions. Your name must be in the **Owners** group (or in a group called `Portal Owners` with **Edit**). Owners see the dashed "Add photos" box above the gallery and an "Edit this photo" panel inside each photo.
-2. **Everyone else reads only:** the **Members** and **Visitors** groups must have **Read**, not Edit or Contribute. People with Edit or Manage Lists are treated as owners and see the owner tools.
-3. **Let visitors react (one-time step, no admin needed).** Reactions are saved in the **GalleryReactions** list, so visitors need permission to add to that one list only:
-   * Open **GalleryReactions** > gear icon > List settings > **Permissions for this list** > **Stop inheriting permissions**.
+Visitors **cannot comment on gallery photos** (there is no comment box there) and cannot add, edit, hide or delete photos. Only you (and anyone you add as an owner) can do that, on the page itself.
+
+1. **Make yourself an owner:** Site settings > Site permissions. Your name must be in the **Owners** group (or in a group called `Portal Owners` with **Edit**). Owners see the dashed "Add photos" box above the gallery and an "Edit this photo" panel inside each photo, plus Feature/Hide/Delete on board messages.
+2. **Everyone else reads only at site level:** the **Members** and **Visitors** groups must have **Read**, not Edit or Contribute. People with Edit or Manage Lists are treated as owners.
+3. **One-time step so visitors can react and post (no admin needed).** Do it for **each of these two lists: GalleryReactions and BoardMessages**:
+   * Open the list > gear icon > List settings > **Permissions for this list** > **Stop inheriting permissions**.
    * **Grant permissions** > add **Everyone except external users** (or your Visitors and Members groups) with **Contribute**.
    * Back in List settings > **Advanced settings** > Item-level Permissions: Read access = **Read all items**; Create and Edit access = **Create items and edit items that were created by the user**. Save.
-   * If this is not done, visitors see the buttons but get "Sorry, that did not save" when they click.
+   * If this is not done, visitors see the buttons and the board box but get "Sorry, that did not save" when they use them.
 4. **Leave all other lists as they are.** Visitors never write to them.
-5. **To switch reactions off:** edit the page > web part settings > turn off **Let visitors react to gallery photos**. **To let visitors post on the board:** turn on **Let visitors post on the board**, then give visitors Contribute on **BoardMessages** the same way as step 3.
+5. **Switches** (edit the page > web part settings): **Let visitors react to gallery photos** and **Let visitors post messages on the board**. Turn either off and visitors only view.
 
 ## Adding and editing photos on the page (owners)
 

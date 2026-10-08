@@ -81,7 +81,7 @@ export default class AnniversaryPortalWebPart extends BaseClientSideWebPart<IAnn
             f('branchesList', 'Branches list'), f('departmentsList', 'Departments list')
           ] },
           { groupName: strings.VisitorsGroup, groupFields: [
-            PropertyPaneToggle('allowPosting', { label: 'Let visitors post on the board', onText: 'On', offText: 'Off (view only)' }),
+            PropertyPaneToggle('allowPosting', { label: 'Let visitors post messages on the board', onText: 'On', offText: 'Off (only owners post)' }),
             PropertyPaneToggle('allowReactions', { label: 'Let visitors react to gallery photos', onText: 'On', offText: 'Off (view only)' })
           ] },
           { groupName: strings.OwnersGroup, groupFields: [f('ownersGroup', 'Portal Owners group name')] }
