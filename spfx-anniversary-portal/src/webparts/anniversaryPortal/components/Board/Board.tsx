@@ -20,7 +20,7 @@ const statValue = (stats: IKeyStat[], re: RegExp): string => {
 interface IBoardProps { legends: ILegend[]; keyStats: IKeyStat[] }
 
 const Board: React.FC<IBoardProps> = ({ legends, keyStats }) => {
-  const { board, user, assets } = usePortal();
+  const { board, user, assets, settings } = usePortal();
   const t = useText();
   const [items, setItems] = React.useState<IBoardMessage[]>([]);
   const [hasMore, setHasMore] = React.useState(false);
@@ -94,7 +94,7 @@ const Board: React.FC<IBoardProps> = ({ legends, keyStats }) => {
         </div>
 
         <FeaturedCarousel items={featured.data || []} />
-        <PostForm legends={legends} onPost={post} />
+        {user.isOwner || settings.allowPosting ? <PostForm legends={legends} onPost={post} /> : <div style={{ height: 22 }} />}
 
         {loadErr ? <ErrorNote what="the board messages" detail={user.isOwner ? loadErr : undefined} onRetry={() => { loadFirst().catch(() => undefined); }} /> : null}
         <div className="oc-wall">

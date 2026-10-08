@@ -2,7 +2,8 @@ import * as React from 'react';
 import * as ReactDom from 'react-dom';
 import { Version } from '@microsoft/sp-core-library';
 import {
-  type IPropertyPaneConfiguration, type IPropertyPaneField, type IPropertyPaneTextFieldProps, PropertyPaneTextField
+  type IPropertyPaneConfiguration, type IPropertyPaneField, type IPropertyPaneTextFieldProps, PropertyPaneTextField,
+  PropertyPaneToggle
 } from '@microsoft/sp-property-pane';
 import { BaseClientSideWebPart } from '@microsoft/sp-webpart-base';
 import { ThemeProvider, ThemeChangedEventArgs, IReadonlyTheme } from '@microsoft/sp-component-base';
@@ -34,9 +35,13 @@ export default class AnniversaryPortalWebPart extends BaseClientSideWebPart<IAnn
   }
 
   private settings(): IPortalSettings {
-    const out = { ...DEFAULT_SETTINGS } as { [k: string]: string };
-    const p = this.properties as { [k: string]: string | undefined };
-    Object.keys(out).forEach(k => { const v = p[k]; if (typeof v === 'string' && v.trim()) out[k] = v.trim(); });
+    const out = { ...DEFAULT_SETTINGS } as { [k: string]: string | boolean };
+    const p = this.properties as { [k: string]: string | boolean | undefined };
+    Object.keys(out).forEach(k => {
+      const v = p[k];
+      if (typeof out[k] === 'boolean') { if (typeof v === 'boolean') out[k] = v; }
+      else if (typeof v === 'string' && v.trim()) out[k] = v.trim();
+    });
     return out as unknown as IPortalSettings;
   }
 
@@ -57,7 +62,7 @@ export default class AnniversaryPortalWebPart extends BaseClientSideWebPart<IAnn
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
     const f = (key: keyof IPortalSettings, label: string): IPropertyPaneField<IPropertyPaneTextFieldProps> =>
-      PropertyPaneTextField(key, { label, placeholder: DEFAULT_SETTINGS[key] });
+      PropertyPaneTextField(key, { label, placeholder: String(DEFAULT_SETTINGS[key]) });
     return {
       pages: [{
         header: { description: strings.PropertyPaneDescription },
@@ -74,6 +79,10 @@ export default class AnniversaryPortalWebPart extends BaseClientSideWebPart<IAnn
           ] },
           { groupName: strings.LookupGroup, groupFields: [
             f('branchesList', 'Branches list'), f('departmentsList', 'Departments list')
+          ] },
+          { groupName: strings.VisitorsGroup, groupFields: [
+            PropertyPaneToggle('allowPosting', { label: 'Let visitors post on the board', onText: 'On', offText: 'Off (view only)' }),
+            PropertyPaneToggle('allowReactions', { label: 'Let visitors react and comment on gallery photos', onText: 'On', offText: 'Off (view only)' })
           ] },
           { groupName: strings.OwnersGroup, groupFields: [f('ownersGroup', 'Portal Owners group name')] }
         ]

@@ -4,6 +4,7 @@ define([], function() {
     "ContentGroup": "Page content",
     "BoardGalleryGroup": "Board and gallery",
     "LookupGroup": "Lookup lists",
-    "OwnersGroup": "Permissions"
+    "OwnersGroup": "Permissions",
+    "VisitorsGroup": "What visitors can do"
   }
 });

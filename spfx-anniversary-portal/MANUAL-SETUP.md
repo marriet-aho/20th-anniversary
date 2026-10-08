@@ -157,15 +157,16 @@ Then, by hand:
 * **MemoryLane**: upload a photo into **Photo** for each tile.
 * **Branches**: add your 81 branches (Title and Region).
 
-## Permissions
+## Permissions (view-only for visitors, you edit everything)
 
-1. **Create the group:** Site settings > Site permissions > **Advanced permissions settings** > **Create Group**, name it `Portal Owners`, give it **Edit** on the site, and add the people who manage content.
-2. **Site level:** make sure *Members* have **Read**, not Edit (Site permissions > Members group > permission level). People with Edit or Manage Lists are treated as owners and see the Feature, Hide and Delete buttons.
-3. **For each of BoardMessages, GalleryReactions and GalleryComments:**
-   * List settings > **Permissions for this list** > **Stop inheriting permissions**.
-   * Then **Grant permissions**: add your **Visitors** and **Members** groups with **Contribute**.
-   * Then List settings > **Advanced settings** > **Item-level Permissions**: *Read access* = **Read all items**; *Create and Edit access* = **Create items and edit items that were created by the user**.
-4. Everything else stays inherited: everyone reads, owners edit.
+This is the default. Visitors can look, search and filter. They cannot post, react or comment. Only you (and anyone you add as an owner) can change content and upload pictures.
+
+1. **Make yourself an owner:** Site settings > Site permissions. Your name must be in the **Owners** group (or in a group called `Portal Owners` with **Edit**).
+2. **Everyone else reads only:** in Site permissions, the **Members** group and the **Visitors** group must have **Read**, not Edit or Contribute. People with Edit or Manage Lists are treated as owners and see the management buttons.
+3. **Leave the lists as they are.** Do not stop inheriting permissions on `BoardMessages`, `GalleryReactions` or `GalleryComments`. If you already did, open each list > List settings > **Permissions for this list** > **Delete unique permissions**, so it follows the site again.
+4. **What visitors see:** the board shows messages that you add or approve, but no form to post. Gallery photos open in a viewer with the counts, but no reaction buttons and no comment box.
+
+**To let visitors post, react and comment later** (no admin needed): edit the page, open the web part's settings and turn on **Let visitors post on the board** and **Let visitors react and comment on gallery photos**. Then, for each of BoardMessages, GalleryReactions and GalleryComments: List settings > Permissions for this list > Stop inheriting permissions > grant **Visitors** and **Members** **Contribute**; then Advanced settings > Item-level Permissions: Read access = **Read all items**, Create and Edit access = **Create items and edit items that were created by the user**.
 
 ## Deploying the web part
 
@@ -174,5 +175,5 @@ If you named anything differently from this guide, edit the web part and type yo
 
 ## Quick check
 * Page opens and every section shows content (a red-bordered message such as "We could not load the timeline" means a list or column name is wrong).
-* Post a message on the board as a normal member: it appears first.
-* Click a reaction twice in the gallery: it toggles on and off.
+* View the page as a normal member: they can search and view but not post.
+* If you turned on visitor reactions: click a reaction twice in the gallery; it toggles on and off.

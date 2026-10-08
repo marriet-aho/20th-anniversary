@@ -4,6 +4,7 @@ declare interface IAnniversaryPortalWebPartStrings {
   BoardGalleryGroup: string;
   LookupGroup: string;
   OwnersGroup: string;
+  VisitorsGroup: string;
 }
 
 declare module 'AnniversaryPortalWebPartStrings' {

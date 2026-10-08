@@ -8,7 +8,8 @@ import { Loading } from '../common/States';
 interface IProps { item: IGalleryItem; onClose: () => void; onLikesChanged: (id: number, n: number) => void }
 
 const GalleryLightbox: React.FC<IProps> = ({ item, onClose, onLikesChanged }) => {
-  const { gallery, reactions, user } = usePortal();
+  const { gallery, reactions, user, settings } = usePortal();
+  const canReact = user.isOwner || settings.allowReactions;
   const [sum, setSum] = React.useState<IReactionSummary | undefined>();
   const [comments, setComments] = React.useState<IGalleryComment[] | undefined>();
   const [text, setText] = React.useState('');
@@ -51,18 +52,26 @@ const GalleryLightbox: React.FC<IProps> = ({ item, onClose, onLikesChanged }) =>
         {[item.credit, item.branch, item.region, item.department, item.category].filter(Boolean).join(', ')}
       </p>
       <div className="rx" role="group" aria-label="Reactions">
-        {REACTIONS.map(r => (
+        {REACTIONS.map(r => (canReact ? (
           <button key={r.kind} type="button" className="btn" disabled={!sum || busy}
             aria-pressed={!!(sum && sum.mine[r.kind])} aria-label={r.label}
             onClick={() => { react(r.kind).catch(() => undefined); }}>
             <span aria-hidden="true">{r.emoji}</span> {sum ? sum.counts[r.kind] : 0}
           </button>
-        ))}
+        ) : (
+          <span key={r.kind} className="rx-ro" aria-label={r.label + ': ' + (sum ? sum.counts[r.kind] : 0)}>
+            <span aria-hidden="true">{r.emoji}</span> {sum ? sum.counts[r.kind] : 0}
+          </span>
+        )))}
       </div>
       <h4>Comments</h4>
-      {!comments ? <Loading /> : comments.length ? comments.map(c => <p key={c.id}><b>{c.authorName}:</b> {c.text}</p>) : <p className="state">Be the first to comment.</p>}
-      <textarea rows={2} placeholder="Add a comment" aria-label="Comment" maxLength={1000} value={text} onChange={e => setText(e.target.value)} />
-      <button type="button" className="btn" disabled={busy} onClick={() => { comment().catch(() => undefined); }}>Comment</button>
+      {!comments ? <Loading /> : comments.length ? comments.map(c => <p key={c.id}><b>{c.authorName}:</b> {c.text}</p>) : <p className="state">{canReact ? 'Be the first to comment.' : 'No comments yet.'}</p>}
+      {canReact ? (
+        <>
+          <textarea rows={2} placeholder="Add a comment" aria-label="Comment" maxLength={1000} value={text} onChange={e => setText(e.target.value)} />
+          <button type="button" className="btn" disabled={busy} onClick={() => { comment().catch(() => undefined); }}>Comment</button>
+        </>
+      ) : null}
       <small role="status" aria-live="polite">{msg}</small>
     </Modal>
   );

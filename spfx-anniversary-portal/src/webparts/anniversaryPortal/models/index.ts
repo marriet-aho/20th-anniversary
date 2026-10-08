@@ -14,6 +14,10 @@ export interface IPortalSettings {
   departmentsList: string;
   assetsLibrary: string;
   ownersGroup: string;
+  /** Visitors can post on the board. Owners always can. */
+  allowPosting: boolean;
+  /** Visitors can react to and comment on gallery photos. Owners always can. */
+  allowReactions: boolean;
 }
 
 export const DEFAULT_SETTINGS: IPortalSettings = {
@@ -31,7 +35,9 @@ export const DEFAULT_SETTINGS: IPortalSettings = {
   branchesList: 'Branches',
   departmentsList: 'Departments',
   assetsLibrary: 'PortalAssets',
-  ownersGroup: 'Portal Owners'
+  ownersGroup: 'Portal Owners',
+  allowPosting: false,
+  allowReactions: false
 };
 
 export type AssetType =

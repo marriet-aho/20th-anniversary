@@ -38,6 +38,8 @@
     .tile img { position: absolute; inset: 0; }
     .tile figcaption { z-index: 1; }
 
+    .rx-ro { padding: 4px 14px; border: 1px solid var(--b); border-radius: 999px; background: var(--s); color: var(--t); font-weight: 600; }
+
     .gi-media { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; color: inherit; font: inherit; }
     .gi-like { color: var(--od); font: 600 .9rem Figtree, sans-serif; white-space: nowrap; }
     .fv.hid { top: 34px; background: #b42318; color: #fff; }

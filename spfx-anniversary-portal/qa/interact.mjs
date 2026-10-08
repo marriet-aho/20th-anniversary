@@ -31,7 +31,7 @@ async function open(q) { await page.goto(`http://localhost:${port}/spfx-annivers
 async function mountAll() { const H = await page.evaluate(() => document.body.scrollHeight); for (let y = 0; y < H + 1500; y += 700) { await page.evaluate(y => window.scrollTo(0, y), y); await page.waitForTimeout(120); } await page.waitForTimeout(500); }
 async function scrollTo(sel) { for (let i = 0; i < 4 && !(await page.locator(sel).count()); i++) await mountAll(); await page.locator(sel).first().scrollIntoViewIfNeeded(); await page.waitForTimeout(600); }
 
-await open('photos=1');
+await open('photos=1&allow=1');
 // tree selection
 await page.locator('.node[aria-label="Edna Engmann"]').click();
 ok('tree select updates panel', (await page.locator('aside.panel h3').innerText()) === 'Edna Engmann');
@@ -116,10 +116,18 @@ ok('memory lightbox opens', (await page.locator('dialog[open]').count()) === 1);
 // owner view
 await open('owner=1&photos=1');
 await scrollTo('#wall');
+ok('owner always sees the post form', (await page.locator('textarea[aria-label="Your message"]').count()) === 1);
 ok('owner sees Feature/Hide/Delete', (await page.locator('.oc-card').first().locator('button').allInnerTexts()).join().match(/Feature.*Hide.*Delete/s) !== null);
 ok('owner sees hidden badge', (await page.locator('.oc-card .badge', { hasText: 'Hidden' }).count()) > 0 || true);
 ok('owner sees manage links', (await page.locator('.mgl a').count()) >= 5, await page.locator('.mgl a').count());
 await page.locator('.oc-card').first().locator('button', { hasText: /^Feature$/ }).click().catch(() => {});
+// view-only by default: visitors cannot post, react or comment
+await open('photos=1'); await scrollTo('#wall');
+ok('visitor: no post form by default', (await page.locator('textarea[aria-label="Your message"]').count()) === 0);
+await scrollTo('#gbody'); await page.locator('.gi-media').first().click(); await page.waitForTimeout(800);
+ok('visitor: reactions are read-only', (await page.locator('dialog[open] button[aria-label="Clap"]').count()) === 0 && (await page.locator('dialog[open] .rx-ro').count()) === 4);
+ok('visitor: no comment box', (await page.locator('dialog[open] textarea').count()) === 0);
+await page.keyboard.press('Escape');
 // visitor sees no manage links
 await open('photos=1'); ok('visitor sees no manage links', (await page.locator('.mgl').count()) === 0);
 // failed list shows an error, rest of page still renders

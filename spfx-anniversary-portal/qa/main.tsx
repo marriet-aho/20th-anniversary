@@ -62,14 +62,15 @@ const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.
   } as never;
   (window as unknown as { __data: unknown }).__data = data;
   ReactDom.unmountComponentAtNode(document.getElementById('app') as HTMLElement);
-  ReactDom.render(<AnniversaryPortal context={context} sp={sp} settings={DEFAULT_SETTINGS} isDarkTheme={params.get('theme') === 'dark'} />, document.getElementById('app'));
+  ReactDom.render(<AnniversaryPortal context={context} sp={sp} settings={{ ...DEFAULT_SETTINGS, allowPosting: !!params.get('allow'), allowReactions: !!params.get('allow') }} isDarkTheme={params.get('theme') === 'dark'} />, document.getElementById('app'));
 }
 
 // ---- preview toolbar (not part of the portal) ----
 const TOGGLES: { key: string; label: string; on: string; off?: string }[] = [
   { key: 'owner', label: 'Owner view', on: '1' }, { key: 'theme', label: 'Dark theme', on: 'dark' },
   { key: 'countdown', label: 'Countdown finished', on: 'done' }, { key: 'broken', label: 'Broken list', on: '1' },
-  { key: 'nogallery', label: 'Empty gallery', on: '1' }, { key: 'fewboard', label: 'Short board', on: '1' }
+  { key: 'nogallery', label: 'Empty gallery', on: '1' }, { key: 'fewboard', label: 'Short board', on: '1' },
+  { key: 'allow', label: 'Visitors can post/react', on: '1' }
 ];
 function toolbar(): void {
   const bar = document.createElement('div');
