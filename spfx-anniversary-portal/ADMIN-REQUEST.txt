@@ -1,19 +1,14 @@
-Subject: Please replace one SharePoint app with a fixed version (about 2 minutes)
+Subject: Please replace the Anniversary Portal app (2 minutes)
 
 Hi,
 
-I am the owner of the InfoPortal site. The 20th anniversary page uses a custom web part that you deployed earlier ("Anniversary Portal"). I found a bug in it (the gallery and board sections fail to load) and have a fixed version.
+The first Anniversary Portal file you uploaded had a bug. I attached the fixed file (spfx-anniversary-portal.sppkg, version 1.0.7.0).
 
-What I need (one time, about 2 minutes):
-1. Open the tenant App Catalog > Apps for SharePoint.
-2. Upload the attached file: spfx-anniversary-portal.sppkg
-3. When asked "Replace it", choose Replace, then click Deploy.
+Please replace the old one with it:
+1. Open the App Catalog > Apps for SharePoint.
+2. Upload the attached file.
+3. When it asks "Replace it", choose Replace, then click Deploy.
 
-Notes:
-- It is the same app, version 1.0.7.0, with fixes. It does not need new permissions and does not ask to approve any API access.
-- Nothing else on the tenant is touched. The package only runs on pages where the Anniversary Portal web part is added.
-- It is view-only for visitors by default.
+It is the same app. It needs no new permissions, and nothing else on the tenant changes.
 
-If it is easier for you in future, you could also enable a site collection app catalog on /sites/InfoPortal and make me its site collection administrator, so I can update this one app myself and not ask you again. (PnP PowerShell: Add-PnPSiteCollectionAppCatalog -Site https://myfidelitybank.sharepoint.com/sites/InfoPortal)
-
-Thank you.
+Thank you!
