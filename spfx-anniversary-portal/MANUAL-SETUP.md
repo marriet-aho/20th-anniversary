@@ -160,7 +160,7 @@ Then, by hand:
 
 By default visitors can:
 * **look and search** the whole page, and **react** to gallery photos (Like, Clap, Celebrate, Love);
-* **post messages on the "Voices of appreciation" board** (their own messages only can be deleted by them).
+* **post messages on the "Voices of appreciation" board**.
 
 Visitors **cannot comment on gallery photos** (there is no comment box there) and cannot add, edit, hide or delete photos. Only you (and anyone you add as an owner) can do that, on the page itself.
 
@@ -174,11 +174,27 @@ Visitors **cannot comment on gallery photos** (there is no comment box there) an
 4. **Leave all other lists as they are.** Visitors never write to them.
 5. **Switches** (edit the page > web part settings): **Let visitors react to gallery photos** and **Let visitors post messages on the board**. Turn either off and visitors only view.
 
-## Adding and editing photos on the page (owners)
+## Editing the page itself (owners)
 
-1. Open the page and scroll to **Celebration Gallery**. Click **+ Add photos**.
+Owners see an orange **Edit page** button at the bottom-right of the page (visitors never see it). It opens one panel with seven tabs:
+
+1. **Words and dates:** every heading, line of text and button label, plus the countdown date and time. Edit and press **Save** on that row.
+2. **Key figures:** change, add or delete the numbers at the top.
+3. **Timeline:** change, add or delete milestones.
+4. **Legends:** change name, position, department, branch and order; add or delete a legend; choose a new picture.
+5. **Memory Lane:** change captions and pictures; add or delete tiles.
+6. **Leadership messages:** change the "Voices of appreciation" cards.
+7. **Logo, video and music:** replace the logo, the top-of-page video and picture, the background music, the anniversary video and its cover, and the board watermark. The newest file you upload is the one the page uses.
+
+Saved changes show on the page straight away. Deleting moves the item to the site Recycle Bin, so it can be restored.
+
+**Good to know:** pictures you choose here are stored in the **PortalAssets** library (as "Other" files). If a Legends or Memory Lane picture does not show after you choose it, check that the **Photo** column exists, and tell me.
+
+## Adding and editing photos in the gallery (owners)
+
+1. Scroll to **Celebration Gallery** and click **+ Add photos**.
 2. Choose one or many files. Pick the **Category**, type the **Branch** and **Region**, and pick the **Department**. Leave **Caption** empty to use each file's name. Click **Upload**.
-3. To change a photo later, click it. Under the picture you will find **Edit this photo**: change the details and **Save changes**, **Hide from visitors**, or **Delete photo** (it goes to the site Recycle Bin, so it can be restored).
+3. To change a photo later, click it. Under the picture you will find **Edit this photo**: change the details and **Save changes**, **Hide from visitors**, or **Delete photo** (it goes to the site Recycle Bin).
 4. Visitors search the gallery by typing a photo name, a branch, a region or a department into the one search box.
 
 ## Deploying the web part

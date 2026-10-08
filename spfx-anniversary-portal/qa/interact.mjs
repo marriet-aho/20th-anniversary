@@ -24,6 +24,7 @@ const errors = [];
 page.on('pageerror', e => errors.push('pageerror: ' + e.message));
 page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' + r.url()); });
 
+await page.route('**/sites/InfoPortal/**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/logo-20th-anniversary.webp'), contentType: 'image/webp' }));
 await page.route('**/getpreview.ashx**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/hero-celebration-poster.webp'), contentType: 'image/webp' }));
 const results = [];
 const ok = (n, c, d = '') => { const line = (c ? 'PASS ' : 'FAIL ') + n + (c ? '' : ' ' + d); results.push(line); if (process.env.LIVE) console.log(line); };
@@ -63,8 +64,8 @@ await page.locator('button', { hasText: 'Post to the board' }).click(); await pa
 const first = await page.locator('.oc-card').first().innerText();
 ok('posted message appears first with chosen tag, author and legend', /Innovation/.test(first) && /Thank you everyone/.test(first) && /Me/.test(first) && /Edna Engmann/.test(first), first);
 ok('message count increments', (+(await page.locator('.oc-s b').first().innerText())) === +before + 1, before);
-ok('own message deletable by author', (await page.locator('.oc-card').first().locator('button', { hasText: 'Delete' }).count()) === 1);
-ok('others messages not deletable by visitor', (await page.locator('.oc-card').nth(1).locator('button', { hasText: 'Delete' }).count()) === 0 || /Ama Mensah/.test(await page.locator('.oc-card').nth(1).innerText()));
+ok('visitor cannot delete even their own message', (await page.locator('.oc-card button', { hasText: 'Delete' }).count()) === 0);
+ok('visitor sees no Delete anywhere on the board', (await page.locator('.oc-card .oc-del').count()) === 0);
 ok('no Feature/Hide buttons for visitor', (await page.locator('.oc-card button', { hasText: /Feature|Hide/ }).count()) === 0);
 await ta.fill('Plain words only');
 await page.locator('.oc-tags button[aria-pressed="true"]').first().click().catch(() => {});
@@ -168,6 +169,65 @@ await page.locator('dialog[open] .ow-edit .btn', { hasText: 'Yes, delete' }).cli
 ok('delete removes the photo and closes the viewer', (await G()).filter(r => r.Title === 'Adenta 20th party').length === 0 && (await page.locator('dialog[open]').count()) === 0);
 ok('gallery shows the remaining new photo', (await page.locator('.gi').count()) === 1, await page.locator('.gi').count());
 // a visitor sees none of this
+// owner edits the whole page from the Edit page panel
+const D = (l) => page.evaluate((l) => window.__data[l], l);
+await page.evaluate(() => window.scrollTo(0, 0)); await page.waitForTimeout(300);
+ok('owner sees the Edit page button', (await page.locator('.ed-fab').count()) === 1);
+await page.locator('.ed-fab').click(); await page.waitForTimeout(500);
+ok('Edit page opens with 7 tabs', (await page.locator('dialog[open] .ed-tabs button').count()) === 7);
+// words
+const heroCard = page.locator('dialog[open] .ed-card', { hasText: 'Top of the page: Title' });
+await heroCard.locator('input').fill('20 Years of Bold Steps'); await heroCard.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(900);
+ok('word saved to PortalContent', (await D('PortalContent')).filter(r => r.Title === 'hero.title')[0].Value === '20 Years of Bold Steps');
+ok('page shows the new words without a reload', (await page.locator('header.hero h1').innerText()).indexOf('Bold Steps') > -1, await page.locator('header.hero h1').innerText());
+ok('edit panel stays open after saving', (await page.locator('dialog[open] .ed-tabs').count()) === 1);
+const cd = page.locator('dialog[open] input[type=datetime-local]');
+await cd.fill('2026-12-01T10:30'); await page.locator('dialog[open] .btn', { hasText: 'Save date' }).click(); await page.waitForTimeout(800);
+ok('countdown date saved', /^2026-12-01T10:30/.test(new Date((await D('PortalContent')).filter(r => r.Title === 'countdown.date')[0].DateValue).toISOString().replace('Z','')), JSON.stringify((await D('PortalContent')).filter(r => r.Title === 'countdown.date')[0]));
+// key figures: add
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Key figures' }).click();
+const nStats = (await D('KeyStats')).length;
+const fresh = page.locator('dialog[open] .ed-new');
+await fresh.locator('input').nth(0).fill('Awards Won'); await fresh.locator('input').nth(1).fill('12'); await fresh.locator('.btn', { hasText: 'Add' }).click(); await page.waitForTimeout(900);
+ok('key figure added', (await D('KeyStats')).length === nStats + 1 && (await D('KeyStats')).some(r => r.Title === 'Awards Won' && r.Value === '12'));
+ok('key figure appears on the page', (await page.locator('text=Awards Won').count()) >= 1);
+// timeline: edit first row
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Timeline' }).click();
+const tl = page.locator('dialog[open] .ed-card:not(.ed-new)').first();
+await tl.locator('textarea').fill('Edited milestone text'); await tl.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(800);
+ok('timeline edited', (await D('Timeline')).some(r => r.Title === 'Edited milestone text'));
+// legends: add with a photo, then delete it
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Legends' }).click();
+const nLeg = (await D('Legends')).length;
+const nl = page.locator('dialog[open] .ed-new');
+const lab = (t) => nl.locator('label', { hasText: t }).locator('input');
+await lab('Name').fill('Test Person'); await lab('Position').fill('Manager'); await lab('Department').fill('Prestige'); await lab('Branch').fill('Adenta');
+await nl.locator('input[type=file]').setInputFiles(path.join(root, 'spfx-anniversary-portal/provisioning/media/logo-20th-anniversary.webp'));
+await nl.locator('.btn', { hasText: 'Add' }).click(); await page.waitForTimeout(1200);
+const added = (await D('Legends')).filter(r => r.Title === 'Test Person')[0];
+ok('legend added with details', !!added && added.Position === 'Manager' && added.Branch === 'Adenta' && added.Department === 'Prestige', JSON.stringify(added));
+ok('legend photo written', !!added && /serverRelativeUrl/.test(String(added.Photo)), JSON.stringify(added && added.Photo));
+ok('picture stored in PortalAssets', (await D('PortalAssets')).some(r => r.Title === 'Test Person' && r.AssetType === 'Other'));
+ok('legend count on the page went up', (await D('Legends')).length === nLeg + 1);
+const del = page.locator('dialog[open] .ed-card', { hasText: 'Test Person' }).first();
+await del.locator('.btn', { hasText: 'Delete' }).click(); await del.locator('.btn', { hasText: 'Yes, delete' }).click(); await page.waitForTimeout(900);
+ok('legend deleted after confirmation', (await D('Legends')).length === nLeg);
+// memory lane + voices + media
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Memory Lane' }).click();
+const mem = page.locator('dialog[open] .ed-card:not(.ed-new)').first();
+await mem.locator('input[type=text]').fill('Edited caption'); await mem.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(800);
+ok('memory caption edited', (await D('MemoryLane')).some(r => r.Title === 'Edited caption'));
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Leadership messages' }).click();
+const vo = page.locator('dialog[open] .ed-card:not(.ed-new)').first();
+await vo.locator('textarea').fill('A new thought from the CEO'); await vo.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(800);
+ok('leadership message edited', (await D('LeadershipMessages')).some(r => r.Message === 'A new thought from the CEO'));
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Logo, video and music' }).click();
+const nAs = (await D('PortalAssets')).length;
+await page.locator('dialog[open] .ed-card', { hasText: 'Logo' }).first().locator('input[type=file]').setInputFiles(path.join(root, 'spfx-anniversary-portal/provisioning/media/logo-20th-anniversary.webp')); await page.waitForTimeout(1200);
+const logoRows = (await D('PortalAssets')).filter(r => r.AssetType === 'Logo' && r.Active === true);
+ok('logo replaced (new Active Logo file added)', (await D('PortalAssets')).length === nAs + 1 && logoRows.length >= 2, String(logoRows.length));
+await page.keyboard.press('Escape'); await page.waitForTimeout(300);
+// a visitor never sees the editor
 // by default visitors can view, search and react; they cannot post or comment
 await open('photos=1'); await scrollTo('#wall');
 ok('visitor: can post on the board by default', (await page.locator('textarea[aria-label="Your message"]').count()) === 1);
@@ -178,7 +238,7 @@ await scrollTo('#gbody'); await page.locator('.gi-media').first().click(); await
 ok('visitor: can react to photos', (await page.locator('dialog[open] button[aria-label="Clap"]').count()) === 1);
 await page.locator('dialog[open] button[aria-label="Clap"]').click(); await page.waitForTimeout(600);
 ok('visitor reaction counts', /1/.test(await page.locator('dialog[open] button[aria-label="Clap"]').innerText()), await page.locator('dialog[open] button[aria-label="Clap"]').innerText());
-ok('visitor: no owner tools anywhere', (await page.locator('.ow').count()) === 0);
+ok('visitor: no owner tools anywhere', (await page.locator('.ow').count()) === 0 && (await page.locator('.ed-fab').count()) === 0);
 ok('nobody sees a comment box or comments heading', (await page.locator('dialog[open] h4', { hasText: 'Comments' }).count()) === 0 && (await page.locator('dialog[open] textarea').count()) === 0);
 ok('visitor: no comment box (legacy check)', (await page.locator('dialog[open] textarea').count()) === 0);
 await page.keyboard.press('Escape');

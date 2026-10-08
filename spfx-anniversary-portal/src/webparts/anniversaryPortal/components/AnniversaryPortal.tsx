@@ -21,6 +21,8 @@ import { MemoryLane } from './MemoryLane';
 import { Voices } from './Voices';
 import { AnniversaryVideo } from './AnniversaryVideo';
 import { Footer } from './Footer';
+import { EditService } from '../services/EditService';
+import { PageEditor } from './Editor/PageEditor';
 import { LazyMount } from './common/LazyMount';
 import { ErrorNote, Loading } from './common/States';
 import styles from '../styles/portal.module.scss';
@@ -53,16 +55,18 @@ const AnniversaryPortal: React.FC<IAnniversaryPortalProps> = ({ context, sp, set
     const me = { id: userId, displayName: page.user.displayName };
     return {
       portal: new PortalService(sp, settings, me, page.web.serverRelativeUrl), board: new BoardService(sp, settings),
-      gallery: new GalleryService(sp, settings), reactions: new ReactionService(sp, settings, userId), me
+      gallery: new GalleryService(sp, settings), edit: new EditService(sp, settings), reactions: new ReactionService(sp, settings, userId), me
     };
   }, [sp, settings, page]);
 
   const [data, setData] = React.useState<IData | undefined>();
   const [sel, setSel] = React.useState(0);
+  const [rev, setRev] = React.useState(0);
 
   React.useEffect(() => {
     let live = true;
     const p = svc.portal;
+    p.invalidate();
     Promise.all([
       settle(p.getContent(), {}), settle(p.getAssets(), {}),
       settle(p.getUser(), { ...svc.me, isOwner: false }),
@@ -72,7 +76,7 @@ const AnniversaryPortal: React.FC<IAnniversaryPortalProps> = ({ context, sp, set
       if (live) setData({ content, assets, user, timeline, stats, legends, memory, voices });
     }).catch(() => undefined);
     return () => { live = false; };
-  }, [svc]);
+  }, [svc, rev]);
 
   const rootProps = { className: styles.root, 'data-theme': isDarkTheme ? 'dark' : undefined };
   if (!data) return <div {...rootProps} style={{ minHeight: 400 }}><Loading label="Loading the celebration…" /></div>;
@@ -116,6 +120,11 @@ const AnniversaryPortal: React.FC<IAnniversaryPortalProps> = ({ context, sp, set
             <React.Suspense fallback={<Loading />}><Board legends={legends} keyStats={data.stats.value} /></React.Suspense>
           </LazyMount>
           <Footer />
+          {ctx.user.isOwner ? (
+            <PageEditor edit={svc.edit} portal={svc.portal} settings={settings} content={data.content.value} assets={data.assets.value}
+              timeline={data.timeline.value} stats={data.stats.value} legends={legends} memory={data.memory.value} voices={data.voices.value}
+              onChanged={() => setRev(r => r + 1)} />
+          ) : null}
         </div>
       </AudioProvider>
     </PortalCtx.Provider>

@@ -98,7 +98,6 @@ const Board: React.FC<IBoardProps> = ({ legends, keyStats }) => {
         {loadErr ? <ErrorNote what="the board messages" detail={user.isOwner ? loadErr : undefined} onRetry={() => { loadFirst().catch(() => undefined); }} /> : null}
         <div className="oc-wall">
           {items.map((m, i) => {
-            const mine = m.authorId === user.id;
             const style = { '--r': ROT[i % 6] + 'deg', '--de': '-' + (i % 7) * 0.9 + 's', '--du': 5 + (i % 4) + 's' } as React.CSSProperties;
             return (
               <article key={m.id} className="oc-card" style={style}>
@@ -114,7 +113,7 @@ const Board: React.FC<IBoardProps> = ({ legends, keyStats }) => {
                       {m.published ? 'Hide' : 'Unhide'}</button>
                   </div>
                 ) : null}
-                {user.isOwner || mine ? (
+                {user.isOwner ? (
                   <button type="button" className="btn oc-fb oc-del" onClick={() => { del(m).catch(() => undefined); }}>Delete</button>
                 ) : null}
               </article>

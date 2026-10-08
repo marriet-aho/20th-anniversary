@@ -21,6 +21,9 @@ export class PortalService {
     return this.sp.web.lists.getByTitle(name);
   }
 
+  /** Forget everything read so far, so the next read shows the owner's edits. */
+  public invalidate(): void { this.cache.clear(); }
+
   public getContent(): Promise<IContentMap> {
     return this.cache.get('content', async () => {
       const rows: any[] = await this.list(this.cfg.contentList).items

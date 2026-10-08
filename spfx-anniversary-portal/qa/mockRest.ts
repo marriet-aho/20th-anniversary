@@ -53,7 +53,7 @@ export function installMockRest(data: { [list: string]: Row[] }, schema: ISchema
       if (rowsG.some(r => r.File && r.File.Name === name)) return spError(409, 'A file with this name already exists.');
       const srv = '/sites/InfoPortal/' + m[1] + '/' + name;
       const rowU: Row = { Id: rowsG.reduce((mx, r) => Math.max(mx, r.Id || 0), 0) + 1, Title: name.replace(/\.[^.]+$/, ''), Published: true,
-        File: { Name: name, ServerRelativeUrl: 'media/logo-20th-anniversary.webp', __srv: srv }, Created: new Date().toISOString(), __bytes: (init && init.body && (init.body as Blob).size) || 0 };
+        FileRef: 'media/logo-20th-anniversary.webp', File: { Name: name, ServerRelativeUrl: 'media/logo-20th-anniversary.webp', __srv: srv }, Created: new Date().toISOString(), __bytes: (init && init.body && (init.body as Blob).size) || 0 };
       rowsG.push(rowU);
       return json(200, { Name: name, ServerRelativeUrl: srv });
     }

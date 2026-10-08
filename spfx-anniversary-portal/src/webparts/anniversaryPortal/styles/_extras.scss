@@ -54,6 +54,16 @@
     .ow label { display: grid; gap: 4px; font: 600 .85rem Figtree, sans-serif; }
     .ow-file { margin-top: 10px; }
     .ow input, .ow select { min-width: 0; }
+    .ed-fab { position: fixed; right: 18px; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); z-index: 50; border: 0; border-radius: 999px; padding: 12px 20px;
+      background: var(--o); color: #111; font: 800 .95rem Figtree, sans-serif; cursor: pointer; box-shadow: 0 6px 20px rgba(0, 0, 0, .3); }
+    .ed-tabs { margin: 10px 0 14px; }
+    .ed-card { margin: 0 0 12px; padding: 12px; border: 1px solid var(--b); border-radius: 10px; background: var(--bg); display: grid; gap: 8px; }
+    .ed-card.ed-new { border: 2px dashed var(--o); }
+    .ed-card label { display: grid; gap: 4px; font: 600 .85rem Figtree, sans-serif; }
+    .ed-card input, .ed-card textarea { min-width: 0; font: inherit; }
+    .ed-wide { grid-column: 1 / -1; }
+    .ed-h { font-size: .95rem; }
+    .ed-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; display: block; }
     .oc-acts { display: flex; gap: 8px; flex-wrap: wrap; }
     .oc-del { background: #b42318; }
     .oc-card .badge { align-self: flex-start; }

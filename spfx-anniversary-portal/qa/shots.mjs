@@ -39,6 +39,12 @@ await page.screenshot({ path: `shots/${name}.png`, fullPage: true });
 const secs = await page.locator('#app > div > header, #app > div > section, #app > div > footer').all();
 let n = 0;
 for (const s of secs) { n++; try { await s.scrollIntoViewIfNeeded(); await page.waitForTimeout(250); await s.screenshot({ path: `shots/${name}-${String(n).padStart(2, '0')}.png`, animations: 'disabled' }); } catch (e) { errors.push('shot ' + n + ': ' + e.message.split('\n')[0]); } }
+if (process.env.EDITOR_SHOT) {
+  await page.locator('.ed-fab').click(); await page.waitForTimeout(500);
+  await page.locator('dialog[open]').screenshot({ path: `shots/${name}-editor-words.png` });
+  await page.locator('dialog[open] .ed-tabs button', { hasText: 'Legends' }).click(); await page.waitForTimeout(400);
+  await page.locator('dialog[open]').screenshot({ path: `shots/${name}-editor-legends.png` });
+}
 const info = await page.evaluate(() => ({ h: document.documentElement.scrollHeight, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth }));
 console.log(JSON.stringify({ name, ...info, errors }));
 await browser.close(); server.close();
