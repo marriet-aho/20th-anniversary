@@ -42,7 +42,7 @@ function matches(row: Row, filter: string): boolean {
 
 type Q = ((() => Promise<Row[]>) & {
   select: (...a: string[]) => Q; expand: (...a: string[]) => Q; filter: (f: string) => Q;
-  orderBy: (c: string, asc?: boolean) => Q; top: (n: number) => Q; getPaged: () => Promise<any>;
+  orderBy: (c: string, asc?: boolean) => Q; top: (n: number) => Q;
   add: (body: Row) => Promise<any>; getById: (id: number) => any;
 });
 
@@ -73,14 +73,19 @@ function makeQuery(store: { [list: string]: Row[] }, list: string, calls: IFakeC
   q.filter = (f: string): Q => { st.f = f; return q; };
   q.orderBy = (c: string, asc: boolean = true): Q => { st.o.push(c + (asc ? ' asc' : ' desc')); return q; };
   q.top = (n: number): Q => { st.t = n; return q; };
-  q.getPaged = (): Promise<any> => {
-    try {
-      const all = run(), size = Math.min(st.t, opts.pageSize || st.t);
-      const page = (i: number): any => ({
-        results: all.slice(i, i + size), hasNext: i + size < all.length, getNext: () => Promise.resolve(page(i + size))
-      });
-      return Promise.resolve(page(0));
-    } catch (e) { return Promise.reject(e); }
+  (q as any)[(Symbol as unknown as { asyncIterator: symbol }).asyncIterator] = () => {
+    let all: Row[] | undefined, i = 0, done = false;
+    const size = (): number => Math.min(st.t, opts.pageSize || st.t);
+    return {
+      next: (): Promise<{ done: boolean; value?: Row[] }> => {
+        try {
+          all = all || run();
+          if (done || i >= all.length) { done = true; return Promise.resolve({ done: true }); }
+          const value = all.slice(i, i + size()); i += size();
+          return Promise.resolve({ done: false, value });
+        } catch (e) { return Promise.reject(e); }
+      }
+    };
   };
   q.add = (body: Row): Promise<any> => {
     calls.push({ list, op: 'add', body });

@@ -1,6 +1,7 @@
 import { SPFI } from './sp';
 import { IGalleryComment, IGalleryItem, IPage, IPortalSettings } from '../models';
 import { mapGalleryItem } from './mappers';
+import { eachPage, pageOf } from './paging';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const GALLERY_CATEGORIES = [
@@ -37,19 +38,11 @@ export class GalleryService {
 
   private lib(): any { return this.sp.web.lists.getByTitle(this.cfg.galleryLibrary); }
 
-  private async wrap(paged: any): Promise<IPage<IGalleryItem>> {
-    return {
-      items: (paged.results as any[]).map(mapGalleryItem),
-      hasMore: !!paged.hasNext,
-      next: async () => this.wrap(await paged.getNext())
-    };
-  }
-
   public async getPage(q: IGalleryQuery, isOwner: boolean, size: number): Promise<IPage<IGalleryItem>> {
     let items = this.lib().items.select(...SELECT).expand('Department', 'File');
     const filter = buildGalleryFilter(q, isOwner);
     if (filter) items = items.filter(filter);
-    return this.wrap(await items.orderBy('Featured', false).orderBy('Created', false).top(size).getPaged());
+    return pageOf(items.orderBy('Featured', false).orderBy('Created', false), size, mapGalleryItem);
   }
 
   /** Total published items, for the "Show gallery (N)" label. */
@@ -57,12 +50,7 @@ export class GalleryService {
     let total = 0;
     let items = this.lib().items.select('Id');
     if (!isOwner) items = items.filter('Published eq 1');
-    let page: any = await items.top(2000).getPaged();
-    for (;;) {
-      total += (page.results as any[]).length;
-      if (!page.hasNext) break;
-      page = await page.getNext();
-    }
+    await eachPage(items, 2000, rows => { total += rows.length; });
     return total;
   }
 

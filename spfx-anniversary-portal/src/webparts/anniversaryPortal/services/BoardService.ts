@@ -1,6 +1,7 @@
 import { SPFI } from './sp';
 import { IBoardMessage, IPage, IPortalSettings, TagKey } from '../models';
 import { mapBoardMessage } from './mappers';
+import { eachPage, pageOf } from './paging';
 import { truncate } from '../logic/names';
 import { ITopLegend, tallyTopLegends } from '../logic/topLegends';
 
@@ -17,19 +18,11 @@ export class BoardService {
 
   private list(): any { return this.sp.web.lists.getByTitle(this.cfg.boardList); }
 
-  private async wrap(paged: any): Promise<IPage<IBoardMessage>> {
-    return {
-      items: (paged.results as any[]).map(mapBoardMessage),
-      hasMore: !!paged.hasNext,
-      next: async () => this.wrap(await paged.getNext())
-    };
-  }
-
   /** Newest first, `size` at a time. Non-owners only ever see Published items. */
   public async getPage(isOwner: boolean, size: number): Promise<IPage<IBoardMessage>> {
     let q = this.list().items.select(...SELECT).expand('Author', 'Celebrating');
     if (!isOwner) q = q.filter('Published eq 1');
-    return this.wrap(await q.orderBy('Created', false).top(size).getPaged());
+    return pageOf(q.orderBy('Created', false), size, mapBoardMessage);
   }
 
   public async getFeatured(): Promise<IBoardMessage[]> {
@@ -46,12 +39,10 @@ export class BoardService {
     const summary = await this.readSummary();
     if (summary) return summary;
     const ids: (number | undefined)[] = [];
-    let page: any = await this.list().items.select('Id', 'CelebratingId').filter('Published eq 1').top(1000).getPaged();
-    for (;;) {
-      (page.results as any[]).forEach(r => ids.push(r.CelebratingId || undefined));
-      if (!page.hasNext || ids.length > STATS_THRESHOLD) break;
-      page = await page.getNext();
-    }
+    await eachPage(this.list().items.select('Id', 'CelebratingId').filter('Published eq 1'), 1000, rows => {
+      rows.forEach(r => ids.push(r.CelebratingId || undefined));
+      return ids.length <= STATS_THRESHOLD;
+    });
     if (ids.length > STATS_THRESHOLD) {
       const s = await this.readSummary(true);
       if (s) return s;
@@ -80,7 +71,13 @@ export class BoardService {
     const text = message.trim().slice(0, MAX_MESSAGE);
     const body: { [k: string]: unknown } = { Title: truncate(text, 80), Message: text, Tags: tags, Featured: false, Published: true };
     if (celebratingId) body.CelebratingId = celebratingId;
-    await this.list().items.add(body);
+    try {
+      await this.list().items.add(body);
+    } catch {
+      // Some tenants want multi-choice values in the collection shape; retry once with it.
+      body.Tags = { __metadata: { type: 'Collection(Edm.String)' }, results: tags };
+      await this.list().items.add(body);
+    }
   }
 
   public async setFlag(id: number, field: 'Featured' | 'Published', value: boolean): Promise<void> {
