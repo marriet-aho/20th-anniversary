@@ -4,19 +4,17 @@ import { mapGalleryItem } from './mappers';
 import { eachPage, pageOf } from './paging';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const GALLERY_CATEGORIES = [
-  'Then & Now', 'Branch Celebrations', 'Team Moments', 'Community Impact', 'Anniversary Events', 'Fun Memories'
-];
+export const GALLERY_CATEGORIES = ['Branch Celebrations', 'Anniversary Events'];
 
 export interface IGalleryQuery {
-  category: string; // 'All' | 'Featured' | a category
+  category: string; // 'All' or a category
   branch: string;      // typed by the visitor; matches part of the Branch text
   region: string;      // typed by the visitor; matches part of the Region text
   departmentId?: number;
   search: string;
 }
 
-const SELECT = ['Id', 'Title', 'Category', 'Featured', 'Published', 'Credit', 'DateTaken', 'Branch', 'Region',
+const SELECT = ['Id', 'Title', 'Category', 'Published', 'Credit', 'DateTaken', 'Branch', 'Region',
   'Department/Title', 'File/Name', 'File/ServerRelativeUrl'];
 
 const esc = (v: string): string => v.replace(/'/g, "''");
@@ -24,8 +22,7 @@ const esc = (v: string): string => v.replace(/'/g, "''");
 export function buildGalleryFilter(q: IGalleryQuery, isOwner: boolean): string {
   const f: string[] = [];
   if (!isOwner) f.push('Published eq 1'); // indexed column first
-  if (q.category === 'Featured') f.push('Featured eq 1');
-  else if (q.category && q.category !== 'All') f.push("Category eq '" + esc(q.category) + "'");
+  if (q.category && q.category !== 'All') f.push("Category eq '" + esc(q.category) + "'");
   if (q.branch.trim()) f.push("substringof('" + esc(q.branch.trim()) + "',Branch)");
   if (q.region.trim()) f.push("substringof('" + esc(q.region.trim()) + "',Region)");
   if (q.departmentId) f.push('DepartmentId eq ' + q.departmentId);
@@ -42,7 +39,7 @@ export class GalleryService {
     let items = this.lib().items.select(...SELECT).expand('Department', 'File');
     const filter = buildGalleryFilter(q, isOwner);
     if (filter) items = items.filter(filter);
-    return pageOf(items.orderBy('Featured', false).orderBy('Created', false), size, mapGalleryItem);
+    return pageOf(items.orderBy('Created', false), size, mapGalleryItem);
   }
 
   /** Total published items, for the "Show gallery (N)" label. */

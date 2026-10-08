@@ -14,7 +14,6 @@ const Card: React.FC<{ item: IGalleryItem; likes: number; onOpen: () => void }> 
   const [broken, setBroken] = React.useState(false);
   return (
     <figure className="gi">
-      {item.featured ? <span className="fv">Featured</span> : null}
       {user.isOwner && !item.published ? <span className="fv hid">Hidden</span> : null}
       <button type="button" className="gi-media" aria-label={'Open ' + item.title} onClick={onOpen}>
         {broken || !item.url
@@ -96,7 +95,7 @@ const Gallery: React.FC = () => {
   }, [hasMore, loadMore]);
 
   const label = open ? 'Hide gallery' : 'Show gallery' + (total.data !== undefined ? ' (' + total.data + ')' : '');
-  const cats = ['All', 'Featured'].concat(GALLERY_CATEGORIES);
+  const cats = ['All'].concat(GALLERY_CATEGORIES);
 
   return (
     <Section k="gallery">

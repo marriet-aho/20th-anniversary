@@ -116,16 +116,15 @@ Index these columns (List settings > Indexed columns): **Published, Featured, Ce
 | Column | Type | Notes |
 |---|---|---|
 | Title | built in | The caption (display name: Caption) |
-| Category | Choice | Then & Now, Branch Celebrations, Team Moments, Community Impact, Anniversary Events, Fun Memories |
+| Category | Choice | Branch Celebrations, Anniversary Events (these are the only two filter buttons visitors see, besides All) |
 | Branch | **Text** | Typed freely, not a lookup |
 | Region | **Text** | Typed freely |
 | Department | **Lookup** | From **Departments**, column **Title** |
-| Featured | Yes/No | Default **No** |
 | Published | Yes/No | Default **Yes** |
 | Credit | Text | Optional "posted by" |
 | DateTaken | Date only | Optional |
 
-Index: **Published, Featured, Created**. Create **GalleryMedia before** GalleryReactions and GalleryComments.
+Index: **Published, Created**. Create **GalleryMedia before** GalleryReactions and GalleryComments.
 
 ### 13. PortalAssets (the page's own media)
 | Column | Type | Notes |

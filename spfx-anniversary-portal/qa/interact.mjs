@@ -89,14 +89,15 @@ ok('clap adds and counts', /1/.test(await page.locator('dialog[open] button[aria
 await page.locator('dialog[open] button[aria-label="Clap"]').click(); await page.waitForTimeout(500);
 ok('clap toggles off', /0/.test(await page.locator('dialog[open] button[aria-label="Clap"]').innerText()));
 await page.locator('dialog[open] button[aria-label="Like"]').click(); await page.waitForTimeout(500);
-ok('like count on first (featured) card = me only', /1/.test(await page.locator('dialog[open] button[aria-label="Like"]').innerText()), await page.locator('dialog[open] button[aria-label="Like"]').innerText());
+ok('like count on first card = me only', /1/.test(await page.locator('dialog[open] button[aria-label="Like"]').innerText()), await page.locator('dialog[open] button[aria-label="Like"]').innerText());
 await page.locator('dialog[open] textarea').fill('Great memory'); await page.locator('dialog[open] button', { hasText: 'Comment' }).click(); await page.waitForTimeout(600);
 ok('comment appears with signed-in author', /Me:|Ama Mensah:|Me/.test(await page.locator('dialog[open]').innerText()) && /Great memory/.test(await page.locator('dialog[open]').innerText()));
 await page.keyboard.press('Escape'); await page.waitForTimeout(300);
 ok('Escape closes lightbox', (await page.locator('dialog[open]').count()) === 0);
 // gallery filter + collapse
-await page.locator('.gb button', { hasText: 'Featured' }).click(); await page.waitForTimeout(700);
-ok('featured filter', (await page.locator('.gi').count()) === 5 && (await page.locator('.gi .fv').count()) === 5, await page.locator('.gi').count());
+ok('only All + 2 category buttons', (await page.locator('.gb button').allInnerTexts()).join('|') === 'All|Branch Celebrations|Anniversary Events', (await page.locator('.gb button').allInnerTexts()).join('|'));
+await page.locator('.gb button', { hasText: 'Anniversary Events' }).click(); await page.waitForTimeout(700);
+ok('category filter', (await page.locator('.gi').count()) > 0 && (await page.locator('.gi').count()) < 28, await page.locator('.gi').count());
 await page.locator('.gb button', { hasText: 'All' }).first().click();
 await page.locator('input[aria-label="Search photos"]').fill('photo 2'); await page.waitForTimeout(900);
 ok('search filters on server query', (await page.locator('.gi').count()) > 0 && (await page.locator('.gi').count()) < 28);

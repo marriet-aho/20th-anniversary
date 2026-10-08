@@ -184,7 +184,7 @@ Ensure-View 'BoardMessages' 'Hidden messages' @('LinkTitle', 'Celebrating', 'Aut
 
 Write-Host 'GalleryMedia (library)'
 Ensure-List 'GalleryMedia' 'DocumentLibrary' | Out-Null
-Ensure-Field 'GalleryMedia' 'Category' 'Choice' @{ Choices = @('Then & Now', 'Branch Celebrations', 'Team Moments', 'Community Impact', 'Anniversary Events', 'Fun Memories'); Format = 'Dropdown' }
+Ensure-Field 'GalleryMedia' 'Category' 'Choice' @{ Choices = @('Branch Celebrations', 'Anniversary Events'); Format = 'Dropdown' }
 # Branch and Region are typed freely (no fixed list), so whoever uploads can write any branch or region.
 $gb = Get-PnPField -List 'GalleryMedia' -Identity 'Branch' -ErrorAction SilentlyContinue
 if ($gb -and $gb.TypeAsString -eq 'Lookup') { Write-Warning 'GalleryMedia.Branch is still a Lookup from an earlier run. Delete that column and re-run to get the free-text Branch.' }
