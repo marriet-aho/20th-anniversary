@@ -37,7 +37,7 @@ export const DEFAULT_SETTINGS: IPortalSettings = {
   assetsLibrary: 'PortalAssets',
   ownersGroup: 'Portal Owners',
   allowPosting: false,
-  allowReactions: false
+  allowReactions: true
 };
 
 export type AssetType =
@@ -68,7 +68,7 @@ export interface IBoardMessage {
 export type ReactionKind = 'Like' | 'Clap' | 'Celebrate' | 'Love';
 
 export interface IGalleryItem {
-  id: number; title: string; category: string; branch: string; region: string; department: string; featured: boolean;
+  id: number; title: string; category: string; branch: string; region: string; department: string; departmentId?: number; featured: boolean;
   published: boolean; credit: string; dateTaken?: string; url: string; fileName: string; isVideo: boolean;
 }
 

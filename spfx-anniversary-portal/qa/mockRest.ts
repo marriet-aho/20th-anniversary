@@ -41,6 +41,34 @@ export function installMockRest(data: { [list: string]: Row[] }, schema: ISchema
     let m = path.match(/^web\/siteGroups\/getByName\('([^']+)'\)\/users\/getById\((\d+)\)$/);
     if (m) return opts.ownerGroupMember ? json(200, { Id: +m[2] }) : spError(404, 'User cannot be found.');
 
+    // owner upload: file into the library, then its list item
+    m = path.match(/^web\/lists\/getByTitle\('([^']+)'\)\/rootFolder\/files\/AddUsingPath\(decodedurl='([^']+)'(?:,Overwrite=true)?\)$/);
+    if (m) {
+      if (!schema[m[1]]) return spError(404, `List '${m[1]}' does not exist at site with URL '${url.origin}'.`);
+      if (!opts.isOwner) return spError(403, 'Access denied. You do not have permission to perform this action or access this resource.');
+      if (method !== 'POST') return spError(405, 'Method not allowed');
+      const rowsG = data[m[1]] || (data[m[1]] = []);
+      const name = m[2];
+      if (/[~"#%&*:<>?/\\{|}]/.test(name)) return spError(400, 'The file name contains characters that are not allowed.');
+      if (rowsG.some(r => r.File && r.File.Name === name)) return spError(409, 'A file with this name already exists.');
+      const srv = '/sites/InfoPortal/' + m[1] + '/' + name;
+      const rowU: Row = { Id: rowsG.reduce((mx, r) => Math.max(mx, r.Id || 0), 0) + 1, Title: name.replace(/\.[^.]+$/, ''), Published: true,
+        File: { Name: name, ServerRelativeUrl: 'media/logo-20th-anniversary.webp', __srv: srv }, Created: new Date().toISOString(), __bytes: (init && init.body && (init.body as Blob).size) || 0 };
+      rowsG.push(rowU);
+      return json(200, { Name: name, ServerRelativeUrl: srv });
+    }
+    m = path.match(/^web\/getFileByServerRelativePath\(decodedUrl='([^']+)'\)\/listItemAllFields$/);
+    if (m) {
+      for (const l of Object.keys(data)) { const r = data[l].filter(x => x.File && x.File.__srv === m![1])[0]; if (r) return json(200, { Id: r.Id }); }
+      return spError(404, 'File Not Found.');
+    }
+    m = path.match(/^web\/lists\/getByTitle\('([^']+)'\)\/items\((\d+)\)\/recycle$/);
+    if (m) {
+      if (!opts.isOwner) return spError(403, 'Access denied.');
+      data[m[1]] = (data[m[1]] || []).filter(x => x.Id !== +m![2]);
+      return json(200, { value: 'recycled' });
+    }
+
     m = path.match(/^web\/lists\/getByTitle\('([^']+)'\)\/items(?:\((\d+)\))?$/);
     if (!m) return spError(404, 'Unsupported request in the stand-in: ' + path);
     const list = m[1], id = m[2] ? +m[2] : 0;

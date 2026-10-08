@@ -5,6 +5,7 @@ import { useAsync, useDebounced } from '../../hooks/useAsync';
 import { Section } from '../common/Section';
 import { Empty, ErrorNote, Loading } from '../common/States';
 import { GALLERY_CATEGORIES, IGalleryQuery } from '../../services/GalleryService';
+import { AddPhotos } from './OwnerTools';
 
 const Lightbox = React.lazy(() => import(/* webpackChunkName: 'gallery-lightbox' */ './GalleryLightbox'));
 const PAGE = 12;
@@ -40,12 +41,14 @@ const Gallery: React.FC = () => {
   const [loading, setLoading] = React.useState(true);
   const [err, setErr] = React.useState<string | undefined>();
   const [likes, setLikes] = React.useState<{ [id: number]: number }>({});
+  const [version, setVersion] = React.useState(0);
   const [current, setCurrent] = React.useState<IGalleryItem | undefined>();
   const pager = React.useRef<IPage<IGalleryItem>>();
   const req = React.useRef(0);
   const sentinel = React.useRef<HTMLDivElement>(null);
 
-  const total = useAsync(() => gallery.count(user.isOwner), [user.isOwner]);
+  const total = useAsync(() => gallery.count(user.isOwner), [user.isOwner, version]);
+  const branches = useAsync<ILookupOption[]>(() => portal.getLookup('branches'), []);
   const departments = useAsync<ILookupOption[]>(() => portal.getLookup('departments'), []);
   // Departments are a lookup, so the page turns the typed words into the matching department ids.
   const deptKey = React.useMemo(() => {
@@ -70,7 +73,7 @@ const Gallery: React.FC = () => {
       if (id !== req.current) return;
       setErr(e instanceof Error ? e.message : String(e)); setLoading(false);
     });
-  }, [open, category, deptKey, dsearch, user.isOwner, gallery, addLikes]);
+  }, [open, category, deptKey, dsearch, user.isOwner, gallery, addLikes, version]);
 
   const loadMore = React.useCallback((): void => {
     const p = pager.current;
@@ -98,6 +101,7 @@ const Gallery: React.FC = () => {
     <Section k="gallery">
       <p><button type="button" className="btn" aria-controls="gbody" aria-expanded={open} onClick={() => setOpen(o => !o)}>{label}</button></p>
       <div id="gbody" hidden={!open}>
+        {user.isOwner ? <AddPhotos branches={branches.data || []} departments={departments.data || []} onDone={() => setVersion(v => v + 1)} /> : null}
         <div className="gb" role="group" aria-label="Categories">
           {cats.map(c => <button key={c} type="button" aria-pressed={category === c} onClick={() => setCategory(c)}>{c}</button>)}
         </div>
@@ -116,7 +120,8 @@ const Gallery: React.FC = () => {
       </div>
       {current ? (
         <React.Suspense fallback={null}>
-          <Lightbox item={current} onClose={() => setCurrent(undefined)}
+          <Lightbox item={current} branches={branches.data || []} departments={departments.data || []}
+            onChanged={() => setVersion(v => v + 1)} onRemoved={() => { setCurrent(undefined); setVersion(v => v + 1); }} onClose={() => setCurrent(undefined)}
             onLikesChanged={(id, n) => setLikes(cur => ({ ...cur, [id]: n }))} />
         </React.Suspense>
       ) : null}

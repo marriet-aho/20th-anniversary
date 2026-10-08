@@ -44,7 +44,7 @@ export function mapGalleryItem(r: Row): IGalleryItem {
   const fileName = s(r.File && r.File.Name);
   return {
     id: r.Id, title: s(r.Title) || fileName, category: s(r.Category), branch: s(r.Branch && typeof r.Branch === 'object' ? r.Branch.Title : r.Branch), region: s(r.Region),
-    department: s(r.Department && r.Department.Title), featured: !!r.Featured,
+    department: s(r.Department && r.Department.Title), departmentId: r.DepartmentId ? +r.DepartmentId : undefined, featured: !!r.Featured,
     published: r.Published !== false && r.Published !== 0, credit: s(r.Credit),
     dateTaken: r.DateTaken ? s(r.DateTaken) : undefined, url: s(r.File && r.File.ServerRelativeUrl),
     fileName, isVideo: isVideoFile(fileName)

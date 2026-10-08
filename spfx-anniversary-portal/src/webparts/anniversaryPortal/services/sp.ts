@@ -3,6 +3,8 @@ import { WebPartContext } from '@microsoft/sp-webpart-base';
 import '@pnp/sp/webs';
 import '@pnp/sp/lists';
 import '@pnp/sp/items';
+import '@pnp/sp/folders';
+import '@pnp/sp/files';
 import '@pnp/sp/site-groups/web';
 import '@pnp/sp/site-users/web';
 import '@pnp/sp/security/web';

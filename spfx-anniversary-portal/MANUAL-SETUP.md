@@ -102,7 +102,7 @@ Index these columns (List settings > Indexed columns): **Published, Featured, Ce
 | Reaction | Choice | Like, Clap, Celebrate, Love |
 | ReactionKey | Text | **Index it and turn on "Enforce unique values".** This is what stops one person reacting twice |
 
-### 11. GalleryComments
+### 11. GalleryComments (optional, not used by the page any more; skip it)
 | Column | Type | Notes |
 |---|---|---|
 | Title | built in | The page fills it in |
@@ -156,16 +156,26 @@ Then, by hand:
 * **MemoryLane**: upload a photo into **Photo** for each tile.
 * **Branches**: add your 81 branches (Title and Region).
 
-## Permissions (view-only for visitors, you edit everything)
+## Permissions (what visitors can and cannot do)
 
-This is the default. Visitors can look, search and filter. They cannot post, react or comment. Only you (and anyone you add as an owner) can change content and upload pictures.
+By default: visitors can **look, search and react** to photos (Like, Clap, Celebrate, Love). They **cannot post on the board or comment**. Only you (and anyone you add as an owner) can add, edit, hide or delete photos, and you do it on the page itself.
 
-1. **Make yourself an owner:** Site settings > Site permissions. Your name must be in the **Owners** group (or in a group called `Portal Owners` with **Edit**).
-2. **Everyone else reads only:** in Site permissions, the **Members** group and the **Visitors** group must have **Read**, not Edit or Contribute. People with Edit or Manage Lists are treated as owners and see the management buttons.
-3. **Leave the lists as they are.** Do not stop inheriting permissions on `BoardMessages`, `GalleryReactions` or `GalleryComments`. If you already did, open each list > List settings > **Permissions for this list** > **Delete unique permissions**, so it follows the site again.
-4. **What visitors see:** the board shows messages that you add or approve, but no form to post. Gallery photos open in a viewer with the counts, but no reaction buttons and no comment box.
+1. **Make yourself an owner:** Site settings > Site permissions. Your name must be in the **Owners** group (or in a group called `Portal Owners` with **Edit**). Owners see the dashed "Add photos" box above the gallery and an "Edit this photo" panel inside each photo.
+2. **Everyone else reads only:** the **Members** and **Visitors** groups must have **Read**, not Edit or Contribute. People with Edit or Manage Lists are treated as owners and see the owner tools.
+3. **Let visitors react (one-time step, no admin needed).** Reactions are saved in the **GalleryReactions** list, so visitors need permission to add to that one list only:
+   * Open **GalleryReactions** > gear icon > List settings > **Permissions for this list** > **Stop inheriting permissions**.
+   * **Grant permissions** > add **Everyone except external users** (or your Visitors and Members groups) with **Contribute**.
+   * Back in List settings > **Advanced settings** > Item-level Permissions: Read access = **Read all items**; Create and Edit access = **Create items and edit items that were created by the user**. Save.
+   * If this is not done, visitors see the buttons but get "Sorry, that did not save" when they click.
+4. **Leave all other lists as they are.** Visitors never write to them.
+5. **To switch reactions off:** edit the page > web part settings > turn off **Let visitors react to gallery photos**. **To let visitors post on the board:** turn on **Let visitors post on the board**, then give visitors Contribute on **BoardMessages** the same way as step 3.
 
-**To let visitors post, react and comment later** (no admin needed): edit the page, open the web part's settings and turn on **Let visitors post on the board** and **Let visitors react and comment on gallery photos**. Then, for each of BoardMessages, GalleryReactions and GalleryComments: List settings > Permissions for this list > Stop inheriting permissions > grant **Visitors** and **Members** **Contribute**; then Advanced settings > Item-level Permissions: Read access = **Read all items**, Create and Edit access = **Create items and edit items that were created by the user**.
+## Adding and editing photos on the page (owners)
+
+1. Open the page and scroll to **Celebration Gallery**. Click **+ Add photos**.
+2. Choose one or many files. Pick the **Category**, type the **Branch** and **Region**, and pick the **Department**. Leave **Caption** empty to use each file's name. Click **Upload**.
+3. To change a photo later, click it. Under the picture you will find **Edit this photo**: change the details and **Save changes**, **Hide from visitors**, or **Delete photo** (it goes to the site Recycle Bin, so it can be restored).
+4. Visitors search the gallery by typing a photo name, a branch, a region or a department into the one search box.
 
 ## Deploying the web part
 
@@ -174,5 +184,6 @@ If you named anything differently from this guide, edit the web part and type yo
 
 ## Quick check
 * Page opens and every section shows content (a red-bordered message such as "We could not load the timeline" means a list or column name is wrong).
-* View the page as a normal member: they can search and view but not post.
-* If you turned on visitor reactions: click a reaction twice in the gallery; it toggles on and off.
+* View the page as a normal member: they can search, view and react, but not post.
+* As owner: **+ Add photos** appears above the gallery; upload one photo and open it to see **Edit this photo**.
+* Click a reaction twice in the gallery; it toggles on and off.

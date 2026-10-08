@@ -26,7 +26,7 @@ page.on('response', r => { if (r.status() >= 400) errors.push(r.status() + ' ' +
 
 await page.route('**/getpreview.ashx**', r => r.fulfill({ path: path.join(root, 'spfx-anniversary-portal/provisioning/media/hero-celebration-poster.webp'), contentType: 'image/webp' }));
 const results = [];
-const ok = (n, c, d = '') => { results.push((c ? 'PASS ' : 'FAIL ') + n + (c ? '' : ' ' + d)); };
+const ok = (n, c, d = '') => { const line = (c ? 'PASS ' : 'FAIL ') + n + (c ? '' : ' ' + d); results.push(line); if (process.env.LIVE) console.log(line); };
 const allRest = [];
 async function open(q) { try { allRest.push(...(await page.evaluate(() => window.__rest || []))); } catch { /* first load */ } await page.goto(`http://localhost:${port}/spfx-anniversary-portal/qa/preview/index.html?notoolbar=1&${q}`); await page.waitForSelector('header.hero'); const b = page.locator('#ov .btn').first(); if (await b.count()) { await b.click(); await page.waitForTimeout(1000); } }
 async function mountAll() { const H = await page.evaluate(() => document.body.scrollHeight); for (let y = 0; y < H + 1500; y += 700) { await page.evaluate(y => window.scrollTo(0, y), y); await page.waitForTimeout(120); } await page.waitForTimeout(500); }
@@ -90,8 +90,6 @@ await page.locator('dialog[open] button[aria-label="Clap"]').click(); await page
 ok('clap toggles off', /0/.test(await page.locator('dialog[open] button[aria-label="Clap"]').innerText()));
 await page.locator('dialog[open] button[aria-label="Like"]').click(); await page.waitForTimeout(500);
 ok('like count on first card = me only', /1/.test(await page.locator('dialog[open] button[aria-label="Like"]').innerText()), await page.locator('dialog[open] button[aria-label="Like"]').innerText());
-await page.locator('dialog[open] textarea').fill('Great memory'); await page.locator('dialog[open] button', { hasText: 'Comment' }).click(); await page.waitForTimeout(600);
-ok('comment appears with signed-in author', /Me:|Ama Mensah:|Me/.test(await page.locator('dialog[open]').innerText()) && /Great memory/.test(await page.locator('dialog[open]').innerText()));
 await page.keyboard.press('Escape'); await page.waitForTimeout(300);
 ok('Escape closes lightbox', (await page.locator('dialog[open]').count()) === 0);
 // gallery filter + collapse
@@ -130,12 +128,56 @@ ok('owner sees Feature/Hide/Delete', (await page.locator('.oc-card').first().loc
 ok('owner sees hidden badge', (await page.locator('.oc-card .badge', { hasText: 'Hidden' }).count()) > 0 || true);
 ok('no "Manage content" links for owners either', (await page.locator('.mgl').count()) === 0 && (await page.locator('text=Manage content').count()) === 0);
 await page.locator('.oc-card').first().locator('button', { hasText: /^Feature$/ }).click().catch(() => {});
-// view-only by default: visitors cannot post, react or comment
+// owner edits on the page: add photos, edit, hide, delete
+await scrollTo('#gbody');
+const G = () => page.evaluate(() => window.__data.GalleryMedia);
+const o_before = (await G()).length;
+ok('owner sees Add photos', (await page.locator('.ow button', { hasText: 'Add photos' }).count()) === 1);
+await page.locator('.ow button', { hasText: 'Add photos' }).click();
+const o_media = path.join(root, 'spfx-anniversary-portal/provisioning/media');
+await page.locator('#ow-add input[type=file]').setInputFiles([path.join(o_media, 'logo-20th-anniversary.webp'), path.join(o_media, 'hero-celebration-poster.webp')]);
+ok('upload button names the file count', /Upload 2 files/.test(await page.locator('#ow-add .btn', { hasText: 'Upload' }).innerText()));
+await page.locator('#ow-add input[placeholder="Type the branch"]').fill('Adenta Branch');
+await page.locator('#ow-add input[placeholder="Type the region"]').fill('Greater Accra');
+await page.locator('#ow-add select').first().selectOption('Anniversary Events');
+await page.locator('#ow-add select').nth(1).selectOption({ label: (await page.evaluate(() => window.__data.Departments[1].Title)) });
+await page.locator('#ow-add .btn', { hasText: 'Upload' }).click();
+await page.waitForFunction(() => /photos added/.test(document.querySelector('#ow-add small')?.textContent || ''), null, { timeout: 8000 }).catch(() => {});
+const o_msgUp = await page.locator('#ow-add small').innerText();
+ok('two photos uploaded with a clear message', /2 photos added/.test(o_msgUp) && !/Not uploaded/.test(o_msgUp), o_msgUp);
+const o_after = await G();
+const o_added = o_after.slice(o_before);
+ok('rows stored with branch, region, category, department, published', o_added.length === 2 && o_added.every(r => r.Branch === 'Adenta Branch' && r.Region === 'Greater Accra' && r.Category === 'Anniversary Events' && r.Published === true && r.DepartmentId === 2), JSON.stringify(o_added.map(r => [r.Branch, r.Category, r.DepartmentId, r.Published])));
+ok('captions default to the file names', o_added.map(r => r.Title).join('|') === 'logo 20th anniversary|hero celebration poster', o_added.map(r => r.Title).join('|'));
+await page.waitForTimeout(900);
+await page.locator('input[aria-label="Search by photo, branch or department"]').fill('adenta'); await page.waitForTimeout(1000);
+ok('new photos found by branch search', (await page.locator('.gi').count()) === 2, await page.locator('.gi').count());
+await page.locator('.gi-media').first().click(); await page.waitForTimeout(700);
+ok('owner sees Edit panel in the viewer', (await page.locator('dialog[open] .ow-edit').count()) === 1);
+const o_capBox = page.locator('dialog[open] .ow-edit input[type=text]').first();
+await o_capBox.fill('Adenta 20th party');
+await page.locator('dialog[open] .ow-edit input[placeholder="Type the branch"]').fill('Adenta Main');
+await page.locator('dialog[open] .ow-edit .btn', { hasText: 'Save changes' }).click(); await page.waitForTimeout(700);
+const o_edited = (await G()).filter(r => r.Title === 'Adenta 20th party')[0];
+ok('edit saved caption and branch', !!o_edited && o_edited.Branch === 'Adenta Main', JSON.stringify(o_edited && [o_edited.Title, o_edited.Branch]));
+await page.locator('dialog[open] .ow-edit .btn', { hasText: 'Hide from visitors' }).click(); await page.waitForTimeout(700);
+ok('hide sets Published=false', (await G()).filter(r => r.Title === 'Adenta 20th party')[0].Published === false);
+await page.locator('dialog[open] .ow-edit .btn', { hasText: 'Delete photo' }).click();
+ok('delete asks to confirm first', (await G()).filter(r => r.Title === 'Adenta 20th party').length === 1);
+await page.locator('dialog[open] .ow-edit .btn', { hasText: 'Yes, delete' }).click(); await page.waitForTimeout(900);
+ok('delete removes the photo and closes the viewer', (await G()).filter(r => r.Title === 'Adenta 20th party').length === 0 && (await page.locator('dialog[open]').count()) === 0);
+ok('gallery shows the remaining new photo', (await page.locator('.gi').count()) === 1, await page.locator('.gi').count());
+// a visitor sees none of this
+// by default visitors can view, search and react; they cannot post or comment
 await open('photos=1'); await scrollTo('#wall');
 ok('visitor: no post form by default', (await page.locator('textarea[aria-label="Your message"]').count()) === 0);
 await scrollTo('#gbody'); await page.locator('.gi-media').first().click(); await page.waitForTimeout(800);
-ok('visitor: reactions are read-only', (await page.locator('dialog[open] button[aria-label="Clap"]').count()) === 0 && (await page.locator('dialog[open] .rx-ro').count()) === 4);
-ok('visitor: no comment box', (await page.locator('dialog[open] textarea').count()) === 0);
+ok('visitor: can react to photos', (await page.locator('dialog[open] button[aria-label="Clap"]').count()) === 1);
+await page.locator('dialog[open] button[aria-label="Clap"]').click(); await page.waitForTimeout(600);
+ok('visitor reaction counts', /1/.test(await page.locator('dialog[open] button[aria-label="Clap"]').innerText()), await page.locator('dialog[open] button[aria-label="Clap"]').innerText());
+ok('visitor: no owner tools anywhere', (await page.locator('.ow').count()) === 0);
+ok('nobody sees a comment box or comments heading', (await page.locator('dialog[open] h4', { hasText: 'Comments' }).count()) === 0 && (await page.locator('dialog[open] textarea').count()) === 0);
+ok('visitor: no comment box (legacy check)', (await page.locator('dialog[open] textarea').count()) === 0);
 await page.keyboard.press('Escape');
 // visitor sees no manage links
 await open('photos=1'); ok('visitor sees no manage links', (await page.locator('text=Manage content').count()) === 0);

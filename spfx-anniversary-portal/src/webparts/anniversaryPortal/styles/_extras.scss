@@ -46,6 +46,14 @@
     .gi figcaption span:first-child { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
     .gf .inp, .gf input { min-width: 0; }
 
+    .ow { margin: 0 0 18px; padding: 14px; border: 2px dashed var(--o); border-radius: 12px; background: var(--s); }
+    .ow-edit { margin: 18px 0 0; }
+    .ow-tag { margin-left: 8px; font: 700 .72rem Figtree, sans-serif; color: var(--od); text-transform: uppercase; letter-spacing: .04em; }
+    .ow-help { margin: 10px 0; color: var(--t2); font-size: .9rem; }
+    .ow-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 10px; margin: 10px 0; }
+    .ow label { display: grid; gap: 4px; font: 600 .85rem Figtree, sans-serif; }
+    .ow-file { margin-top: 10px; }
+    .ow input, .ow select { min-width: 0; }
     .oc-acts { display: flex; gap: 8px; flex-wrap: wrap; }
     .oc-del { background: #b42318; }
     .oc-card .badge { align-self: flex-start; }
