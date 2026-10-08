@@ -57,6 +57,11 @@ const TextRow: React.FC<{ k: string; value: string; onSave: (v: string) => Promi
   );
 };
 
+interface IHandlers {
+  onSave: (id: number, v: { [k: string]: string }, file: File | undefined) => Promise<void>;
+  onDelete: (id: number) => Promise<void>;
+}
+
 const nextOrder = (xs: { sortOrder: number }[]): number => xs.reduce((m, x) => Math.max(m, x.sortOrder || 0), 0) + 1;
 const str = (n: number | string | undefined): string => (n === undefined || n === null ? '' : String(n));
 const num = (s: string, d = 0): number => (isFinite(parseFloat(s)) ? parseFloat(s) : d);
@@ -81,7 +86,7 @@ export const PageEditor: React.FC<IProps> = p => {
   const rowsOf = <T extends { id: number }>(xs: T[], map: (x: T) => { [k: string]: string }, photo?: (x: T) => string): IRow[] =>
     xs.map(x => ({ id: x.id, values: map(x), photo: photo ? photo(x) : undefined }));
 
-  const crud = (listName: string, build: (v: { [k: string]: string }) => { [k: string]: unknown }, extraOnAdd?: { [k: string]: unknown }) => ({
+  const crud = (listName: string, build: (v: { [k: string]: string }) => { [k: string]: unknown }, extraOnAdd?: { [k: string]: unknown }): IHandlers => ({
     onSave: async (id: number, v: { [k: string]: string }): Promise<void> => {
       if (id) await edit.updateRow(listName, id, build(v)); else await edit.addRow(listName, { ...build(v), ...(extraOnAdd || {}) });
       done();
@@ -89,7 +94,7 @@ export const PageEditor: React.FC<IProps> = p => {
     onDelete: async (id: number): Promise<void> => { await edit.removeRow(listName, id); done(); }
   });
 
-  const photoCrud = (listName: string, build: (v: { [k: string]: string }) => { [k: string]: unknown }, titleOf: (v: { [k: string]: string }) => string, extra?: { [k: string]: unknown }) => ({
+  const photoCrud = (listName: string, build: (v: { [k: string]: string }) => { [k: string]: unknown }, titleOf: (v: { [k: string]: string }) => string, extra?: { [k: string]: unknown }): IHandlers => ({
     onSave: async (id: number, v: { [k: string]: string }, file: File | undefined): Promise<void> => {
       const rid = id || await edit.addRow(listName, { ...build(v), ...(extra || {}) });
       if (id) await edit.updateRow(listName, id, build(v));
