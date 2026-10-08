@@ -10,7 +10,7 @@ What I need (one time, about 2 minutes):
 3. When asked "Replace it", choose Replace, then click Deploy.
 
 Notes:
-- It is the same app, version 1.0.2.0, with fixes. It does not need new permissions and does not ask to approve any API access.
+- It is the same app, version 1.0.3.0, with fixes. It does not need new permissions and does not ask to approve any API access.
 - Nothing else on the tenant is touched. The package only runs on pages where the Anniversary Portal web part is added.
 - It is view-only for visitors by default.
 

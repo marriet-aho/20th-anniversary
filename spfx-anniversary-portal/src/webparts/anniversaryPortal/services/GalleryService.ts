@@ -8,10 +8,8 @@ export const GALLERY_CATEGORIES = ['Branch Celebrations', 'Anniversary Events'];
 
 export interface IGalleryQuery {
   category: string; // 'All' or a category
-  branch: string;      // typed by the visitor; matches part of the Branch text
-  region: string;      // typed by the visitor; matches part of the Region text
-  departmentId?: number;
-  search: string;
+  search: string;      // one box: matches the caption, Branch or Region text, or a department
+  departmentIds?: number[]; // departments whose name contains the search text (resolved by the page)
 }
 
 const SELECT = ['Id', 'Title', 'Category', 'Published', 'Credit', 'DateTaken', 'Branch', 'Region',
@@ -23,10 +21,12 @@ export function buildGalleryFilter(q: IGalleryQuery, isOwner: boolean): string {
   const f: string[] = [];
   if (!isOwner) f.push('Published eq 1'); // indexed column first
   if (q.category && q.category !== 'All') f.push("Category eq '" + esc(q.category) + "'");
-  if (q.branch.trim()) f.push("substringof('" + esc(q.branch.trim()) + "',Branch)");
-  if (q.region.trim()) f.push("substringof('" + esc(q.region.trim()) + "',Region)");
-  if (q.departmentId) f.push('DepartmentId eq ' + q.departmentId);
-  if (q.search.trim()) f.push("substringof('" + esc(q.search.trim()) + "',Title)");
+  const s = q.search.trim();
+  if (s) {
+    const any = ['Title', 'Branch', 'Region'].map(c => "substringof('" + esc(s) + "'," + c + ')')
+      .concat((q.departmentIds || []).map(id => 'DepartmentId eq ' + id));
+    f.push('(' + any.join(' or ') + ')');
+  }
   return f.join(' and ');
 }
 

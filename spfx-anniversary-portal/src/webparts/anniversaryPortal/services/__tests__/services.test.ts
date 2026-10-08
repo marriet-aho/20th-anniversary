@@ -140,11 +140,11 @@ describe('BoardService', () => {
 
 describe('GalleryService', () => {
   it('builds filters with the indexed column first and escapes quotes', () => {
-    expect(buildGalleryFilter({ category: 'All', branch: '', region: '', search: '' }, false)).toBe('Published eq 1');
-    expect(buildGalleryFilter({ category: 'All', branch: '', region: '', search: '' }, true)).toBe('');
-    expect(buildGalleryFilter({ category: 'Branch Celebrations', search: "o'neil", branch: ' Kumasi ', region: 'Ashanti', departmentId: 4 }, false))
-      .toBe("Published eq 1 and Category eq 'Branch Celebrations' and substringof('Kumasi',Branch) and substringof('Ashanti',Region) and DepartmentId eq 4 and substringof('o''neil',Title)");
-    expect(buildGalleryFilter({ category: 'Anniversary Events', branch: '', region: '', search: '' }, false)).toBe("Published eq 1 and Category eq 'Anniversary Events'");
+    expect(buildGalleryFilter({ category: 'All', search: '' }, false)).toBe('Published eq 1');
+    expect(buildGalleryFilter({ category: 'All', search: '' }, true)).toBe('');
+    expect(buildGalleryFilter({ category: 'Branch Celebrations', search: " o'neil ", departmentIds: [4, 7] }, false))
+      .toBe("Published eq 1 and Category eq 'Branch Celebrations' and (substringof('o''neil',Title) or substringof('o''neil',Branch) or substringof('o''neil',Region) or DepartmentId eq 4 or DepartmentId eq 7)");
+    expect(buildGalleryFilter({ category: 'Anniversary Events', search: '' }, false)).toBe("Published eq 1 and Category eq 'Anniversary Events'");
   });
   it('lists published media newest first and flags videos', async () => {
     const d = base();
@@ -154,12 +154,12 @@ describe('GalleryService', () => {
       { Id: 3, Title: 'hid', Published: false, Featured: false, Created: '2026-01-03', File: { Name: 'c.jpg', ServerRelativeUrl: '/c.jpg' } }
     ];
     const svc = new GalleryService(createFakeSp(d).sp, cfg);
-    const p = await svc.getPage({ category: 'All', branch: '', region: '', search: '' }, false, 12);
+    const p = await svc.getPage({ category: 'All', search: '' }, false, 12);
     expect(p.items.map(i => i.id)).toEqual([1, 2]);
     expect(p.items[1].isVideo).toBe(true);
-    expect((await svc.getPage({ category: 'All', branch: '', region: '', search: 'ONE' }, false, 12)).items.map(i => i.id)).toEqual([1]);
-    expect((await svc.getPage({ category: 'All', branch: 'kumasi', region: '', search: '' }, false, 12)).items.map(i => i.id)).toEqual([1]);
-    expect((await svc.getPage({ category: 'All', branch: '', region: 'ashanti', search: '' }, false, 12)).items[0].region).toBe('Ashanti');
+    expect((await svc.getPage({ category: 'All', search: 'ONE' }, false, 12)).items.map(i => i.id)).toEqual([1]);
+    expect((await svc.getPage({ category: 'All', search: 'kumasi' }, false, 12)).items.map(i => i.id)).toEqual([1]);
+    expect((await svc.getPage({ category: 'All', search: 'ashanti' }, false, 12)).items[0].region).toBe('Ashanti');
     expect(await svc.count(false)).toBe(2);
     expect(await svc.count(true)).toBe(3);
   });
