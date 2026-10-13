@@ -69,24 +69,18 @@ export class EditService {
     }
   }
 
-  /** Legends: Department and Branch may be text or lookup columns; try text first, then lookup ids. */
-  public async saveLegend(id: number, w: ILegendWrite, lookups: { departments: { id: number; title: string }[]; branches: { id: number; title: string }[] }): Promise<number> {
-    const base = { Title: w.name, Position: w.position, SortOrder: w.sortOrder };
-    const write = async (extra: { [k: string]: unknown }): Promise<number> => {
-      if (id) { await this.updateRow(this.cfg.legendsList, id, { ...base, ...extra }); return id; }
-      return this.addRow(this.cfg.legendsList, { ...base, Active: true, ...extra });
+  /** Legends: Department and Branch may each be a text or a lookup column (shape comes from how the legends loaded). */
+  public async saveLegend(id: number, w: ILegendWrite, shape: { dept: boolean; branch: boolean },
+    lookups: { departments: { id: number; title: string }[]; branches: { id: number; title: string }[] }): Promise<number> {
+    const idOf = (xs: { id: number; title: string }[], t: string): number | undefined => {
+      const hit = xs.filter(x => x.title.trim().toLowerCase() === t.trim().toLowerCase())[0];
+      return hit ? hit.id : undefined;
     };
-    try {
-      return await write({ Department: w.department, Branch: w.branch });
-    } catch {
-      const pick = (xs: { id: number; title: string }[], t: string): number | undefined =>
-        (xs.filter(x => x.title.toLowerCase() === t.trim().toLowerCase())[0] || { id: undefined as unknown as number }).id;
-      const extra: { [k: string]: unknown } = {};
-      const d = pick(lookups.departments, w.department), b = pick(lookups.branches, w.branch);
-      if (d) extra.DepartmentId = d;
-      if (b) extra.BranchId = b;
-      return write(extra);
-    }
+    const fields: { [k: string]: unknown } = { Title: w.name, Position: w.position, SortOrder: w.sortOrder };
+    if (shape.dept) { const d = idOf(lookups.departments, w.department); if (d) fields.DepartmentId = d; } else fields.Department = w.department;
+    if (shape.branch) { const b = idOf(lookups.branches, w.branch); if (b) fields.BranchId = b; } else fields.Branch = w.branch;
+    if (id) { await this.updateRow(this.cfg.legendsList, id, fields); return id; }
+    return this.addRow(this.cfg.legendsList, { ...fields, Active: true });
   }
 
   /** Replace one of the page's own media files. The newest Active file of each type is the one shown. */

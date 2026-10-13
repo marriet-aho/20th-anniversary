@@ -96,6 +96,7 @@ export function installMockRest(data: { [list: string]: Row[] }, schema: ISchema
         const base = f.split('/')[0];
         if (!known(base)) return missing(base);
         if (f.indexOf('/') > -1 && exp.indexOf(base) < 0) return bad(base);
+        if (f.indexOf('/') < 0 && fields[f] === 'lookup' && exp.indexOf(f) < 0) return bad(f); // a lookup cannot be selected without $expand
       }
       const idents = flt.match(/(?:^|[\s(])([A-Za-z_]\w*)(?= (?:eq|ne) )/g) || [];
       for (const raw of idents) { const f = raw.trim().replace('(', ''); if (!known(f)) return missing(f); }

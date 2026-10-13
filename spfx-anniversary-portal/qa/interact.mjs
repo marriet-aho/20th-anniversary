@@ -254,6 +254,19 @@ ok('empty gallery state', (await page.locator('text=No posts match').count()) ==
 await open('legends=lookup'); await scrollTo('#tree');
 ok('legends load with lookup columns (all 13)', (await page.locator('.node').count()) === 13 && (await page.locator('text=We could not load the legends').count()) === 0);
 ok('lookup legends show department', /Corporate/.test(await page.locator('aside.panel').innerText()));
+// mixed columns: Department is text, Branch is a lookup (the real site's shape)
+await open('legends=mixed&owner=1'); await scrollTo('#tree');
+ok('mixed legends (text Department, lookup Branch) load all 13', (await page.locator('.node').count()) === 13, await page.locator('.node').count());
+ok('mixed legends show department text', /Corporate/.test(await page.locator('aside.panel').innerText()));
+await page.locator('.ed-fab').click(); await page.waitForTimeout(500);
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Legends' }).click();
+const mnew = page.locator('dialog[open] .ed-new');
+const mlab = (t) => mnew.locator('label', { hasText: t }).locator('input');
+await mlab('Name').fill('Mixed Person'); await mlab('Position').fill('Lead'); await mlab('Department').fill('Prestige'); await mlab('Branch').fill((await page.evaluate(() => window.__data.Branches[0].Title)));
+await mnew.locator('.btn', { hasText: 'Add' }).click(); await page.waitForTimeout(1200);
+const mrow = (await page.evaluate(() => window.__data.Legends)).filter(r => r.Title === 'Mixed Person')[0];
+ok('mixed legend saved: Department as text, Branch as lookup id', !!mrow && mrow.Department === 'Prestige' && !!mrow.BranchId && !('DepartmentId' in mrow), JSON.stringify(mrow));
+await page.keyboard.press('Escape');
 // celebration done / overlay
 await open('overlay=1'); 
 allRest.push(...(await page.evaluate(() => window.__rest || [])));

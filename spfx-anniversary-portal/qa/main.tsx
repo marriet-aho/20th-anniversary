@@ -58,13 +58,15 @@ const byTitle = (rows: Row[], t: string): Row | undefined => rows.filter(r => r.
   if (params.get('broken')) delete (data as Row).Timeline;
 
   const asLookup = params.get('legends') === 'lookup';
+  const mixed = params.get('legends') === 'mixed'; // Department text, Branch lookup
   if (asLookup) (data.Legends as Row[]).forEach(l => { l.Department = { Title: l.Department }; l.Branch = { Title: l.Branch }; });
+  if (mixed) (data.Legends as Row[]).forEach(l => { l.Branch = { Title: l.Branch }; });
   const T = 'text', L = 'lookup', O = 'other';
   const schema: ISchema = {
     PortalContent: { Title: T, Value: O, DateValue: O, ContentGroup: O },
     Timeline: { Title: T, Year: O, SortOrder: O },
     KeyStats: { Title: T, Value: T, SortOrder: O },
-    Legends: { Title: T, Department: asLookup ? L : T, Position: T, Branch: asLookup ? L : T, Joined: O, Quote: O, CareerHighlights: O, FunFact: O, Photo: O, SortOrder: O, Active: O },
+    Legends: { Title: T, Department: asLookup ? L : T, Position: T, Branch: asLookup || mixed ? L : T, Joined: O, Quote: O, CareerHighlights: O, FunFact: O, Photo: O, SortOrder: O, Active: O },
     MemoryLane: { Title: T, Year: O, Photo: O, SortOrder: O },
     LeadershipMessages: { Title: T, Message: O, SortOrder: O },
     BoardMessages: { Title: T, Message: O, Celebrating: L, Tags: O, Featured: O, Published: O },

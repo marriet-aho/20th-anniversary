@@ -2,7 +2,7 @@ Subject: Please replace the Anniversary Portal app (2 minutes)
 
 Hi,
 
-The first Anniversary Portal file you uploaded had a bug. I attached the fixed file (spfx-anniversary-portal.sppkg, version 1.0.7.0).
+The first Anniversary Portal file you uploaded had a bug. I attached the fixed file (spfx-anniversary-portal.sppkg, version 1.0.8.0).
 
 Please replace the old one with it:
 1. Open the App Catalog > Apps for SharePoint.

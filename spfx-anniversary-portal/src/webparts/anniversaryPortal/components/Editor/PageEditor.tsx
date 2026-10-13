@@ -170,7 +170,7 @@ export const PageEditor: React.FC<IProps> = p => {
             rows={rowsOf(p.legends, l => ({ name: l.name, position: l.position, department: l.department, branch: l.branch, sortOrder: str(l.sortOrder) }), l => l.photo)}
             describe={v => v.name || ''}
             onSave={async (id, v, file) => {
-              const rid = await edit.saveLegend(id, { name: v.name || '', position: v.position || '', department: v.department || '', branch: v.branch || '', sortOrder: num(v.sortOrder) }, lookups.current);
+              const rid = await edit.saveLegend(id, { name: v.name || '', position: v.position || '', department: v.department || '', branch: v.branch || '', sortOrder: num(v.sortOrder) }, p.portal.legendShape(), lookups.current);
               if (file) await edit.setPhoto(settings.legendsList, rid, file, v.name || 'Legend');
               done();
             }}

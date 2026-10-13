@@ -13,6 +13,7 @@ const MANAGE_LISTS = 12;
 
 export class PortalService {
   private readonly cache = new Cache();
+  private shape = { dept: false, branch: false };
 
   constructor(private readonly sp: SPFI, private readonly cfg: IPortalSettings,
     private readonly user: { id: number; displayName: string }, private readonly webServerRelativeUrl: string = '') { }
@@ -20,6 +21,9 @@ export class PortalService {
   private list(name: string): any {
     return this.sp.web.lists.getByTitle(name);
   }
+
+  /** Which Legends columns are lookups (known once the legends have loaded). */
+  public legendShape(): { dept: boolean; branch: boolean } { return this.shape; }
 
   /** Forget everything read so far, so the next read shows the owner's edits. */
   public invalidate(): void { this.cache.clear(); }
@@ -58,14 +62,23 @@ export class PortalService {
         if (expand.length) q = q.expand(...expand);
         return q.filter('Active eq 1').orderBy('SortOrder', true).top(PAGE)();
       };
-      let rows: any[];
-      try {
-        // Department and Branch as lookup columns...
-        rows = await query(cols.concat('Department/Title', 'Branch/Title'), ['Department', 'Branch']);
-      } catch {
-        // ...or as plain text columns (no expand allowed).
-        rows = await query(cols.concat('Department', 'Branch'), []);
+      // Department and Branch may each be a lookup column or plain text, in any mix. A lookup must be expanded and
+      // a text column must not be, so try the four shapes until SharePoint accepts one.
+      const shapes: { dept: boolean; branch: boolean }[] = [
+        { dept: true, branch: true }, { dept: false, branch: false }, { dept: false, branch: true }, { dept: true, branch: false }
+      ];
+      let rows: any[] | undefined;
+      let lastError: unknown;
+      for (const s of shapes) {
+        try {
+          rows = await query(
+            cols.concat(s.dept ? 'Department/Title' : 'Department', s.branch ? 'Branch/Title' : 'Branch'),
+            (s.dept ? ['Department'] : []).concat(s.branch ? ['Branch'] : []));
+          this.shape = s;
+          break;
+        } catch (e) { lastError = e; }
       }
+      if (!rows) throw lastError;
       return rows.map(r => mapLegend(r, { webServerRelativeUrl: this.webServerRelativeUrl, listName: this.cfg.legendsList, itemId: r.Id }));
     });
   }
