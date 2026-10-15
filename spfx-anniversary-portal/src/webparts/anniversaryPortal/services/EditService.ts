@@ -17,7 +17,7 @@ export const MEDIA_SLOTS: { type: AssetType; label: string; accept: string }[] =
   { type: 'Watermark', label: 'Board watermark', accept: 'image/*' }
 ];
 
-export interface ILegendWrite { name: string; position: string; department: string; branch: string; sortOrder: number }
+export interface ILegendWrite { name: string; quote: string; position: string; department: string; branch: string; sortOrder: number }
 
 /** Owner-only writes behind the "Edit page" panel. Nothing here is used by visitors. */
 export class EditService {
@@ -76,7 +76,7 @@ export class EditService {
       const hit = xs.filter(x => x.title.trim().toLowerCase() === t.trim().toLowerCase())[0];
       return hit ? hit.id : undefined;
     };
-    const fields: { [k: string]: unknown } = { Title: w.name, Position: w.position, SortOrder: w.sortOrder };
+    const fields: { [k: string]: unknown } = { Title: w.name, Position: w.position, SortOrder: w.sortOrder, Quote: w.quote };
     if (shape.dept) { const d = idOf(lookups.departments, w.department); if (d) fields.DepartmentId = d; } else fields.Department = w.department;
     if (shape.branch) { const b = idOf(lookups.branches, w.branch); if (b) fields.BranchId = b; } else fields.Branch = w.branch;
     if (id) { await this.updateRow(this.cfg.legendsList, id, fields); return id; }

@@ -212,6 +212,18 @@ ok('legend count on the page went up', (await D('Legends')).length === nLeg + 1)
 const del = page.locator('dialog[open] .ed-card', { hasText: 'Test Person' }).first();
 await del.locator('.btn', { hasText: 'Delete' }).click(); await del.locator('.btn', { hasText: 'Yes, delete' }).click(); await page.waitForTimeout(900);
 ok('legend deleted after confirmation', (await D('Legends')).length === nLeg);
+// caption: shown in the tree panel only, never on the legend cards
+const capCard = page.locator('dialog[open] .ed-card:not(.ed-new)').first();
+await capCard.locator('textarea').fill('Twenty years taught me that bold steps are taken together.');
+await capCard.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(900);
+ok('caption saved to the Quote column', (await D('Legends')).some(r => r.Quote === 'Twenty years taught me that bold steps are taken together.'));
+await page.keyboard.press('Escape'); await page.waitForTimeout(400);
+await scrollTo('#tree');
+await page.locator('.node').first().click(); await page.waitForTimeout(300);
+ok('caption shows in the Tree of Legacy panel', /bold steps are taken together/.test(await page.locator('aside.panel').innerText()));
+ok('caption does not show on the legend cards', !/bold steps are taken together/.test(await page.locator('.card').first().innerText()) && (await page.locator('.card', { hasText: 'bold steps' }).count()) === 0);
+await page.locator('.ed-fab').click(); await page.waitForTimeout(400);
+await page.locator('dialog[open] .ed-tabs button', { hasText: 'Legends' }).click();
 // memory lane + voices + media
 await page.locator('dialog[open] .ed-tabs button', { hasText: 'Memory Lane' }).click();
 const mem = page.locator('dialog[open] .ed-card:not(.ed-new)').first();

@@ -105,7 +105,7 @@ export const PageEditor: React.FC<IProps> = p => {
   });
 
   const legendFields: IField[] = [
-    { key: 'name', label: 'Name', kind: 'text' }, { key: 'position', label: 'Position', kind: 'text' },
+    { key: 'name', label: 'Name', kind: 'text' }, { key: 'quote', label: 'Caption (shown in the Tree of Legacy when this person is selected)', kind: 'long', wide: true }, { key: 'position', label: 'Position', kind: 'text' },
     { key: 'department', label: 'Department', kind: 'text' }, { key: 'branch', label: 'Branch', kind: 'text' },
     { key: 'sortOrder', label: 'Order in the tree (1, 2, 3...)', kind: 'number' }
   ];
@@ -167,10 +167,10 @@ export const PageEditor: React.FC<IProps> = p => {
         {tab === 'legends' ? (
           <RowsTab addLabel="Add a legend, change one, or choose a new picture. Picture, name, position, department and branch show on the page." orderKey="sortOrder" nextOrder={nextOrder(p.legends)} withPhoto
             fields={legendFields}
-            rows={rowsOf(p.legends, l => ({ name: l.name, position: l.position, department: l.department, branch: l.branch, sortOrder: str(l.sortOrder) }), l => l.photo)}
+            rows={rowsOf(p.legends, l => ({ name: l.name, quote: l.quote, position: l.position, department: l.department, branch: l.branch, sortOrder: str(l.sortOrder) }), l => l.photo)}
             describe={v => v.name || ''}
             onSave={async (id, v, file) => {
-              const rid = await edit.saveLegend(id, { name: v.name || '', position: v.position || '', department: v.department || '', branch: v.branch || '', sortOrder: num(v.sortOrder) }, p.portal.legendShape(), lookups.current);
+              const rid = await edit.saveLegend(id, { name: v.name || '', quote: v.quote || '', position: v.position || '', department: v.department || '', branch: v.branch || '', sortOrder: num(v.sortOrder) }, p.portal.legendShape(), lookups.current);
               if (file) await edit.setPhoto(settings.legendsList, rid, file, v.name || 'Legend');
               done();
             }}

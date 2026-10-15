@@ -27,7 +27,6 @@ export const LegendCards: React.FC<{ legends: ILegend[]; onPick: (i: number) => 
             <b>{l.name}</b>
             <small>{l.department}</small>
             <span className="badge">20 years of service</span>
-            {l.quote ? <small style={{ fontStyle: 'italic', marginTop: 'auto', paddingTop: 8 }}>&ldquo;{l.quote}&rdquo;</small> : null}
           </div>
         ))}
         {!list.length ? <Empty>{legends.length ? 'No colleagues match. Clear the search.' : 'No legends have been added yet.'}</Empty> : null}
