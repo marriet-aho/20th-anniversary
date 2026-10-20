@@ -197,6 +197,13 @@ Saved changes show on the page straight away. Deleting moves the item to the sit
 3. To change a photo later, click it. Under the picture you will find **Edit this photo**: change the details and **Save changes**, **Hide from visitors**, or **Delete photo** (it goes to the site Recycle Bin).
 4. Visitors search the gallery by typing a photo name, a branch, a region or a department into the one search box.
 
+## Adding or renaming the gallery filter buttons (owners)
+
+1. Click **Edit page**, then the **Words and dates** tab.
+2. Find **Celebration Gallery: Filter buttons** and type the names separated by commas, for example `Branch Celebrations, Anniversary Events, Community Impact`. **All** is always added for you.
+3. Click **Save**. The buttons change straight away.
+4. In the **GalleryMedia** library, open the **Category** column settings and add the same names to its choices, so photos can be given that category.
+
 ## Deploying the web part
 
 Upload `spfx-anniversary-portal.sppkg` to the tenant App Catalog and **Deploy**, then add the **Anniversary Portal** web part to a full-width **App page** and publish.

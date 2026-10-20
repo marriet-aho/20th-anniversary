@@ -4,8 +4,6 @@ import { mapGalleryItem } from './mappers';
 import { eachPage, pageOf } from './paging';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const GALLERY_CATEGORIES = ['Branch Celebrations', 'Anniversary Events'];
-
 export interface IPhotoDetails { title: string; category: string; branch: string; region: string; departmentId?: number }
 
 const CHUNK_AT = 8 * 1024 * 1024;

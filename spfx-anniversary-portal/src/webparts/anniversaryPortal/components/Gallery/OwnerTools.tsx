@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { IGalleryItem, ILookupOption } from '../../models';
-import { usePortal } from '../PortalContext';
-import { GALLERY_CATEGORIES, IPhotoDetails } from '../../services/GalleryService';
+import { useCategories, usePortal } from '../PortalContext';
+import { IPhotoDetails } from '../../services/GalleryService';
 
 interface IFieldsProps {
   value: IPhotoDetails; onChange: (v: IPhotoDetails) => void; captionLabel: string; captionHint?: string;
@@ -11,6 +11,8 @@ interface IFieldsProps {
 /** The five details an owner can set on a photo. */
 const DetailFields: React.FC<IFieldsProps> = ({ value, onChange, captionLabel, captionHint, branches, departments, idPrefix }) => {
   const set = (p: Partial<IPhotoDetails>): void => onChange({ ...value, ...p });
+  const configured = useCategories();
+  const categories = value.category && configured.indexOf(value.category) < 0 ? configured.concat(value.category) : configured;
   const regions = Array.from(new Set(branches.map(b => b.region || '').filter(Boolean)));
   return (
     <div className="ow-grid">
@@ -19,7 +21,7 @@ const DetailFields: React.FC<IFieldsProps> = ({ value, onChange, captionLabel, c
       </label>
       <label>Category
         <select className="inp" value={value.category} onChange={e => set({ category: e.target.value })}>
-          {GALLERY_CATEGORIES.map(c => <option key={c} value={c}>{c}</option>)}
+          {categories.map(c => <option key={c} value={c}>{c}</option>)}
         </select>
       </label>
       <label>Branch
@@ -40,7 +42,6 @@ const DetailFields: React.FC<IFieldsProps> = ({ value, onChange, captionLabel, c
   );
 };
 
-const EMPTY: IPhotoDetails = { title: '', category: GALLERY_CATEGORIES[0], branch: '', region: '' };
 const baseName = (n: string): string => n.replace(/\.[^.]+$/, '').replace(/[_-]+/g, ' ').trim();
 
 interface IAddProps { branches: ILookupOption[]; departments: ILookupOption[]; onDone: () => void }
@@ -50,7 +51,8 @@ export const AddPhotos: React.FC<IAddProps> = ({ branches, departments, onDone }
   const { gallery } = usePortal();
   const [open, setOpen] = React.useState(false);
   const [files, setFiles] = React.useState<File[]>([]);
-  const [d, setD] = React.useState<IPhotoDetails>(EMPTY);
+  const categories = useCategories();
+  const [d, setD] = React.useState<IPhotoDetails>({ title: '', category: categories[0] || '', branch: '', region: '' });
   const [busy, setBusy] = React.useState(false);
   const [msg, setMsg] = React.useState('');
   const input = React.useRef<HTMLInputElement>(null);
@@ -98,7 +100,8 @@ interface IEditProps { item: IGalleryItem; branches: ILookupOption[]; department
 /** Owners only: edit, hide or delete the photo that is open. */
 export const EditPhoto: React.FC<IEditProps> = ({ item, branches, departments, onChanged, onRemoved }) => {
   const { gallery } = usePortal();
-  const [d, setD] = React.useState<IPhotoDetails>({ title: item.title, category: item.category || GALLERY_CATEGORIES[0], branch: item.branch, region: item.region, departmentId: item.departmentId });
+  const categories = useCategories();
+  const [d, setD] = React.useState<IPhotoDetails>({ title: item.title, category: item.category || (categories[0] || ''), branch: item.branch, region: item.region, departmentId: item.departmentId });
   const [published, setPublished] = React.useState(item.published);
   const [sure, setSure] = React.useState(false);
   const [busy, setBusy] = React.useState(false);

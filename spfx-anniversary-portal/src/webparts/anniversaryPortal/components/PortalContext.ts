@@ -29,6 +29,15 @@ export function usePortal(): IPortalContext {
   return c;
 }
 
+/** The gallery's filter buttons, from the comma-separated PortalContent row gallery.categories. */
+export function useCategories(): string[] {
+  const { content } = usePortal();
+  const raw = content['gallery.categories'] && content['gallery.categories'].value ? content['gallery.categories'].value : DEFAULT_TEXT['gallery.categories'];
+  const out: string[] = [];
+  raw.split(',').forEach(x => { const t = x.trim(); if (t && out.indexOf(t) < 0 && t.toLowerCase() !== 'all') out.push(t); });
+  return out;
+}
+
 /** Text for a PortalContent key, with {count} replaced by the number of Active legends. */
 export function useText(): (key: string) => string {
   const { content, legendCount } = usePortal();

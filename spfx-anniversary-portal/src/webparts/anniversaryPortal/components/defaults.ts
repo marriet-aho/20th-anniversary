@@ -22,6 +22,7 @@ export const DEFAULT_TEXT: { [key: string]: string } = {
   'board.heading': 'Orange Family Celebration Board',
   'board.sub': 'Share a message celebrating our people, our journey, and our 20 Years of Audacious Steps.',
   'gallery.heading': 'Celebration Gallery',
+  'gallery.categories': 'Branch Celebrations, Anniversary Events',
   'gallery.sub': 'Memories and moments from our 20th anniversary celebrations.',
   'footer.heading': 'Here is to the next audacious step',
   'footer.sub': 'Twenty years of bold moves, and we are just getting started.'

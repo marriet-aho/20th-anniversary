@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { IGalleryItem, ILookupOption, IPage } from '../../models';
-import { usePortal } from '../PortalContext';
+import { useCategories, usePortal } from '../PortalContext';
 import { useAsync, useDebounced } from '../../hooks/useAsync';
 import { Section } from '../common/Section';
 import { Empty, ErrorNote, Loading } from '../common/States';
-import { GALLERY_CATEGORIES, IGalleryQuery } from '../../services/GalleryService';
+import { IGalleryQuery } from '../../services/GalleryService';
 import { AddPhotos } from './OwnerTools';
 
 const Lightbox = React.lazy(() => import(/* webpackChunkName: 'gallery-lightbox' */ './GalleryLightbox'));
@@ -95,7 +95,7 @@ const Gallery: React.FC = () => {
   }, [hasMore, loadMore]);
 
   const label = open ? 'Hide gallery' : 'Show gallery' + (total.data !== undefined ? ' (' + total.data + ')' : '');
-  const cats = ['All'].concat(GALLERY_CATEGORIES);
+  const cats = ['All'].concat(useCategories());
 
   return (
     <Section k="gallery">

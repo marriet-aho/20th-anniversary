@@ -26,7 +26,7 @@ const SECTION_NAMES: { [k: string]: string } = {
   memory: 'Memory Lane', voices: 'Voices of appreciation', video: 'Anniversary video', board: 'Celebration board',
   gallery: 'Celebration Gallery', footer: 'Bottom of the page'
 };
-const PART_NAMES: { [k: string]: string } = { title: 'Title', subtitle: 'Subtitle', heading: 'Heading', sub: 'Line under the heading', lead: 'Intro line', btn1: 'Button 1', btn2: 'Button 2', btn3: 'Button 3' };
+const PART_NAMES: { [k: string]: string } = { categories: 'Filter buttons (names separated by commas, for example Branch Celebrations, Anniversary Events)', title: 'Title', subtitle: 'Subtitle', heading: 'Heading', sub: 'Line under the heading', lead: 'Intro line', btn1: 'Button 1', btn2: 'Button 2', btn3: 'Button 3' };
 
 const toLocalInput = (iso: string): string => {
   const d = new Date(iso);

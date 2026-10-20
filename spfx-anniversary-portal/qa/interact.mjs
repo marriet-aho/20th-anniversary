@@ -184,6 +184,11 @@ ok('edit panel stays open after saving', (await page.locator('dialog[open] .ed-t
 const cd = page.locator('dialog[open] input[type=datetime-local]');
 await cd.fill('2026-12-01T10:30'); await page.locator('dialog[open] .btn', { hasText: 'Save date' }).click(); await page.waitForTimeout(800);
 ok('countdown date saved', /^2026-12-01T10:30/.test(new Date((await D('PortalContent')).filter(r => r.Title === 'countdown.date')[0].DateValue).toISOString().replace('Z','')), JSON.stringify((await D('PortalContent')).filter(r => r.Title === 'countdown.date')[0]));
+// gallery filter buttons are editable
+const catCard = page.locator('dialog[open] .ed-card', { hasText: 'Celebration Gallery: Filter buttons' });
+await catCard.locator('input, textarea').fill('Branch Celebrations, Anniversary Events, Community Impact, Team Moments'); await catCard.locator('.btn', { hasText: 'Save' }).click(); await page.waitForTimeout(900);
+ok('categories saved to PortalContent', (await D('PortalContent')).some(r => r.Title === 'gallery.categories' && /Community Impact/.test(r.Value)));
+ok('gallery shows the new filter buttons', (await page.locator('.gb:not(.ed-tabs) button').allInnerTexts()).join('|') === 'All|Branch Celebrations|Anniversary Events|Community Impact|Team Moments', (await page.locator('.gb:not(.ed-tabs) button').allInnerTexts()).join('|'));
 // key figures: add
 await page.locator('dialog[open] .ed-tabs button', { hasText: 'Key figures' }).click();
 const nStats = (await D('KeyStats')).length;
