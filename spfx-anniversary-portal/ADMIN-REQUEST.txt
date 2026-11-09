@@ -1,14 +1,21 @@
-Subject: Please replace the Anniversary Portal app (2 minutes)
+Subject: InfoPortal: replace the Anniversary Portal app and allow visitors to post (5 minutes)
 
 Hi,
 
-The first Anniversary Portal file you uploaded had a bug. I attached the fixed file (spfx-anniversary-portal.sppkg, version 1.0.10.0).
+Please do these two things on the InfoPortal site.
 
-Please replace the old one with it:
-1. Open the App Catalog > Apps for SharePoint.
-2. Upload the attached file.
-3. When it asks "Replace it", choose Replace, then click Deploy.
+1. REPLACE THE APP
+   App Catalog > Apps for SharePoint > upload the attached spfx-anniversary-portal.sppkg (version 1.0.10.0) > choose Replace > Deploy.
+   It is the same app with fixes. It needs no new permissions.
 
-It is the same app. It needs no new permissions, and nothing else on the tenant changes.
+2. LET VISITORS POST AND REACT
+   Do this on two lists only: BoardMessages and GalleryReactions.
+   For each list:
+   a. Gear icon > List settings > Permissions for this list > Stop Inheriting Permissions.
+   b. Tick the Visitors and Members groups > Edit User Permissions > choose Contribute (instead of Read) > OK.
+   c. Back in List settings > Advanced settings:
+      - Read access: Read all items
+      - Create and Edit access: Create items and edit items that were created by the user
+      Click OK.
 
-Thank you!
+Nothing else on the site changes. Thank you!
